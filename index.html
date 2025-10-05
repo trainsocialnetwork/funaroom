@@ -1,0 +1,1750 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FUN・A・ROOM - 健康で楽しい毎日を</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .phone-frame {
+            width: 100%;
+            max-width: 390px;
+            height: 844px;
+            background: #1a1a1a;
+            border-radius: 45px;
+            padding: 14px;
+            box-shadow: 0 30px 90px rgba(0,0,0,0.4);
+            position: relative;
+        }
+
+        .screen {
+            width: 100%;
+            height: 100%;
+            background: #F8F9FA;
+            border-radius: 35px;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .status-bar {
+            height: 44px;
+            background: transparent;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 28px;
+            font-size: 15px;
+            font-weight: 600;
+            color: #1a1a1a;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 10;
+        }
+
+        .page {
+            display: none;
+            flex-direction: column;
+            height: 100%;
+            overflow-y: auto;
+            background: #F8F9FA;
+        }
+
+        .page.active {
+            display: flex;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #5B86E5 0%, #36D1DC 100%);
+            color: white;
+            padding: 32px 28px 40px 28px;
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+
+        .header-title {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+            letter-spacing: -0.5px;
+        }
+
+        .header-subtitle {
+            font-size: 17px;
+            opacity: 0.95;
+            font-weight: 500;
+            position: relative;
+            z-index: 1;
+        }
+
+        .content {
+            flex: 1;
+            padding: 28px;
+            overflow-y: auto;
+        }
+
+        .content::-webkit-scrollbar {
+            width: 0;
+        }
+
+        .welcome-section {
+            text-align: center;
+            padding: 60px 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 600px;
+        }
+
+        .app-logo {
+            width: 140px;
+            height: 140px;
+            background: linear-gradient(135deg, #5B86E5 0%, #36D1DC 100%);
+            border-radius: 35px;
+            margin: 0 auto 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 64px;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 20px 60px rgba(91, 134, 229, 0.4);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .welcome-title {
+            font-size: 28px;
+            font-weight: 800;
+            color: #1a1a1a;
+            margin-bottom: 20px;
+            letter-spacing: -0.5px;
+        }
+
+        .welcome-text {
+            font-size: 19px;
+            color: #6B7280;
+            line-height: 1.9;
+            margin-bottom: 48px;
+            font-weight: 500;
+        }
+
+        .button {
+            background: linear-gradient(135deg, #5B86E5 0%, #36D1DC 100%);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 22px 36px;
+            font-size: 20px;
+            font-weight: 700;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 30px rgba(91, 134, 229, 0.3);
+            min-height: 68px;
+            letter-spacing: 0.3px;
+        }
+
+        .button:active {
+            transform: translateY(2px);
+            box-shadow: 0 5px 15px rgba(91, 134, 229, 0.3);
+        }
+
+        .button-secondary {
+            background: white;
+            color: #5B86E5;
+            border: 3px solid #5B86E5;
+            box-shadow: 0 4px 15px rgba(91, 134, 229, 0.15);
+        }
+
+        .button-large {
+            padding: 26px 40px;
+            font-size: 22px;
+            min-height: 76px;
+        }
+
+        .input-group {
+            margin-bottom: 28px;
+        }
+
+        .input-label {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 20px 24px;
+            font-size: 18px;
+            border: 2px solid #E5E7EB;
+            border-radius: 16px;
+            transition: all 0.3s;
+            min-height: 64px;
+            background: white;
+            font-weight: 500;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #5B86E5;
+            box-shadow: 0 0 0 4px rgba(91, 134, 229, 0.1);
+        }
+
+        .card {
+            background: white;
+            border-radius: 24px;
+            padding: 28px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(0,0,0,0.04);
+        }
+
+        .card:active {
+            transform: scale(0.98);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+        }
+
+        .card-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            color: #5B86E5;
+        }
+
+        .card-title {
+            font-size: 21px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 12px;
+            letter-spacing: -0.3px;
+        }
+
+        .card-text {
+            font-size: 17px;
+            color: #6B7280;
+            line-height: 1.8;
+            font-weight: 500;
+        }
+
+        .recommend-card {
+            background: linear-gradient(135deg, rgba(91, 134, 229, 0.08) 0%, rgba(54, 209, 220, 0.08) 100%);
+            border: 2px solid #5B86E5;
+            border-radius: 24px;
+            padding: 28px;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .recommend-card::before {
+            content: '\f005';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 32px;
+            opacity: 0.5;
+            color: #5B86E5;
+        }
+
+        .recommend-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #5B86E5;
+            margin-bottom: 12px;
+        }
+
+        .recommend-message {
+            font-size: 17px;
+            color: #1a1a1a;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .question-card {
+            background: white;
+            border-radius: 28px;
+            padding: 36px 28px;
+            margin-bottom: 28px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            border: 1px solid rgba(0,0,0,0.04);
+        }
+
+        .question-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #5B86E5 0%, #36D1DC 100%);
+            color: white;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(91, 134, 229, 0.3);
+        }
+
+        .question-text {
+            font-size: 23px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 28px;
+            line-height: 1.6;
+            letter-spacing: -0.3px;
+        }
+
+        .option-button {
+            background: #F9FAFB;
+            border: 2px solid #E5E7EB;
+            border-radius: 16px;
+            padding: 22px 28px;
+            margin-bottom: 16px;
+            font-size: 19px;
+            color: #374151;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: left;
+            width: 100%;
+            min-height: 72px;
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+        }
+
+        .option-button:active {
+            transform: scale(0.98);
+        }
+
+        .option-button.selected {
+            background: linear-gradient(135deg, rgba(91, 134, 229, 0.1) 0%, rgba(54, 209, 220, 0.1) 100%);
+            border-color: #5B86E5;
+            color: #5B86E5;
+            font-weight: 700;
+            box-shadow: 0 4px 20px rgba(91, 134, 229, 0.15);
+        }
+
+        .option-button i {
+            margin-right: 12px;
+            font-size: 22px;
+        }
+
+        .activity-card {
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(0,0,0,0.04);
+        }
+
+        .activity-card:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+        }
+
+        .activity-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+            position: relative;
+            overflow: hidden;
+            color: white;
+        }
+
+        .activity-image::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+        }
+
+        .activity-image i {
+            position: relative;
+            z-index: 1;
+        }
+
+        .activity-content {
+            padding: 24px;
+        }
+
+        .activity-category {
+            display: inline-block;
+            background: linear-gradient(135deg, rgba(91, 134, 229, 0.1) 0%, rgba(54, 209, 220, 0.1) 100%);
+            color: #5B86E5;
+            padding: 8px 16px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            letter-spacing: 0.3px;
+        }
+
+        .activity-title {
+            font-size: 21px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 16px;
+            letter-spacing: -0.3px;
+        }
+
+        .activity-info {
+            font-size: 16px;
+            color: #6B7280;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+
+        .activity-info i {
+            width: 20px;
+            color: #5B86E5;
+        }
+
+        .bottom-nav {
+            background: white;
+            border-top: 1px solid #F3F4F6;
+            display: flex;
+            padding: 12px 8px 20px 8px;
+            flex-shrink: 0;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.03);
+        }
+
+        .nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-radius: 16px;
+        }
+
+        .nav-item:active {
+            transform: scale(0.95);
+            background: #F9FAFB;
+        }
+
+        .nav-icon {
+            width: 36px;
+            height: 36px;
+            margin-bottom: 6px;
+            font-size: 24px;
+            transition: all 0.3s;
+            color: #9CA3AF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-label {
+            font-size: 13px;
+            color: #9CA3AF;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .nav-item.active .nav-label {
+            color: #5B86E5;
+            font-weight: 700;
+        }
+
+        .nav-item.active .nav-icon {
+            transform: scale(1.1);
+            color: #5B86E5;
+        }
+
+        .progress-bar {
+            background: #E5E7EB;
+            height: 8px;
+            border-radius: 4px;
+            margin-bottom: 32px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #5B86E5 0%, #36D1DC 100%);
+            height: 100%;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 4px;
+        }
+
+        .result-badge {
+            width: 140px;
+            height: 140px;
+            margin: 20px auto 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 64px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.15);
+            animation: scaleIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            color: white;
+        }
+
+        @keyframes scaleIn {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .result-badge.good {
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+        }
+
+        .result-badge.warning {
+            background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+        }
+
+        .result-title {
+            font-size: 28px;
+            font-weight: 800;
+            color: #1a1a1a;
+            text-align: center;
+            margin-bottom: 16px;
+            letter-spacing: -0.5px;
+        }
+
+        .result-text {
+            font-size: 18px;
+            color: #6B7280;
+            line-height: 1.9;
+            text-align: center;
+            margin-bottom: 36px;
+            font-weight: 500;
+        }
+
+        .bridge-message {
+            background: linear-gradient(135deg, rgba(91, 134, 229, 0.08) 0%, rgba(54, 209, 220, 0.08) 100%);
+            border: 2px solid #5B86E5;
+            border-radius: 24px;
+            padding: 32px 28px;
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .bridge-message::before {
+            content: '\f0eb';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            font-size: 32px;
+            color: #5B86E5;
+        }
+
+        .bridge-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #5B86E5;
+            margin-bottom: 16px;
+        }
+
+        .bridge-text {
+            font-size: 18px;
+            color: #1a1a1a;
+            line-height: 1.9;
+            margin-bottom: 24px;
+            font-weight: 500;
+        }
+
+        .completion-message {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.1) 100%);
+            border: 2px solid #10B981;
+            border-radius: 24px;
+            padding: 32px 28px;
+            text-align: center;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .completion-icon {
+            font-size: 72px;
+            margin-bottom: 20px;
+            color: #059669;
+        }
+
+        .completion-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #059669;
+            margin-bottom: 12px;
+        }
+
+        .completion-text {
+            font-size: 17px;
+            color: #047857;
+            font-weight: 500;
+            line-height: 1.8;
+        }
+
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            margin-top: 24px;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 12px;
+            transition: all 0.3s;
+        }
+
+        .calendar-day.header {
+            color: #9CA3AF;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .calendar-day.recorded {
+            background: linear-gradient(135deg, rgba(91, 134, 229, 0.15) 0%, rgba(54, 209, 220, 0.15) 100%);
+            color: #5B86E5;
+            font-weight: 700;
+        }
+
+        .calendar-day.today {
+            background: linear-gradient(135deg, #5B86E5 0%, #36D1DC 100%);
+            color: white;
+            font-weight: 700;
+            box-shadow: 0 4px 15px rgba(91, 134, 229, 0.3);
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #5B86E5 0%, #36D1DC 100%);
+            color: white;
+            border-radius: 24px;
+            padding: 32px 28px;
+            margin-bottom: 24px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(91, 134, 229, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+
+        .stat-number {
+            font-size: 56px;
+            font-weight: 800;
+            margin-bottom: 12px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-label {
+            font-size: 18px;
+            opacity: 0.95;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+        }
+
+        .detail-header {
+            padding: 28px;
+            background: white;
+        }
+
+        .detail-category {
+            display: inline-block;
+            background: linear-gradient(135deg, rgba(91, 134, 229, 0.1) 0%, rgba(54, 209, 220, 0.1) 100%);
+            color: #5B86E5;
+            padding: 10px 20px;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .detail-title {
+            font-size: 26px;
+            font-weight: 800;
+            color: #1a1a1a;
+            margin-bottom: 24px;
+            line-height: 1.4;
+            letter-spacing: -0.5px;
+        }
+
+        .detail-image {
+            width: 100%;
+            height: 260px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin-bottom: 28px;
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 96px;
+            position: relative;
+            overflow: hidden;
+            color: white;
+        }
+
+        .detail-image::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+        }
+
+        .detail-image i {
+            position: relative;
+            z-index: 1;
+        }
+
+        .info-row {
+            display: flex;
+            align-items: flex-start;
+            padding: 18px 0;
+            border-bottom: 1px solid #F3F4F6;
+            font-size: 17px;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            color: #5B86E5;
+            margin-right: 20px;
+            min-width: 30px;
+            font-weight: 600;
+            font-size: 20px;
+        }
+
+        .info-value {
+            color: #1a1a1a;
+            font-weight: 600;
+            flex: 1;
+        }
+
+        .section-title {
+            font-size: 21px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin: 36px 0 16px 0;
+            letter-spacing: -0.3px;
+        }
+
+        .description-text {
+            font-size: 17px;
+            color: #6B7280;
+            line-height: 1.9;
+            font-weight: 500;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 10px 18px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            margin-right: 10px;
+        }
+
+        .badge-easy {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(5, 150, 105, 0.15) 100%);
+            color: #059669;
+        }
+
+        .settings-item {
+            background: white;
+            border-radius: 18px;
+            padding: 22px 24px;
+            margin-bottom: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+            transition: all 0.3s;
+            border: 1px solid rgba(0,0,0,0.04);
+        }
+
+        .settings-item:active {
+            transform: scale(0.98);
+            background: #F9FAFB;
+        }
+
+        .settings-label {
+            font-size: 18px;
+            color: #1a1a1a;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .settings-label i {
+            font-size: 20px;
+            color: #5B86E5;
+        }
+
+        .toggle-switch {
+            width: 64px;
+            height: 36px;
+            background: #E5E7EB;
+            border-radius: 18px;
+            position: relative;
+            transition: background 0.3s;
+            cursor: pointer;
+        }
+
+        .toggle-switch.on {
+            background: #10B981;
+        }
+
+        .toggle-knob {
+            width: 32px;
+            height: 32px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        }
+
+        .toggle-switch.on .toggle-knob {
+            left: 30px;
+        }
+
+        .help-card {
+            background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+            border: 2px solid #FCD34D;
+            border-radius: 20px;
+            padding: 28px;
+            margin-bottom: 28px;
+        }
+
+        .help-title {
+            font-size: 21px;
+            font-weight: 700;
+            color: #92400E;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .help-title i {
+            font-size: 24px;
+        }
+
+        .help-text {
+            font-size: 17px;
+            color: #78350F;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .phone-button {
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            padding: 20px 28px;
+            font-size: 20px;
+            font-weight: 700;
+            width: 100%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
+            transition: all 0.3s;
+        }
+
+        .phone-button:active {
+            transform: translateY(2px);
+            box-shadow: 0 3px 10px rgba(16, 185, 129, 0.3);
+        }
+
+        .back-button {
+            background: white;
+            border: 2px solid #E5E7EB;
+            border-radius: 16px;
+            padding: 14px 24px;
+            font-size: 18px;
+            color: #6B7280;
+            cursor: pointer;
+            margin-bottom: 16px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .back-button:active {
+            background: #F9FAFB;
+            transform: scale(0.98);
+        }
+
+        .pill-button {
+            background: white;
+            border: 2px solid #E5E7EB;
+            border-radius: 16px;
+            padding: 14px 24px;
+            font-size: 16px;
+            color: #6B7280;
+            cursor: pointer;
+            display: inline-block;
+            margin: 0 10px 14px 0;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .pill-button:active {
+            transform: scale(0.95);
+        }
+
+        .pill-button.active {
+            background: linear-gradient(135deg, #5B86E5 0%, #36D1DC 100%);
+            border-color: transparent;
+            color: white;
+            font-weight: 700;
+            box-shadow: 0 4px 15px rgba(91, 134, 229, 0.3);
+        }
+
+        @media (max-width: 400px) {
+            .phone-frame {
+                border-radius: 0;
+                padding: 0;
+                max-width: 100%;
+                height: 100vh;
+            }
+            
+            .screen {
+                border-radius: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-frame">
+        <div class="screen">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+
+            <!-- スプラッシュ画面 -->
+            <div id="splash" class="page active">
+                <div class="content">
+                    <div class="welcome-section">
+                        <div class="app-logo">健</div>
+                        <h1 class="welcome-title">FUN・A・ROOM</h1>
+                        <p class="welcome-text">
+                            健康で楽しい毎日を<br>
+                            仲間と一緒に
+                        </p>
+                        <button class="button button-large" onclick="showPage('login')">
+                            はじめる
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ログイン画面 -->
+            <div id="login" class="page">
+                <div class="header">
+                    <h1 class="header-title">ログイン</h1>
+                    <p class="header-subtitle">メールアドレスでログイン</p>
+                </div>
+                <div class="content">
+                    <div class="input-group">
+                        <label class="input-label">メールアドレス</label>
+                        <input type="email" class="input-field" placeholder="example@email.com">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">パスワード</label>
+                        <input type="password" class="input-field" placeholder="パスワードを入力">
+                    </div>
+                    <button class="button button-large" onclick="showPage('home')">
+                        ログイン
+                    </button>
+                    <br><br>
+                    <button class="button button-secondary" onclick="showPage('register')">
+                        新規登録
+                    </button>
+                </div>
+            </div>
+
+            <!-- 新規登録画面 -->
+            <div id="register" class="page">
+                <div class="header">
+                    <h1 class="header-title">新規登録</h1>
+                    <p class="header-subtitle">アカウントを作成</p>
+                </div>
+                <div class="content">
+                    <div class="input-group">
+                        <label class="input-label">ニックネーム</label>
+                        <input type="text" class="input-field" placeholder="田中 太郎">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">年代</label>
+                        <select class="input-field">
+                            <option>選択してください</option>
+                            <option>60代</option>
+                            <option>70代</option>
+                            <option>80代</option>
+                            <option>90代以上</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">メールアドレス</label>
+                        <input type="email" class="input-field" placeholder="example@email.com">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">パスワード</label>
+                        <input type="password" class="input-field" placeholder="6文字以上">
+                    </div>
+                    <button class="button button-large" onclick="showPage('home')">
+                        登録する
+                    </button>
+                    <br><br>
+                    <button class="button-secondary button" onclick="showPage('login')">
+                        戻る
+                    </button>
+                </div>
+            </div>
+
+            <!-- ホーム画面 -->
+            <div id="home" class="page">
+                <div class="header">
+                    <h1 class="header-title">おはようございます</h1>
+                    <p class="header-subtitle">田中さん、今日も元気に過ごしましょう</p>
+                </div>
+                <div class="content">
+                    <div class="stat-card">
+                        <div class="stat-number">7日</div>
+                        <div class="stat-label">連続で記録しています！</div>
+                    </div>
+
+                    <div class="recommend-card">
+                        <h3 class="recommend-title">田中さんへのおすすめ</h3>
+                        <p class="recommend-message">
+                            最近、少し歩く機会が<br>
+                            減っているようですね。<br><br>
+                            みんなで楽しく体を動かしませんか？
+                        </p>
+                        <button class="button" onclick="setActiveTab('activities')">
+                            おすすめの活動を見る
+                        </button>
+                    </div>
+
+                    <div class="card" onclick="showPage('daily-check-1')">
+                        <div class="card-icon"><i class="fas fa-clipboard-list"></i></div>
+                        <h2 class="card-title">今日の記録</h2>
+                        <p class="card-text">毎日の体調を記録しましょう<br>3つの簡単な質問に答えるだけです</p>
+                    </div>
+                    
+                    <div class="card" onclick="showPage('health-check')">
+                        <div class="card-icon"><i class="fas fa-heartbeat"></i></div>
+                        <h2 class="card-title">健康チェック</h2>
+                        <p class="card-text">あなたの健康状態を確認しましょう<br>5分ほどで完了します</p>
+                    </div>
+                </div>
+                <div class="bottom-nav">
+                    <div class="nav-item active" onclick="setActiveTab('home')">
+                        <div class="nav-icon"><i class="fas fa-home"></i></div>
+                        <div class="nav-label">ホーム</div>
+                    </div>
+                    <div class="nav-item" onclick="setActiveTab('health')">
+                        <div class="nav-icon"><i class="fas fa-heartbeat"></i></div>
+                        <div class="nav-label">健康</div>
+                    </div>
+                    <div class="nav-item" onclick="setActiveTab('activities')">
+                        <div class="nav-icon"><i class="fas fa-users"></i></div>
+                        <div class="nav-label">部活動</div>
+                    </div>
+                    <div class="nav-item" onclick="setActiveTab('mypage')">
+                        <div class="nav-icon"><i class="fas fa-user"></i></div>
+                        <div class="nav-label">マイページ</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 毎日のヒアリング 質問1 -->
+            <div id="daily-check-1" class="page">
+                <div class="header">
+                    <h1 class="header-title">今日の記録</h1>
+                    <p class="header-subtitle">3つの質問に答えてください</p>
+                </div>
+                <div class="content">
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 33%"></div>
+                    </div>
+
+                    <div class="question-card">
+                        <span class="question-number">1</span>
+                        <h2 class="question-text">今日の体調はいかがですか？</h2>
+                        <button class="option-button" onclick="selectOption(this)"><i class="far fa-laugh-beam"></i>とても良い</button>
+                        <button class="option-button" onclick="selectOption(this)"><i class="far fa-smile"></i>良い</button>
+                        <button class="option-button" onclick="selectOption(this)"><i class="far fa-meh"></i>普通</button>
+                        <button class="option-button" onclick="selectOption(this)"><i class="far fa-frown"></i>少し悪い</button>
+                        <button class="option-button" onclick="selectOption(this)"><i class="far fa-sad-tear"></i>悪い</button>
+                    </div>
+
+                    <button class="button button-large" onclick="goToQuestion2()">
+                        次へ
+                    </button>
+                    <br><br>
+                    <button class="back-button" onclick="setActiveTab('home')">
+                        <i class="fas fa-arrow-left"></i> 戻る
+                    </button>
+                </div>
+            </div>
+
+            <!-- 毎日のヒアリング 質問2 -->
+            <div id="daily-check-2" class="page">
+                <div class="header">
+                    <h1 class="header-title">今日の記録</h1>
+                    <p class="header-subtitle">あと2つの質問です</p>
+                </div>
+                <div class="content">
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 66%"></div>
+                    </div>
+
+                    <div class="question-card">
+                        <span class="question-number">2</span>
+                        <h2 class="question-text">今日は何歩くらい歩きましたか？</h2>
+                        <button class="option-button" onclick="selectOption(this)"><i class="fas fa-walking"></i>5000歩以上</button>
+                        <button class="option-button" onclick="selectOption(this)"><i class="fas fa-walking"></i>3000-5000歩</button>
+                        <button class="option-button" onclick="selectOption(this)"><i class="fas fa-shoe-prints"></i>1000-3000歩</button>
+                        <button class="option-button" onclick="selectOption(this)"><i class="fas fa-home"></i>1000歩未満</button>
+                        <button class="option-button" onclick="selectOption(this)"><i class="fas fa-chair"></i>ほとんど歩いていない</button>
+                    </div>
+
+                    <button class="button button-large" onclick="goToQuestion3()">
+                        次へ
+                    </button>
+                    <br><br>
+                    <button class="back-button" onclick="showPage('daily-check-1')">
+                        <i class="fas fa-arrow-left"></i> 戻る
+                    </button>
+                </div>
+            </div>
+
+            <!-- 毎日のヒアリング 質問3 -->
+            <div id="daily-check-3" class="page">
+                <div class="header">
+                    <h1 class="header-title">今日の記録</h1>
+                    <p class="header-subtitle">最後の質問です</p>
+                </div>
+                <div class="content">
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 100%"></div>
+                    </div>
+
+                    <div class="question-card">
+                        <span class="question-number">3</span>
+                        <h2 class="question-text">今日、誰かとお話ししましたか？</h2>
+                        <button class="option-button" onclick="selectOption(this)"><i class="fas fa-comments"></i>たくさん話した</button>
+                        <button class="option-button" onclick="selectOption(this)"><i class="fas fa-comment"></i>少し話した</button>
+                        <button class="option-button" onclick="selectOption(this)"><i class="fas fa-hand-paper"></i>挨拶程度</button>
+                        <button class="option-button" onclick="selectOption(this)"><i class="fas fa-minus-circle"></i>話していない</button>
+                    </div>
+
+                    <button class="button button-large" onclick="completeDailyCheck()">
+                        記録を完了する
+                    </button>
+                    <br><br>
+                    <button class="back-button" onclick="showPage('daily-check-2')">
+                        <i class="fas fa-arrow-left"></i> 戻る
+                    </button>
+                </div>
+            </div>
+
+            <!-- 毎日のヒアリング完了画面 -->
+            <div id="daily-check-complete" class="page">
+                <div class="header">
+                    <h1 class="header-title">記録完了</h1>
+                    <p class="header-subtitle">ありがとうございます</p>
+                </div>
+                <div class="content">
+                    <div class="completion-message">
+                        <div class="completion-icon"><i class="fas fa-trophy"></i></div>
+                        <h2 class="completion-title">素晴らしい！</h2>
+                        <p class="completion-text">
+                            田中さん、今日も記録できましたね。<br>
+                            これで8日連続です！<br><br>
+                            この調子で、健康な毎日を<br>
+                            続けていきましょう。
+                        </p>
+                    </div>
+
+                    <div class="recommend-card" style="margin-top: 24px;">
+                        <h3 class="recommend-title">田中さんへ</h3>
+                        <p class="recommend-message">
+                            誰かとおしゃべりするだけで、<br>
+                            気持ちが明るくなるものです。<br><br>
+                            同じ趣味の仲間と<br>
+                            楽しい時間を過ごしませんか？
+                        </p>
+                        <button class="button" onclick="setActiveTab('activities')">
+                            おすすめの活動を見る
+                        </button>
+                    </div>
+
+                    <button class="button-secondary button" onclick="setActiveTab('health')">
+                        健康記録を見る
+                    </button>
+                </div>
+            </div>
+
+            <!-- 健康チェック画面 -->
+            <div id="health-check" class="page">
+                <div class="header">
+                    <h1 class="header-title">健康チェック</h1>
+                    <p class="header-subtitle">5つの質問に答えてください</p>
+                </div>
+                <div class="content">
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 20%"></div>
+                    </div>
+
+                    <div class="question-card">
+                        <span class="question-number">1</span>
+                        <h2 class="question-text">この半年で2〜3kg以上の体重減少がありましたか？</h2>
+                        <button class="option-button" onclick="selectOption(this)">はい</button>
+                        <button class="option-button" onclick="selectOption(this)">いいえ</button>
+                    </div>
+
+                    <button class="button button-large" onclick="showHealthCheck2()">
+                        次へ
+                    </button>
+                    <br><br>
+                    <button class="back-button" onclick="setActiveTab('home')">
+                        <i class="fas fa-arrow-left"></i> 戻る
+                    </button>
+                </div>
+            </div>
+
+            <!-- 健康チェック結果 -->
+            <div id="health-result" class="page">
+                <div class="header">
+                    <h1 class="header-title">健康チェック結果</h1>
+                    <p class="header-subtitle">田中さんの健康状態</p>
+                </div>
+                <div class="content">
+                    <div class="result-badge good"><i class="fas fa-check"></i></div>
+                    <h2 class="result-title">健常です</h2>
+                    <p class="result-text">
+                        素晴らしいです！<br>
+                        今の健康状態を維持しましょう。
+                    </p>
+
+                    <div class="bridge-message">
+                        <h3 class="bridge-title">田中さん、お疲れ様です</h3>
+                        <p class="bridge-text">
+                            定期的な運動と仲間との交流が<br>
+                            さらなる健康につながります。<br><br>
+                            週に2〜3回、軽い運動をするだけで<br>
+                            体力がぐっとアップしますよ！<br><br>
+                            みんなで楽しく体を動かしませんか？
+                        </p>
+                        <button class="button" onclick="setActiveTab('activities')">
+                            おすすめの活動を見る
+                        </button>
+                    </div>
+
+                    <button class="button-secondary button" onclick="setActiveTab('health')">
+                        健康記録に戻る
+                    </button>
+                </div>
+            </div>
+
+            <!-- 健康記録画面 -->
+            <div id="health" class="page">
+                <div class="header">
+                    <h1 class="header-title">健康記録</h1>
+                    <p class="header-subtitle">田中さんの記録を確認</p>
+                </div>
+                <div class="content">
+                    <div class="stat-card">
+                        <div class="stat-number">7日</div>
+                        <div class="stat-label">連続で記録しています！</div>
+                    </div>
+
+                    <div class="card">
+                        <h2 class="card-title"><i class="fas fa-calendar-alt" style="margin-right: 10px;"></i>今月の記録カレンダー</h2>
+                        <div class="calendar" id="calendar"></div>
+                    </div>
+
+                    <button class="button" onclick="showPage('daily-check-1')">
+                        今日の記録をする
+                    </button>
+                    <br><br>
+                    <button class="button-secondary button" onclick="showPage('health-check')">
+                        健康チェックをする
+                    </button>
+                </div>
+                <div class="bottom-nav">
+                    <div class="nav-item" onclick="setActiveTab('home')">
+                        <div class="nav-icon"><i class="fas fa-home"></i></div>
+                        <div class="nav-label">ホーム</div>
+                    </div>
+                    <div class="nav-item active" onclick="setActiveTab('health')">
+                        <div class="nav-icon"><i class="fas fa-heartbeat"></i></div>
+                        <div class="nav-label">健康</div>
+                    </div>
+                    <div class="nav-item" onclick="setActiveTab('activities')">
+                        <div class="nav-icon"><i class="fas fa-users"></i></div>
+                        <div class="nav-label">部活動</div>
+                    </div>
+                    <div class="nav-item" onclick="setActiveTab('mypage')">
+                        <div class="nav-icon"><i class="fas fa-user"></i></div>
+                        <div class="nav-label">マイページ</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 部活動一覧画面 -->
+            <div id="activities" class="page">
+                <div class="header">
+                    <h1 class="header-title">部活動</h1>
+                    <p class="header-subtitle">仲間と楽しく活動しよう</p>
+                </div>
+                <div class="content">
+                    <div style="margin-bottom: 24px;">
+                        <button class="pill-button active">すべて</button>
+                        <button class="pill-button">運動系</button>
+                        <button class="pill-button">交流系</button>
+                        <button class="pill-button">学習系</button>
+                    </div>
+
+                    <div class="activity-card" onclick="showPage('activity-detail')">
+                        <div class="activity-image"><i class="fas fa-walking"></i></div>
+                        <div class="activity-content">
+                            <span class="activity-category">運動系</span>
+                            <h3 class="activity-title">朝の健康ウォーキング部</h3>
+                            <p class="activity-info"><i class="fas fa-map-marker-alt"></i>日向市中央公園</p>
+                            <p class="activity-info"><i class="far fa-clock"></i>毎週火・木 7:00-8:00</p>
+                            <p class="activity-info"><i class="fas fa-users"></i>参加者: 12名</p>
+                        </div>
+                    </div>
+
+                    <div class="activity-card" onclick="showPage('activity-detail')">
+                        <div class="activity-image" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);"><i class="fas fa-palette"></i></div>
+                        <div class="activity-content">
+                            <span class="activity-category">交流系</span>
+                            <h3 class="activity-title">絵手紙サークル</h3>
+                            <p class="activity-info"><i class="fas fa-map-marker-alt"></i>コミュニティセンター</p>
+                            <p class="activity-info"><i class="far fa-clock"></i>毎週水 13:00-15:00</p>
+                            <p class="activity-info"><i class="fas fa-users"></i>参加者: 8名</p>
+                        </div>
+                    </div>
+
+                    <div class="activity-card" onclick="showPage('activity-detail')">
+                        <div class="activity-image" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);"><i class="fas fa-spa"></i></div>
+                        <div class="activity-content">
+                            <span class="activity-category">運動系</span>
+                            <h3 class="activity-title">ゆったりヨガ教室</h3>
+                            <p class="activity-info"><i class="fas fa-map-marker-alt"></i>FUN・A・ROOMスタジオ</p>
+                            <p class="activity-info"><i class="far fa-clock"></i>毎週月・金 10:00-11:00</p>
+                            <p class="activity-info"><i class="fas fa-users"></i>参加者: 15名</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bottom-nav">
+                    <div class="nav-item" onclick="setActiveTab('home')">
+                        <div class="nav-icon"><i class="fas fa-home"></i></div>
+                        <div class="nav-label">ホーム</div>
+                    </div>
+                    <div class="nav-item" onclick="setActiveTab('health')">
+                        <div class="nav-icon"><i class="fas fa-heartbeat"></i></div>
+                        <div class="nav-label">健康</div>
+                    </div>
+                    <div class="nav-item active" onclick="setActiveTab('activities')">
+                        <div class="nav-icon"><i class="fas fa-users"></i></div>
+                        <div class="nav-label">部活動</div>
+                    </div>
+                    <div class="nav-item" onclick="setActiveTab('mypage')">
+                        <div class="nav-icon"><i class="fas fa-user"></i></div>
+                        <div class="nav-label">マイページ</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 部活動詳細画面 -->
+            <div id="activity-detail" class="page">
+                <div class="content" style="padding: 0;">
+                    <div class="detail-image"><i class="fas fa-walking"></i></div>
+                    <div style="padding: 28px;">
+                        <span class="detail-category">運動系</span>
+                        <h1 class="detail-title">朝の健康ウォーキング部</h1>
+                        
+                        <div class="badge badge-easy">体力レベル: やさしい</div>
+
+                        <div class="info-row">
+                            <span class="info-label"><i class="fas fa-map-marker-alt"></i></span>
+                            <span class="info-value">日向市中央公園</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label"><i class="far fa-clock"></i></span>
+                            <span class="info-value">毎週火・木<br>7:00-8:00</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label"><i class="fas fa-users"></i></span>
+                            <span class="info-value">12名が参加中</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label"><i class="fas fa-yen-sign"></i></span>
+                            <span class="info-value">無料</span>
+                        </div>
+
+                        <h2 class="section-title">活動内容</h2>
+                        <p class="description-text">
+                            朝の爽やかな空気の中、公園を1時間ほどゆっくり歩きます。無理のないペースで、おしゃべりしながら楽しく歩きましょう。<br><br>
+                            初心者の方も大歓迎です。運動不足の解消や、朝の習慣づくりに最適です。
+                        </p>
+
+                        <div class="help-card" style="margin-top: 36px;">
+                            <h3 class="help-title"><i class="fas fa-phone"></i>お問い合わせ</h3>
+                            <p class="help-text">
+                                わからないことがあれば<br>
+                                お気軽にお電話ください
+                            </p>
+                            <button class="phone-button">
+                                <i class="fas fa-phone"></i>
+                                <span>電話する (0982-XX-XXXX)</span>
+                            </button>
+                        </div>
+
+                        <button class="button button-large" onclick="joinActivity()">
+                            参加を申し込む
+                        </button>
+                        <br><br>
+                        <button class="back-button" onclick="setActiveTab('activities')">
+                            <i class="fas fa-arrow-left"></i> 部活動一覧に戻る
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- マイページ -->
+            <div id="mypage" class="page">
+                <div class="header">
+                    <h1 class="header-title">マイページ</h1>
+                    <p class="header-subtitle">田中 太郎さん (70代)</p>
+                </div>
+                <div class="content">
+                    <div class="card">
+                        <h2 class="card-title">参加中の部活動</h2>
+                        <div class="activity-card" onclick="showPage('activity-detail')" style="margin-bottom: 0; margin-top: 16px;">
+                            <div class="activity-image" style="height: 160px;"><i class="fas fa-walking"></i></div>
+                            <div class="activity-content">
+                                <span class="activity-category">運動系</span>
+                                <h3 class="activity-title">朝の健康ウォーキング部</h3>
+                                <p class="activity-info" style="color: #10B981; font-weight: 700;"><i class="fas fa-bell"></i>次回: 明日 7:00</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="settings-item" onclick="setActiveTab('settings')">
+                        <span class="settings-label"><i class="fas fa-cog"></i>設定</span>
+                        <span style="font-size: 20px; color: #9CA3AF;"><i class="fas fa-chevron-right"></i></span>
+                    </div>
+
+                    <div class="settings-item" onclick="alert('ログアウトしました')">
+                        <span class="settings-label" style="color: #EF4444;"><i class="fas fa-sign-out-alt"></i>ログアウト</span>
+                    </div>
+                </div>
+                <div class="bottom-nav">
+                    <div class="nav-item" onclick="setActiveTab('home')">
+                        <div class="nav-icon"><i class="fas fa-home"></i></div>
+                        <div class="nav-label">ホーム</div>
+                    </div>
+                    <div class="nav-item" onclick="setActiveTab('health')">
+                        <div class="nav-icon"><i class="fas fa-heartbeat"></i></div>
+                        <div class="nav-label">健康</div>
+                    </div>
+                    <div class="nav-item" onclick="setActiveTab('activities')">
+                        <div class="nav-icon"><i class="fas fa-users"></i></div>
+                        <div class="nav-label">部活動</div>
+                    </div>
+                    <div class="nav-item active" onclick="setActiveTab('mypage')">
+                        <div class="nav-icon"><i class="fas fa-user"></i></div>
+                        <div class="nav-label">マイページ</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 設定画面 -->
+            <div id="settings" class="page">
+                <div class="header">
+                    <h1 class="header-title">設定</h1>
+                    <p class="header-subtitle">アプリの設定を変更</p>
+                </div>
+                <div class="content">
+                    <div class="settings-item">
+                        <span class="settings-label">通知を受け取る</span>
+                        <div class="toggle-switch on" onclick="toggleSwitch(this)">
+                            <div class="toggle-knob"></div>
+                        </div>
+                    </div>
+
+                    <div class="help-card">
+                        <h3 class="help-title"><i class="fas fa-phone"></i>困った時は</h3>
+                        <p class="help-text">
+                            アプリの使い方がわからない時は<br>
+                            お気軽にお電話ください<br><br>
+                            受付時間: 平日 10:00-17:00
+                        </p>
+                        <button class="phone-button">
+                            <i class="fas fa-phone"></i>
+                            <span>電話する (0982-XX-XXXX)</span>
+                        </button>
+                    </div>
+
+                    <div class="settings-item">
+                        <span class="settings-label">利用規約</span>
+                        <span style="font-size: 20px; color: #9CA3AF;"><i class="fas fa-chevron-right"></i></span>
+                    </div>
+
+                    <div class="settings-item">
+                        <span class="settings-label">プライバシーポリシー</span>
+                        <span style="font-size: 20px; color: #9CA3AF;"><i class="fas fa-chevron-right"></i></span>
+                    </div>
+
+                    <br><br>
+                    <button class="back-button" onclick="setActiveTab('mypage')">
+                        <i class="fas fa-arrow-left"></i> マイページに戻る
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // カレンダー生成関数
+        function generateCalendar() {
+            const calendarEl = document.getElementById('calendar');
+            if (!calendarEl) return;
+            
+            calendarEl.innerHTML = '';
+            
+            const weekDays = ['日', '月', '火', '水', '木', '金', '土'];
+            weekDays.forEach(day => {
+                const dayEl = document.createElement('div');
+                dayEl.className = 'calendar-day header';
+                dayEl.textContent = day;
+                calendarEl.appendChild(dayEl);
+            });
+            
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = today.getMonth();
+            const todayDate = today.getDate();
+            
+            const firstDay = new Date(year, month, 1);
+            const lastDay = new Date(year, month + 1, 0);
+            const firstDayOfWeek = firstDay.getDay();
+            const daysInMonth = lastDay.getDate();
+            
+            for (let i = 0; i < firstDayOfWeek; i++) {
+                const emptyDay = document.createElement('div');
+                emptyDay.className = 'calendar-day';
+                calendarEl.appendChild(emptyDay);
+            }
+            
+            const recordedDays = [1, 2, 3, 4, 5, 6, 7];
+            
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayEl = document.createElement('div');
+                dayEl.className = 'calendar-day';
+                dayEl.textContent = day;
+                
+                if (day === todayDate) {
+                    dayEl.classList.add('today');
+                } else if (recordedDays.includes(day)) {
+                    dayEl.classList.add('recorded');
+                }
+                
+                calendarEl.appendChild(dayEl);
+            }
+        }
+
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+            document.querySelectorAll('.page')[0].scrollTop = 0;
+            
+            if (pageId === 'health') {
+                setTimeout(generateCalendar, 100);
+            }
+        }
+
+        function setActiveTab(tab) {
+            const tabs = {
+                'home': 'home',
+                'health': 'health',
+                'activities': 'activities',
+                'mypage': 'mypage',
+                'settings': 'settings'
+            };
+            
+            showPage(tabs[tab]);
+            
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            const activeItem = Array.from(document.querySelectorAll('.nav-item')).find(item => {
+                return item.textContent.includes({
+                    'home': 'ホーム',
+                    'health': '健康',
+                    'activities': '部活動',
+                    'mypage': 'マイページ'
+                }[tab]);
+            });
+            
+            if (activeItem) {
+                activeItem.classList.add('active');
+            }
+        }
+
+        function selectOption(button) {
+            const parent = button.parentElement;
+            parent.querySelectorAll('.option-button').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            button.classList.add('selected');
+        }
+
+        function goToQuestion2() {
+            const selected = document.querySelector('#daily-check-1 .option-button.selected');
+            if (!selected) {
+                alert('選択肢を選んでください');
+                return;
+            }
+            showPage('daily-check-2');
+        }
+
+        function goToQuestion3() {
+            const selected = document.querySelector('#daily-check-2 .option-button.selected');
+            if (!selected) {
+                alert('選択肢を選んでください');
+                return;
+            }
+            showPage('daily-check-3');
+        }
+
+        function completeDailyCheck() {
+            const selected = document.querySelector('#daily-check-3 .option-button.selected');
+            if (!selected) {
+                alert('選択肢を選んでください');
+                return;
+            }
+            showPage('daily-check-complete');
+        }
+
+        function showHealthCheck2() {
+            const selected = document.querySelector('#health-check .option-button.selected');
+            if (!selected) {
+                alert('選択肢を選んでください');
+                return;
+            }
+            alert('質問2/5に進みます（プロトタイプでは省略）\n\n5つの質問に答えると結果が表示されます。');
+            showPage('health-result');
+        }
+
+        function joinActivity() {
+            alert('参加申し込みを受け付けました！\n\n担当者から連絡がありますので、しばらくお待ちください。');
+            setActiveTab('mypage');
+        }
+
+        function toggleSwitch(element) {
+            element.classList.toggle('on');
+        }
+
+        window.addEventListener('load', () => {
+            generateCalendar();
+        });
+    </script>
+</body>
+</html>
