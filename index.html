@@ -550,6 +550,10 @@
             background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
         }
 
+        .result-badge.caution {
+            background: linear-gradient(135deg, #EF4444 0%, #B91C1C 100%);
+        }
+
         .result-title {
             font-size: 28px;
             font-weight: 800;
@@ -600,6 +604,145 @@
             color: #1a1a1a;
             line-height: 1.9;
             margin-bottom: 24px;
+            font-weight: 500;
+        }
+
+        .result-score {
+            text-align: center;
+            font-size: 16px;
+            color: #6B7280;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .result-section {
+            background: white;
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            border: 1px solid rgba(0,0,0,0.04);
+        }
+
+        .result-section-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1f2937;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .result-section-title i {
+            color: #5B86E5;
+        }
+
+        .result-list {
+            list-style: none;
+            margin-top: 16px;
+        }
+
+        .result-item {
+            padding: 16px;
+            border-radius: 16px;
+            background: #F9FAFB;
+            margin-bottom: 12px;
+        }
+
+        .result-category {
+            font-size: 15px;
+            font-weight: 700;
+            color: #5B86E5;
+            margin-bottom: 6px;
+        }
+
+        .result-question {
+            font-size: 15px;
+            color: #4B5563;
+            line-height: 1.6;
+            margin-bottom: 6px;
+        }
+
+        .result-answer {
+            font-size: 16px;
+            color: #1f2937;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .result-advice {
+            font-size: 14px;
+            color: #6B7280;
+            line-height: 1.6;
+        }
+
+        .result-action-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 15px;
+            color: #374151;
+            line-height: 1.7;
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+
+        .result-action-item i {
+            color: #10B981;
+            margin-top: 4px;
+        }
+
+        .risk-tag-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .risk-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(91, 134, 229, 0.12);
+            color: #3b82f6;
+            padding: 8px 14px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .risk-tag.warning {
+            background: rgba(245, 158, 11, 0.12);
+            color: #d97706;
+        }
+
+        .risk-tag.caution {
+            background: rgba(239, 68, 68, 0.12);
+            color: #dc2626;
+        }
+
+        .latest-health-card {
+            border-left: 4px solid #5B86E5;
+        }
+
+        .latest-health-card.warning {
+            border-left-color: #F59E0B;
+        }
+
+        .latest-health-card.caution {
+            border-left-color: #EF4444;
+        }
+
+        .latest-health-status {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 8px;
+        }
+
+        .latest-health-date {
+            font-size: 14px;
+            color: #6B7280;
             font-weight: 500;
         }
 
@@ -1294,21 +1437,22 @@
                 </div>
                 <div class="content">
                     <div class="progress-bar">
-                        <div class="progress-fill" style="width: 20%"></div>
+                        <div id="health-progress" class="progress-fill" style="width: 0%"></div>
                     </div>
 
-                    <div class="question-card">
-                        <span class="question-number">1</span>
-                        <h2 class="question-text">この半年で2〜3kg以上の体重減少がありましたか？</h2>
-                        <button class="option-button" onclick="selectOption(this)">はい</button>
-                        <button class="option-button" onclick="selectOption(this)">いいえ</button>
+                    <div id="health-question-card" class="question-card">
+                        <span id="health-question-number" class="question-number">1</span>
+                        <h2 id="health-question-text" class="question-text">この半年で2〜3kg以上の体重減少がありましたか？</h2>
+                        <p id="health-question-description" class="card-text" style="margin-bottom: 20px; color: #4B5563;"></p>
+                        <div id="health-options"></div>
+                        <p id="health-question-tip" class="result-advice" style="margin-top: 12px;"></p>
                     </div>
 
-                    <button class="button button-large" onclick="showHealthCheck2()">
+                    <button id="health-next-button" class="button button-large" onclick="goToNextHealthQuestion()">
                         次へ
                     </button>
                     <br><br>
-                    <button class="back-button" onclick="setActiveTab('home')">
+                    <button id="health-back-button" class="back-button" onclick="handleHealthBack()">
                         <i class="fas fa-arrow-left"></i> 戻る
                     </button>
                 </div>
@@ -1321,22 +1465,24 @@
                     <p class="header-subtitle">田中さんの健康状態</p>
                 </div>
                 <div class="content">
-                    <div class="result-badge good"><i class="fas fa-check"></i></div>
-                    <h2 class="result-title">健常です</h2>
-                    <p class="result-text">
-                        素晴らしいです！<br>
-                        今の健康状態を維持しましょう。
-                    </p>
+                    <div id="health-result-badge" class="result-badge"><i id="health-result-icon" class="fas fa-check"></i></div>
+                    <h2 id="health-result-title" class="result-title">総合結果</h2>
+                    <p id="health-result-text" class="result-text"></p>
+                    <p id="health-result-score" class="result-score"></p>
 
-                    <div class="bridge-message">
-                        <h3 class="bridge-title">田中さん、お疲れ様です</h3>
-                        <p class="bridge-text">
-                            定期的な運動と仲間との交流が<br>
-                            さらなる健康につながります。<br><br>
-                            週に2〜3回、軽い運動をするだけで<br>
-                            体力がぐっとアップしますよ！<br><br>
-                            みんなで楽しく体を動かしませんか？
-                        </p>
+                    <div class="result-section">
+                        <div class="result-section-title"><i class="fas fa-clipboard-list"></i>回答の振り返り</div>
+                        <ul id="health-result-summary" class="result-list"></ul>
+                    </div>
+
+                    <div class="result-section">
+                        <div class="result-section-title"><i class="fas fa-lightbulb"></i>おすすめの行動</div>
+                        <div id="health-result-actions"></div>
+                    </div>
+
+                    <div id="health-result-bridge" class="bridge-message" style="display: none;">
+                        <h3 id="health-result-bridge-title" class="bridge-title"></h3>
+                        <p id="health-result-bridge-text" class="bridge-text"></p>
                         <button class="button" onclick="setActiveTab('activities')">
                             おすすめの活動を見る
                         </button>
@@ -1358,6 +1504,13 @@
                     <div class="stat-card">
                         <div class="stat-number">7日</div>
                         <div class="stat-label">連続で記録しています！</div>
+                    </div>
+
+                    <div id="latest-health-card" class="card latest-health-card">
+                        <h2 class="card-title" style="display: flex; align-items: center; gap: 10px;"><i class="fas fa-heartbeat" style="color: #5B86E5;"></i>最新の健康チェック</h2>
+                        <div id="latest-health-status" class="latest-health-status">まだ健康チェックを実施していません。</div>
+                        <p id="latest-health-date" class="latest-health-date">「健康チェックをする」からはじめましょう。</p>
+                        <div id="latest-health-tags" class="risk-tag-container"></div>
                     </div>
 
                     <div class="card calendar-card">
@@ -1611,13 +1764,149 @@
     </div>
 
     <script>
+        const HEALTH_RESULT_KEY = 'funaroom_latest_health_result';
+        const healthQuestions = [
+            {
+                question: 'この半年で2〜3kg以上の体重減少がありましたか？',
+                category: '栄養',
+                description: '体重の変化は食事や体力のサインになります。気になる時は、体重を記録してみましょう。',
+                options: [
+                    {
+                        label: 'はい、目立つ減少がある',
+                        value: 2,
+                        riskLevel: 'caution',
+                        advice: '体重減少が続く場合は、かかりつけ医や管理栄養士に相談しましょう。',
+                        actions: ['直近の体重変化をメモして医療機関で相談しましょう。', '柔らかく食べやすい食事を意識し、食事量を確保しましょう。']
+                    },
+                    {
+                        label: '少し減った気がする',
+                        value: 1,
+                        riskLevel: 'warning',
+                        advice: '週に1度は体重を測って、変化を確認しましょう。',
+                        actions: ['週1回の体重測定を習慣にしましょう。']
+                    },
+                    {
+                        label: 'いいえ',
+                        value: 0,
+                        note: '今の体重を維持できています。引き続きバランスの良い食事を続けましょう。'
+                    }
+                ]
+            },
+            {
+                question: '食事の時に噛みにくさや飲み込みづらさを感じますか？',
+                category: '口腔機能',
+                description: '口の中の変化は食事量や栄養状態に影響します。違和感が続く時は早めの確認が大切です。',
+                options: [
+                    {
+                        label: 'よく感じる',
+                        value: 2,
+                        riskLevel: 'caution',
+                        advice: '歯科医師や歯科衛生士に相談し、噛みやすい工夫をしてみましょう。',
+                        actions: ['かかりつけの歯科で口腔ケアを相談しましょう。', 'とろみをつける、柔らかい食材を選ぶなどの工夫を試しましょう。']
+                    },
+                    {
+                        label: '時々感じる',
+                        value: 1,
+                        riskLevel: 'warning',
+                        advice: '食後にうがいをしてお口の中を清潔に保ちましょう。',
+                        actions: ['食後のうがいと舌の体操を毎日の習慣にしましょう。']
+                    },
+                    {
+                        label: 'いいえ',
+                        value: 0,
+                        note: '噛む力が保てています。お口の体操で今の状態を維持しましょう。'
+                    }
+                ]
+            },
+            {
+                question: '週にどのくらい体を動かしていますか？',
+                category: '運動',
+                description: '体を動かす習慣は、筋力と気分の両方を支えます。仲間と取り組むと続けやすくなります。',
+                options: [
+                    {
+                        label: '3回以上、しっかり動いている',
+                        value: 0,
+                        note: '素晴らしい習慣です。このリズムを仲間と共有しましょう。'
+                    },
+                    {
+                        label: '1〜2回、軽く動いている',
+                        value: 1,
+                        riskLevel: 'warning',
+                        advice: '無理のないウォーキングや体操をもう1日増やしてみましょう。',
+                        actions: ['同じペースで動ける仲間を見つけて、一緒に運動する日を作りましょう。']
+                    },
+                    {
+                        label: 'ほとんど動いていない',
+                        value: 2,
+                        riskLevel: 'caution',
+                        advice: '転倒予防のためにも、短時間でも体を動かす日を作りましょう。',
+                        actions: ['椅子に座ったままできる体操から始めましょう。', 'FUN・A・ROOMの運動系部活動を活用しましょう。']
+                    }
+                ]
+            },
+            {
+                question: 'お薬の飲み忘れはありますか？',
+                category: '服薬管理',
+                description: '飲み忘れが続くと体調に影響します。飲むタイミングを決めておくと安心です。',
+                options: [
+                    {
+                        label: 'よく忘れてしまう',
+                        value: 2,
+                        riskLevel: 'caution',
+                        advice: 'お薬カレンダーや服薬ボックスを活用して、飲む時間を可視化しましょう。',
+                        actions: ['服薬カレンダーやスマートフォンのアラームを活用しましょう。', 'ご家族や地域包括支援センターに相談して、見守りをお願いしましょう。']
+                    },
+                    {
+                        label: '時々忘れる',
+                        value: 1,
+                        riskLevel: 'warning',
+                        advice: '食後・就寝前など、生活の流れとセットにすると忘れにくくなります。',
+                        actions: ['食事や歯みがきとセットで服薬タイミングを決めましょう。']
+                    },
+                    {
+                        label: '忘れない',
+                        value: 0,
+                        note: '服薬管理ができています。これからも続けましょう。'
+                    }
+                ]
+            },
+            {
+                question: '最近、気分が落ち込んだり、一人で過ごす時間が長いと感じますか？',
+                category: 'こころ・交流',
+                description: '気持ちの変化は誰にでもあります。人と話す時間を意識的に作るだけでも気分転換になります。',
+                options: [
+                    {
+                        label: 'よくある',
+                        value: 2,
+                        riskLevel: 'caution',
+                        advice: '一人で抱え込まず、身近な人や専門職に気持ちを共有しましょう。',
+                        actions: ['週に一度は誰かと話す時間を予定に入れましょう。', '地域のサロンや交流活動に参加して気分転換をしましょう。']
+                    },
+                    {
+                        label: 'ときどきある',
+                        value: 1,
+                        riskLevel: 'warning',
+                        advice: 'ちょっとしたおしゃべりでも心が軽くなります。意識して声を掛けてみましょう。',
+                        actions: ['電話やオンラインでも構いません。気軽に話せる相手を思い浮かべましょう。']
+                    },
+                    {
+                        label: 'あまり感じない',
+                        value: 0,
+                        note: '交流が保てています。このつながりを大切にしましょう。'
+                    }
+                ]
+            }
+        ];
+
+        let healthState = null;
+
         // カレンダー生成関数
         function generateCalendar() {
             const calendarEl = document.getElementById('calendar');
             if (!calendarEl) return;
-            
+
             calendarEl.innerHTML = '';
-            
+
             const weekDays = ['日', '月', '火', '水', '木', '金', '土'];
             weekDays.forEach(day => {
                 const dayEl = document.createElement('div');
@@ -1625,36 +1914,36 @@
                 dayEl.textContent = day;
                 calendarEl.appendChild(dayEl);
             });
-            
+
             const today = new Date();
             const year = today.getFullYear();
             const month = today.getMonth();
             const todayDate = today.getDate();
-            
+
             const firstDay = new Date(year, month, 1);
             const lastDay = new Date(year, month + 1, 0);
             const firstDayOfWeek = firstDay.getDay();
             const daysInMonth = lastDay.getDate();
-            
+
             for (let i = 0; i < firstDayOfWeek; i++) {
                 const emptyDay = document.createElement('div');
                 emptyDay.className = 'calendar-day';
                 calendarEl.appendChild(emptyDay);
             }
-            
+
             const recordedDays = [1, 2, 3, 4, 5, 6, 7];
-            
+
             for (let day = 1; day <= daysInMonth; day++) {
                 const dayEl = document.createElement('div');
                 dayEl.className = 'calendar-day';
                 dayEl.textContent = day;
-                
+
                 if (day === todayDate) {
                     dayEl.classList.add('today');
                 } else if (recordedDays.includes(day)) {
                     dayEl.classList.add('recorded');
                 }
-                
+
                 calendarEl.appendChild(dayEl);
             }
         }
@@ -1663,11 +1952,26 @@
             document.querySelectorAll('.page').forEach(page => {
                 page.classList.remove('active');
             });
-            document.getElementById(pageId).classList.add('active');
-            document.querySelectorAll('.page')[0].scrollTop = 0;
-            
+
+            const pageEl = document.getElementById(pageId);
+            if (!pageEl) return;
+
+            pageEl.classList.add('active');
+            pageEl.scrollTop = 0;
+            const contentEl = pageEl.querySelector('.content');
+            if (contentEl) {
+                contentEl.scrollTop = 0;
+            }
+
             if (pageId === 'health') {
-                setTimeout(generateCalendar, 100);
+                setTimeout(() => {
+                    generateCalendar();
+                    renderLatestHealthCard();
+                }, 100);
+            }
+
+            if (pageId === 'health-check') {
+                setTimeout(initHealthCheck, 50);
             }
         }
 
@@ -1679,22 +1983,24 @@
                 'mypage': 'mypage',
                 'settings': 'settings'
             };
-            
+
             showPage(tabs[tab]);
-            
+
             document.querySelectorAll('.nav-item').forEach(item => {
                 item.classList.remove('active');
             });
-            
+
+            const labels = {
+                'home': 'ホーム',
+                'health': '健康',
+                'activities': '部活動',
+                'mypage': 'マイページ'
+            };
+
             const activeItem = Array.from(document.querySelectorAll('.nav-item')).find(item => {
-                return item.textContent.includes({
-                    'home': 'ホーム',
-                    'health': '健康',
-                    'activities': '部活動',
-                    'mypage': 'マイページ'
-                }[tab]);
+                return labels[tab] && item.textContent.includes(labels[tab]);
             });
-            
+
             if (activeItem) {
                 activeItem.classList.add('active');
             }
@@ -1735,14 +2041,317 @@
             showPage('daily-check-complete');
         }
 
-        function showHealthCheck2() {
-            const selected = document.querySelector('#health-check .option-button.selected');
-            if (!selected) {
+        function initHealthCheck() {
+            const questionCard = document.getElementById('health-question-card');
+            if (!questionCard) return;
+
+            healthState = {
+                currentIndex: 0,
+                answers: Array(healthQuestions.length).fill(null)
+            };
+            renderHealthQuestion();
+        }
+
+        function renderHealthQuestion() {
+            if (!healthState) return;
+
+            const question = healthQuestions[healthState.currentIndex];
+            const numberEl = document.getElementById('health-question-number');
+            const textEl = document.getElementById('health-question-text');
+            const descriptionEl = document.getElementById('health-question-description');
+            const tipEl = document.getElementById('health-question-tip');
+            const optionsEl = document.getElementById('health-options');
+            const progressEl = document.getElementById('health-progress');
+            const nextButton = document.getElementById('health-next-button');
+            const backButton = document.getElementById('health-back-button');
+
+            if (!question || !numberEl || !textEl || !optionsEl) return;
+
+            numberEl.textContent = healthState.currentIndex + 1;
+            textEl.textContent = question.question;
+            descriptionEl.textContent = question.description || '';
+            tipEl.textContent = question.tip || '';
+
+            optionsEl.innerHTML = '';
+
+            question.options.forEach((option, index) => {
+                const button = document.createElement('button');
+                button.className = 'option-button';
+                button.textContent = option.label;
+                button.onclick = () => selectHealthOption(index, button);
+
+                if (healthState.answers[healthState.currentIndex] === index) {
+                    button.classList.add('selected');
+                }
+
+                optionsEl.appendChild(button);
+            });
+
+            const progress = ((healthState.currentIndex + 1) / healthQuestions.length) * 100;
+            if (progressEl) {
+                progressEl.style.width = `${progress}%`;
+            }
+
+            if (nextButton) {
+                nextButton.textContent = healthState.currentIndex === healthQuestions.length - 1 ? '結果を見る' : '次へ';
+            }
+
+            if (backButton) {
+                if (healthState.currentIndex === 0) {
+                    backButton.innerHTML = '<i class="fas fa-arrow-left"></i> 健康記録に戻る';
+                } else {
+                    backButton.innerHTML = '<i class="fas fa-arrow-left"></i> 前の質問に戻る';
+                }
+            }
+        }
+
+        function selectHealthOption(optionIndex, button) {
+            if (!healthState) return;
+
+            const optionsEl = document.getElementById('health-options');
+            if (optionsEl) {
+                optionsEl.querySelectorAll('.option-button').forEach(btn => btn.classList.remove('selected'));
+            }
+
+            button.classList.add('selected');
+            healthState.answers[healthState.currentIndex] = optionIndex;
+        }
+
+        function goToNextHealthQuestion() {
+            if (!healthState) return;
+
+            const answerIndex = healthState.answers[healthState.currentIndex];
+            if (answerIndex === null || answerIndex === undefined) {
                 alert('選択肢を選んでください');
                 return;
             }
-            alert('質問2/5に進みます（プロトタイプでは省略）\n\n5つの質問に答えると結果が表示されます。');
+
+            if (healthState.currentIndex < healthQuestions.length - 1) {
+                healthState.currentIndex += 1;
+                renderHealthQuestion();
+                return;
+            }
+
+            const result = calculateHealthResult();
+            applyHealthResult(result);
+            localStorage.setItem(HEALTH_RESULT_KEY, JSON.stringify(result));
+            renderLatestHealthCard();
             showPage('health-result');
+        }
+
+        function handleHealthBack() {
+            if (!healthState) {
+                setActiveTab('health');
+                return;
+            }
+
+            if (healthState.currentIndex === 0) {
+                setActiveTab('health');
+            } else {
+                healthState.currentIndex -= 1;
+                renderHealthQuestion();
+            }
+        }
+
+        function calculateHealthResult() {
+            let score = 0;
+            const summary = [];
+            const flagged = [];
+            const actionsSet = new Set();
+
+            healthState.answers.forEach((answerIndex, questionIndex) => {
+                const question = healthQuestions[questionIndex];
+                const option = question.options[answerIndex];
+                const value = option.value || 0;
+                score += value;
+
+                summary.push({
+                    category: question.category,
+                    question: question.question,
+                    answer: option.label,
+                    note: option.note || option.advice || ''
+                });
+
+                if (value > 0) {
+                    flagged.push({
+                        category: question.category,
+                        riskLevel: option.riskLevel || (value >= 2 ? 'caution' : 'warning'),
+                        advice: option.advice || ''
+                    });
+                }
+
+                if (option.actions) {
+                    option.actions.forEach(action => actionsSet.add(action));
+                }
+            });
+
+            const maxScore = healthQuestions.length * 2;
+            const flaggedCategories = Array.from(new Set(flagged.map(item => item.category)));
+
+            let status = 'good';
+            let statusLabel = '安心';
+            let message = '大きなリスクは見られません。この調子で生活リズムを保ちましょう。';
+            let icon = 'fas fa-check';
+
+            if (score >= 3 && score <= 5) {
+                status = 'warning';
+                statusLabel = '気をつけたい状態';
+                message = flaggedCategories.length
+                    ? `「${flaggedCategories.join('・')}」のケアを意識してみましょう。少しの工夫で整えられます。`
+                    : '少し気になる項目があります。生活リズムを整えて様子をみましょう。';
+                icon = 'fas fa-exclamation';
+            } else if (score > 5) {
+                status = 'caution';
+                statusLabel = 'フォローが必要';
+                message = flaggedCategories.length
+                    ? `心配な項目がいくつか見つかりました。${flaggedCategories.join('・')}の様子を、早めに専門職へ相談しましょう。`
+                    : '心配な項目がいくつか見つかりました。早めに専門職へ相談しましょう。';
+                icon = 'fas fa-exclamation-triangle';
+            }
+
+            const actions = Array.from(actionsSet);
+            if (actions.length === 0) {
+                actions.push('気になる点があれば、地域包括支援センターやかかりつけ医に早めに相談しましょう。');
+            }
+
+            return {
+                timestamp: new Date().toISOString(),
+                score,
+                maxScore,
+                status,
+                statusLabel,
+                message,
+                icon,
+                flagged,
+                summary,
+                actions,
+                totalQuestions: healthQuestions.length
+            };
+        }
+
+        function applyHealthResult(result) {
+            const badge = document.getElementById('health-result-badge');
+            const iconEl = document.getElementById('health-result-icon');
+            const titleEl = document.getElementById('health-result-title');
+            const textEl = document.getElementById('health-result-text');
+            const scoreEl = document.getElementById('health-result-score');
+            const summaryEl = document.getElementById('health-result-summary');
+            const actionsEl = document.getElementById('health-result-actions');
+            const bridge = document.getElementById('health-result-bridge');
+            const bridgeTitle = document.getElementById('health-result-bridge-title');
+            const bridgeText = document.getElementById('health-result-bridge-text');
+
+            if (!badge || !iconEl || !titleEl || !textEl || !summaryEl || !actionsEl) return;
+
+            badge.classList.remove('good', 'warning', 'caution');
+            badge.classList.add(result.status);
+            iconEl.className = result.icon;
+            titleEl.textContent = `総合結果：${result.statusLabel}`;
+            textEl.textContent = result.message;
+            scoreEl.textContent = `リスクスコア：${result.score} / ${result.maxScore}`;
+
+            summaryEl.innerHTML = '';
+            result.summary.forEach(item => {
+                const li = document.createElement('li');
+                li.className = 'result-item';
+                li.innerHTML = `
+                    <div class="result-category">${item.category}</div>
+                    <div class="result-question">${item.question}</div>
+                    <div class="result-answer">回答：${item.answer}</div>
+                    <div class="result-advice">${item.note || '記録しました。'}</div>
+                `;
+                summaryEl.appendChild(li);
+            });
+
+            actionsEl.innerHTML = '';
+            result.actions.forEach(action => {
+                const div = document.createElement('div');
+                div.className = 'result-action-item';
+                div.innerHTML = `<i class="fas fa-check-circle"></i><span>${action}</span>`;
+                actionsEl.appendChild(div);
+            });
+
+            const hasFlagged = result.flagged.length > 0;
+            if (bridge && bridgeTitle && bridgeText) {
+                if (hasFlagged) {
+                    bridge.style.display = 'block';
+                    const primary = result.flagged[0];
+                    bridgeTitle.textContent = `${primary.category}のケアを一緒に整えましょう`;
+                    bridgeText.innerHTML = `${primary.advice || '生活の中に小さな工夫を取り入れてみましょう。'}<br><br>仲間と一緒に取り組むと続けやすいですよ。`;
+                } else {
+                    bridge.style.display = 'block';
+                    bridgeTitle.textContent = '田中さん、お疲れ様です';
+                    bridgeText.innerHTML = 'この調子で、楽しみながら体を動かしていきましょう。<br><br>部活動で仲間と交流することで、健康がさらに保てます。';
+                }
+            }
+        }
+
+        function renderLatestHealthCard() {
+            const card = document.getElementById('latest-health-card');
+            if (!card) return;
+
+            const statusEl = document.getElementById('latest-health-status');
+            const dateEl = document.getElementById('latest-health-date');
+            const tagsEl = document.getElementById('latest-health-tags');
+
+            card.classList.remove('warning', 'caution');
+            if (tagsEl) {
+                tagsEl.innerHTML = '';
+            }
+
+            const stored = localStorage.getItem(HEALTH_RESULT_KEY);
+            if (!stored) {
+                if (statusEl) statusEl.textContent = 'まだ健康チェックを実施していません。';
+                if (dateEl) dateEl.textContent = '「健康チェックをする」からはじめましょう。';
+                return;
+            }
+
+            try {
+                const data = JSON.parse(stored);
+                if (statusEl) statusEl.textContent = `評価：${data.statusLabel}`;
+                if (dateEl) dateEl.textContent = `最終更新：${formatDate(new Date(data.timestamp))}`;
+
+                if (data.status === 'warning' || data.status === 'caution') {
+                    card.classList.add(data.status);
+                }
+
+                if (tagsEl) {
+                    if (data.flagged && data.flagged.length > 0) {
+                        const uniqueTags = [];
+                        const seen = new Set();
+                        data.flagged.forEach(item => {
+                            if (!seen.has(item.category)) {
+                                uniqueTags.push(item);
+                                seen.add(item.category);
+                            }
+                        });
+
+                        uniqueTags.forEach(tag => {
+                            const span = document.createElement('span');
+                            span.className = `risk-tag ${tag.riskLevel || ''}`.trim();
+                            span.innerHTML = `<i class="fas fa-exclamation-circle"></i>${tag.category}`;
+                            tagsEl.appendChild(span);
+                        });
+                    } else {
+                        const span = document.createElement('span');
+                        span.className = 'risk-tag';
+                        span.innerHTML = '<i class="fas fa-smile"></i>良好な状態';
+                        tagsEl.appendChild(span);
+                    }
+                }
+            } catch (error) {
+                console.error(error);
+                if (statusEl) statusEl.textContent = '結果を読み込めませんでした。もう一度チェックしてください。';
+            }
+        }
+
+        function formatDate(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            return `${year}/${month}/${day} ${hours}:${minutes}`;
         }
 
         function joinActivity() {
@@ -1756,6 +2365,7 @@
 
         window.addEventListener('load', () => {
             generateCalendar();
+            renderLatestHealthCard();
         });
     </script>
 </body>
