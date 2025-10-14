@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>FUN・A・ROOM — 健康チェック × 地域のつながり</title>
+  <meta name="color-scheme" content="light dark" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  <style>
+    /* ----------------------
+       Design Tokens
+    ---------------------- */
+    :root{
+      --bg: #f7f8fa;
+      --surface: #ffffff;
+      --text: #0f172a; /* slate-900 */
+      --muted: #475569; /* slate-600 */
+      --border: #e5e7eb;
+      --primary: #2563eb; /* blue-600 */
+      --primary-700: #1d4ed8;
+      --success: #10b981;
+      --warn: #f59e0b;
+      --caution: #ef4444;
+      --radius: 16px;
+      --shadow: 0 8px 24px rgba(15, 23, 42, .06);
+      --tap: 14px; /* min target padding */
+    }
+
+    @media (prefers-color-scheme: dark){
+      :root{
+        --bg: #0b1220;
+        --surface: #0f172a;
+        --text: #e5e7eb;
+        --muted: #94a3b8;
+        --border: #1f2937;
+        --shadow: 0 0 0 rgba(0,0,0,0);
+      }
+    }
+
+    *{ box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", Meiryo, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height:1.6;
+    }
+
+    /* Safe area for iOS */
+    .app{ min-height:100dvh; padding-bottom: env(safe-area-inset-bottom); display:flex; align-items:center; justify-content:center; }
+
+    .phone{ width:100%; max-width:420px; min-height:100dvh; background:var(--bg); display:flex; flex-direction:column; }
+
+    header.hero{
+      position:relative; padding:24px 20px 18px; background:linear-gradient(135deg, #e8efff, #f5faff);
+      border-bottom:1px solid var(--border);
+    }
+    @media (prefers-color-scheme: dark){
+      header.hero{ background:linear-gradient(135deg, rgba(37, 99, 235,.2), rgba(37, 99, 235,.05)); }
+    }
+    .hero h1{ font-size:20px; margin:0; letter-spacing:.2px; }
+    .hero p{ margin:.25rem 0 0; color:var(--muted); font-size:13px; }
+
+    main{ flex:1; overflow:auto; -webkit-overflow-scrolling:touch; }
+    .container{ padding:20px; }
+
+    /* Cards */
+    .card{ background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:18px; box-shadow:var(--shadow); }
+    .card + .card{ margin-top:14px; }
+
+    /* Buttons */
+    .btn{ appearance:none; border:none; border-radius:14px; padding:16px 18px; width:100%; font-weight:700; letter-spacing:.2px; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:10px; }
+    .btn:focus-visible{ outline:3px solid color-mix(in oklab, var(--primary), white 70%); outline-offset:2px; }
+    .btn.primary{ background:var(--primary); color:#fff; }
+    .btn.primary:active{ background:var(--primary-700); }
+    .btn.ghost{ background:transparent; border:1px solid var(--border); color:var(--muted); }
+
+    /* Nav */
+    nav.bottom{
+      position:sticky; bottom:0; left:0; right:0; background:var(--surface); border-top:1px solid var(--border);
+      display:grid; grid-template-columns:repeat(4,1fr); gap:4px; padding:8px max(8px, env(safe-area-inset-left)) calc(8px + env(safe-area-inset-bottom)) max(8px, env(safe-area-inset-right));
+    }
+    .nav-item{ text-align:center; padding:10px 4px; border-radius:12px; color:var(--muted); font-size:12px; }
+    .nav-item i{ display:block; font-size:20px; margin-bottom:4px; }
+    .nav-item[aria-current="page"]{ color:var(--primary); font-weight:700; background:color-mix(in oklab, var(--primary), transparent 92%); }
+
+    /* Sections (pages) */
+    .page{ display:none; }
+    .page.active{ display:block; }
+
+    /* Welcome */
+    .welcome{ text-align:center; padding:40px 10px; }
+    .logo{ width:104px; height:104px; margin:0 auto 14px; border-radius:24px; display:grid; place-items:center;
+      color:#fff; background:linear-gradient(135deg, var(--primary), color-mix(in oklab, var(--primary), #36d1dc 40%)); font-size:44px; font-weight:800; }
+    .welcome h2{ font-size:24px; margin:6px 0 6px; }
+    .welcome p{ color:var(--muted); margin:0 0 18px; }
+
+    /* Stat */
+    .stat{
+      display:grid; place-items:center; padding:18px; border-radius:14px; color:#fff; background:linear-gradient(135deg, var(--primary), #36d1dc);
+    }
+    .stat .n{ font-size:40px; font-weight:800; line-height:1; }
+    .stat .l{ font-size:13px; opacity:.95; margin-top:4px; }
+
+    /* Question block */
+    .q-card{ padding:20px; }
+    .q-num{ width:36px; height:36px; display:grid; place-items:center; border-radius:999px; color:#fff; background:var(--primary); font-weight:800; }
+    .q-title{ font-size:18px; margin:12px 0 10px; font-weight:800; letter-spacing:.2px; }
+    .progress{ height:8px; border-radius:999px; background:#e5e7eb; overflow:hidden; margin:8px 0 16px; }
+    .progress>span{ display:block; height:100%; background:linear-gradient(90deg, var(--primary), #36d1dc); width:0%; transition:width .35s ease; }
+
+    .opt{ width:100%; text-align:left; padding:14px 14px; border:1px solid var(--border); border-radius:12px; background:var(--surface); cursor:pointer; font-weight:600; color:var(--text); }
+    .opt + .opt{ margin-top:10px; }
+    .opt:active{ transform:scale(.99); }
+    .opt[aria-pressed="true"]{ border-color: var(--primary); outline:2px solid color-mix(in oklab, var(--primary), white 80%); color: var(--primary); background:color-mix(in oklab, var(--primary), transparent 92%); }
+
+    /* Result */
+    .badge{ width:112px; height:112px; border-radius:999px; display:grid; place-items:center; margin:10px auto 14px; color:#fff; font-size:40px; }
+    .badge.good{ background:linear-gradient(135deg, var(--success), color-mix(in oklab, var(--success), #065f46 40%)); }
+    .badge.warning{ background:linear-gradient(135deg, var(--warn), #d97706); }
+    .badge.caution{ background:linear-gradient(135deg, var(--caution), #b91c1c); }
+    .result h3{ text-align:center; margin:0 0 6px; font-size:20px; }
+    .result p{ text-align:center; color:var(--muted); margin:0 0 14px; }
+
+    /* Tags */
+    .tags{ display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+    .tag{ padding:8px 12px; border-radius:999px; font-size:12px; font-weight:700; color:var(--primary); background:color-mix(in oklab, var(--primary), transparent 90%); border:1px solid color-mix(in oklab, var(--primary), transparent 70%); }
+    .tag.warn{ color:#b45309; background:color-mix(in oklab, var(--warn), transparent 90%); border-color:color-mix(in oklab, var(--warn), transparent 70%); }
+    .tag.caution{ color:#b91c1c; background:color-mix(in oklab, var(--caution), transparent 90%); border-color:color-mix(in oklab, var(--caution), transparent 70%); }
+
+    /* Calendar */
+    .cal{ display:grid; grid-template-columns:repeat(7,1fr); gap:6px; }
+    .cell{ aspect-ratio:1/1; display:grid; place-items:center; font-size:11px; border-radius:8px; }
+    .cell.h{ color:var(--muted); font-weight:700; background:transparent; }
+    .cell.rec{ color:var(--primary); font-weight:700; background:color-mix(in oklab, var(--primary), transparent 93%); }
+    .cell.today{ color:#fff; font-weight:800; background:var(--primary); }
+
+    /* Helpers */
+    .mt-8{ margin-top:8px; } .mt-12{ margin-top:12px; } .mt-16{ margin-top:16px; } .mt-20{ margin-top:20px; }
+    .mb-8{ margin-bottom:8px; } .mb-12{ margin-bottom:12px; } .mb-16{ margin-bottom:16px; } .mb-20{ margin-bottom:20px; }
+    .grid{ display:grid; gap:12px; }
+
+    /* Accessibility */
+    @media (prefers-reduced-motion: reduce){
+      *{ animation:none !important; transition:none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="phone" role="application" aria-label="FUN・A・ROOM アプリ">
+      <header class="hero" id="appHeader">
+        <h1 id="headerTitle">FUN・A・ROOM</h1>
+        <p id="headerSub">健康チェックからはじまる、地域のつながり</p>
+      </header>
+
+      <main id="pages">
+        <!-- Splash / Welcome -->
+        <section id="page-welcome" class="page active" aria-labelledby="welcomeTitle">
+          <div class="container">
+            <div class="welcome card">
+              <div class="logo" aria-hidden="true">健</div>
+              <h2 id="welcomeTitle">健康で楽しい毎日を、仲間と。</h2>
+              <p>かんたんな記録からはじめましょう。操作は大きく、シンプルに。</p>
+              <button class="btn primary" data-go="page-login" aria-describedby="welcomeTitle"><i class="fa-solid fa-arrow-right"></i> はじめる</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Login -->
+        <section id="page-login" class="page" aria-labelledby="loginTitle">
+          <header class="hero">
+            <h1 id="loginTitle">ログイン</h1>
+            <p>メールアドレスでログイン</p>
+          </header>
+          <div class="container grid">
+            <label class="card" style="display:block">
+              <div class="mb-8" style="font-weight:700">メールアドレス</div>
+              <input id="loginEmail" type="email" inputmode="email" autocomplete="email" placeholder="example@email.com" style="width:100%; padding:16px; border-radius:12px; border:1px solid var(--border)" />
+            </label>
+            <label class="card" style="display:block">
+              <div class="mb-8" style="font-weight:700">パスワード</div>
+              <input id="loginPass" type="password" autocomplete="current-password" placeholder="••••••" style="width:100%; padding:16px; border-radius:12px; border:1px solid var(--border)" />
+            </label>
+            <button class="btn primary" data-go="page-home">ログイン</button>
+            <button class="btn ghost" data-go="page-register">新規登録</button>
+          </div>
+        </section>
+
+        <!-- Register -->
+        <section id="page-register" class="page" aria-labelledby="regTitle">
+          <header class="hero">
+            <h1 id="regTitle">新規登録</h1>
+            <p>アカウントを作成</p>
+          </header>
+          <div class="container grid">
+            <label class="card" style="display:block">
+              <div class="mb-8" style="font-weight:700">ニックネーム</div>
+              <input type="text" placeholder="田中 太郎" style="width:100%; padding:16px; border-radius:12px; border:1px solid var(--border)">
+            </label>
+            <label class="card" style="display:block">
+              <div class="mb-8" style="font-weight:700">年代</div>
+              <select style="width:100%; padding:16px; border-radius:12px; border:1px solid var(--border)">
+                <option>選択してください</option>
+                <option>60代</option>
+                <option>70代</option>
+                <option>80代</option>
+                <option>90代以上</option>
+              </select>
+            </label>
+            <label class="card" style="display:block">
+              <div class="mb-8" style="font-weight:700">メールアドレス</div>
+              <input type="email" placeholder="example@email.com" style="width:100%; padding:16px; border-radius:12px; border:1px solid var(--border)">
+            </label>
+            <label class="card" style="display:block">
+              <div class="mb-8" style="font-weight:700">パスワード</div>
+              <input type="password" placeholder="6文字以上" style="width:100%; padding:16px; border-radius:12px; border:1px solid var(--border)">
+            </label>
+            <button class="btn primary" data-go="page-home">登録する</button>
+            <button class="btn ghost" data-go="page-login">戻る</button>
+          </div>
+        </section>
+
+        <!-- Home -->
+        <section id="page-home" class="page" aria-labelledby="homeTitle">
+          <header class="hero">
+            <h1 id="homeTitle">おはようございます</h1>
+            <p id="homeSub">今日も気持ちよく過ごしましょう</p>
+          </header>
+          <div class="container">
+            <div class="stat" role="status" aria-live="polite">
+              <div class="n" id="streakNum">7日</div>
+              <div class="l">連続で記録しています！</div>
+            </div>
+
+            <div class="card mt-16" id="bridgeCard" aria-label="おすすめの活動">
+              <strong style="display:block; color:var(--primary);">あなたへのおすすめ</strong>
+              <p class="mt-8" style="margin:0; color:var(--text)">最近、少し歩く機会が減っているようですね。仲間と一緒に楽しく体を動かしませんか？</p>
+              <button class="btn primary mt-12" data-tab="activities"><i class="fa-solid fa-person-walking"></i> おすすめの活動を見る</button>
+            </div>
+
+            <div class="grid mt-16">
+              <div class="card">
+                <h3 style="margin:0 0 6px; font-size:16px">今日の記録</h3>
+                <p style="margin:0 0 12px; color:var(--muted); font-size:14px">3つのかんたんな質問に答えるだけです</p>
+                <button class="btn primary" data-go="page-dq-1"><i class="fa-regular fa-clipboard"></i> はじめる</button>
+              </div>
+              <div class="card">
+                <h3 style="margin:0 0 6px; font-size:16px">健康チェック</h3>
+                <p style="margin:0 0 12px; color:var(--muted); font-size:14px">5分ほどで完了します</p>
+                <button class="btn ghost" data-go="page-health-check"><i class="fa-solid fa-heart-pulse"></i> チェックする</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Daily quick (3 Qs) -->
+        <section id="page-dq-1" class="page" aria-labelledby="dq1t">
+          <header class="hero"><h1 id="dq1t">今日の記録</h1><p>3つの質問に答えてください</p></header>
+          <div class="container card q-card">
+            <div class="progress" aria-hidden="true"><span style="width:33%"></span></div>
+            <div class="q-num" aria-hidden="true">1</div>
+            <div class="q-title">今日の体調はいかがですか？</div>
+            <div class="grid">
+              <button class="opt" data-press>とても良い</button>
+              <button class="opt" data-press>良い</button>
+              <button class="opt" data-press>普通</button>
+              <button class="opt" data-press>少し悪い</button>
+              <button class="opt" data-press>悪い</button>
+            </div>
+            <button class="btn primary mt-16" data-go="page-dq-2">次へ</button>
+          </div>
+        </section>
+        <section id="page-dq-2" class="page" aria-labelledby="dq2t">
+          <header class="hero"><h1 id="dq2t">今日の記録</h1><p>あと2つの質問です</p></header>
+          <div class="container card q-card">
+            <div class="progress" aria-hidden="true"><span style="width:66%"></span></div>
+            <div class="q-num" aria-hidden="true">2</div>
+            <div class="q-title">今日は何歩くらい歩きましたか？</div>
+            <div class="grid">
+              <button class="opt" data-press><i class="fa-solid fa-person-walking"></i>&nbsp;5000歩以上</button>
+              <button class="opt" data-press>3000-5000歩</button>
+              <button class="opt" data-press>1000-3000歩</button>
+              <button class="opt" data-press>1000歩未満</button>
+              <button class="opt" data-press>ほとんど歩いていない</button>
+            </div>
+            <button class="btn primary mt-16" data-go="page-dq-3">次へ</button>
+          </div>
+        </section>
+        <section id="page-dq-3" class="page" aria-labelledby="dq3t">
+          <header class="hero"><h1 id="dq3t">今日の記録</h1><p>最後の質問です</p></header>
+          <div class="container card q-card">
+            <div class="progress" aria-hidden="true"><span style="width:100%"></span></div>
+            <div class="q-num" aria-hidden="true">3</div>
+            <div class="q-title">今日、誰かとお話ししましたか？ <button id="voiceBtn" title="音声入力" style="margin-left:6px; border:none; background:transparent; color:var(--primary)"><i class="fa-solid fa-microphone"></i><span class="sr-only">音声入力</span></button></div>
+            <div class="grid">
+              <button class="opt" data-press>たくさん話した</button>
+              <button class="opt" data-press>少し話した</button>
+              <button class="opt" data-press>挨拶程度</button>
+              <button class="opt" data-press>話していない</button>
+            </div>
+            <button class="btn primary mt-16" data-go="page-dq-done">記録を完了する</button>
+          </div>
+        </section>
+        <section id="page-dq-done" class="page" aria-labelledby="dqDoneT">
+          <header class="hero"><h1 id="dqDoneT">記録完了</h1><p>ありがとうございます</p></header>
+          <div class="container">
+            <div class="card result">
+              <div class="badge good"><i class="fa-solid fa-trophy"></i></div>
+              <h3>素晴らしい！</h3>
+              <p>今日も記録できました。連続記録を更新中！</p>
+              <button class="btn primary" data-tab="health">健康記録を見る</button>
+              <div class="mt-16"></div>
+              <button class="btn ghost" data-tab="activities">おすすめ活動を見る</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Health (history + calendar) -->
+        <section id="page-health" class="page" aria-labelledby="healthTitle">
+          <header class="hero">
+            <h1 id="healthTitle">健康記録</h1>
+            <p>あなたの記録を確認</p>
+          </header>
+          <div class="container">
+            <div class="stat" id="latestStat">
+              <div class="n" id="streakNum2">7日</div>
+              <div class="l">連続で記録中</div>
+            </div>
+
+            <div class="card mt-16" id="latestHealth">
+              <h3 style="margin:0 0 6px; font-size:16px"><i class="fa-solid fa-heart-pulse" style="color:var(--primary)"></i> 最新の健康チェック</h3>
+              <div id="latestStatus" class="mt-8">まだ健康チェックを実施していません。</div>
+              <div id="latestDate" class="mt-8" style="color:var(--muted); font-size:13px">「健康チェックをする」からはじめましょう。</div>
+              <div class="tags" id="latestTags"></div>
+            </div>
+
+            <div class="card mt-16">
+              <h3 style="margin:0 0 10px; font-size:16px"><i class="fa-regular fa-calendar"></i> 今月の記録カレンダー</h3>
+              <div class="cal" id="calendar"></div>
+            </div>
+
+            <div class="grid mt-16">
+              <button class="btn primary" data-go="page-dq-1">今日の記録をする</button>
+              <button class="btn ghost" data-go="page-health-check">健康チェックをする</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Activities -->
+        <section id="page-activities" class="page" aria-labelledby="actTitle">
+          <header class="hero"><h1 id="actTitle">部活動</h1><p>仲間と楽しく活動しよう</p></header>
+          <div class="container">
+            <div class="grid">
+              <div class="card">
+                <small style="display:block; color:var(--primary); font-weight:800">運動系</small>
+                <h3 style="margin:6px 0 6px">朝の健康ウォーキング部</h3>
+                <p class="mb-12" style="color:var(--muted)"><i class="fa-solid fa-location-dot"></i> 日向市中央公園 / <i class="fa-regular fa-clock"></i> 毎週火・木 7:00-8:00 / <i class="fa-solid fa-user-group"></i> 参加者:12名</p>
+                <button class="btn primary" data-go="page-activity-detail">詳細を見る</button>
+              </div>
+
+              <div class="card">
+                <small style="display:block; color:#d946ef; font-weight:800">交流系</small>
+                <h3 style="margin:6px 0 6px">絵手紙サークル</h3>
+                <p class="mb-12" style="color:var(--muted)"><i class="fa-solid fa-location-dot"></i> コミュニティセンター / <i class="fa-regular fa-clock"></i> 毎週水 13:00-15:00 / <i class="fa-solid fa-user-group"></i> 参加者:8名</p>
+                <button class="btn ghost" data-go="page-activity-detail">詳細を見る</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Activity Detail -->
+        <section id="page-activity-detail" class="page" aria-labelledby="adTitle">
+          <header class="hero"><h1 id="adTitle">朝の健康ウォーキング部</h1><p>体力レベル: やさしい</p></header>
+          <div class="container">
+            <div class="card">
+              <p class="mb-12"><i class="fa-solid fa-location-dot" style="color:var(--primary)"></i> 日向市中央公園</p>
+              <p class="mb-12"><i class="fa-regular fa-clock" style="color:var(--primary)"></i> 毎週火・木 7:00-8:00</p>
+              <p class="mb-12"><i class="fa-solid fa-user-group" style="color:var(--primary)"></i> 12名が参加中</p>
+              <p class="mb-12"><i class="fa-solid fa-yen-sign" style="color:var(--primary)"></i> 無料</p>
+              <p style="color:var(--muted)">朝の爽やかな空気の中、公園を1時間ほどゆっくり歩きます。初心者の方も大歓迎です。</p>
+              <button class="btn primary mt-16" id="joinBtn">参加を申し込む</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Health Check Wizard -->
+        <section id="page-health-check" class="page" aria-labelledby="hctitle">
+          <header class="hero"><h1 id="hctitle">健康チェック</h1><p>5つの質問に答えてください</p></header>
+          <div class="container">
+            <div class="card q-card">
+              <div class="progress" aria-hidden="true"><span id="hcProgress" style="width:0%"></span></div>
+              <div class="q-num" aria-hidden="true" id="hcNum">1</div>
+              <div class="q-title" id="hcText">ロード中...</div>
+              <div id="hcOpts" class="grid mt-12"></div>
+              <div id="hcTip" class="mt-12" style="color:var(--muted); font-size:14px"></div>
+              <div class="grid mt-16">
+                <button class="btn primary" id="hcNext">次へ</button>
+                <button class="btn ghost" id="hcBack">戻る</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Health Result -->
+        <section id="page-health-result" class="page" aria-labelledby="hrtitle">
+          <header class="hero"><h1 id="hrtitle">健康チェック結果</h1><p>あなたの健康状態</p></header>
+          <div class="container">
+            <div class="card result">
+              <div class="badge" id="hrBadge"><i id="hrIcon" class="fa-solid fa-check"></i></div>
+              <h3 id="hrTitleTxt">総合結果</h3>
+              <p id="hrMsg"></p>
+              <p id="hrScore" style="font-size:12px; color:var(--muted)"></p>
+            </div>
+
+            <div class="card mt-16" id="hrSummary">
+              <strong><i class="fa-regular fa-clipboard"></i> 回答の振り返り</strong>
+              <div id="hrList" class="mt-12"></div>
+            </div>
+
+            <div class="card mt-16" id="hrActions">
+              <strong><i class="fa-regular fa-lightbulb"></i> おすすめの行動</strong>
+              <ul id="hrActionList" class="mt-12" style="padding-left:18px"></ul>
+            </div>
+
+            <div class="card mt-16" id="hrBridge" hidden>
+              <strong style="color:var(--primary)" id="hrBridgeTitle"></strong>
+              <p id="hrBridgeText" class="mt-8"></p>
+              <button class="btn primary mt-12" data-tab="activities">おすすめの活動を見る</button>
+            </div>
+
+            <div class="grid mt-16">
+              <button class="btn ghost" data-tab="health">健康記録に戻る</button>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <nav class="bottom" role="navigation" aria-label="ボトムナビゲーション">
+        <button class="nav-item" data-tab="home" aria-current="page"><i class="fa-solid fa-house"></i>ホーム</button>
+        <button class="nav-item" data-tab="health"><i class="fa-solid fa-heart-pulse"></i>健康</button>
+        <button class="nav-item" data-tab="activities"><i class="fa-solid fa-user-group"></i>部活動</button>
+        <button class="nav-item" data-tab="welcome"><i class="fa-solid fa-user"></i>マイページ</button>
+      </nav>
+    </div>
+  </div>
+
+  <script>
+    const PAGES = ["welcome","login","register","home","dq-1","dq-2","dq-3","dq-done","health","activities","activity-detail","health-check","health-result"];
+    const LS_RESULT_KEY = 'funaroom_latest_health_result_v2';
+
+    // Simple router
+    function show(id){
+      PAGES.forEach(p=>{
+        const el = document.getElementById(`page-${p}`);
+        if(!el) return; el.classList.toggle('active', p===id);
+      });
+      // header title swap for welcome
+      const ht = document.getElementById('headerTitle');
+      const hs = document.getElementById('headerSub');
+      if(id==='welcome'){ ht.textContent='FUN・A・ROOM'; hs.textContent='健康チェックからはじまる、地域のつながり'; }
+    }
+
+    // Tab handler (bottom nav)
+    function setTab(tab){
+      const map = { home:'home', health:'health', activities:'activities', welcome:'welcome' };
+      show(map[tab]||'home');
+      document.querySelectorAll('nav.bottom .nav-item').forEach(btn=>{
+        btn.setAttribute('aria-current', btn.dataset.tab===tab ? 'page':'false');
+      })
+      if(tab==='health'){ renderCalendar(); renderLatestCard(); }
+    }
+
+    document.addEventListener('click', (e)=>{
+      const go = e.target.closest('[data-go]');
+      if(go){ show(go.dataset.go.replace('page-','')); return; }
+      const tab = e.target.closest('[data-tab]');
+      if(tab){ setTab(tab.dataset.tab); return; }
+      const press = e.target.closest('[data-press]');
+      if(press){
+        // toggle pressed in the group
+        const group = press.parentElement; group.querySelectorAll('[data-press]').forEach(x=>x.setAttribute('aria-pressed','false'));
+        press.setAttribute('aria-pressed','true');
+      }
+    });
+
+    // Join action
+    document.getElementById('joinBtn').addEventListener('click', ()=>{
+      alert('参加申し込みを受け付けました！\n担当者からご連絡します。');
+      setTab('welcome');
+    });
+
+    // Calendar
+    function renderCalendar(){
+      const cal = document.getElementById('calendar'); if(!cal) return; cal.innerHTML='';
+      const days = ['日','月','火','水','木','金','土'];
+      days.forEach(d=>{ const el=document.createElement('div'); el.className='cell h'; el.textContent=d; cal.appendChild(el); });
+      const t = new Date(); const y=t.getFullYear(); const m=t.getMonth();
+      const first = new Date(y,m,1); const last = new Date(y, m+1, 0);
+      for(let i=0;i<first.getDay();i++){ const el=document.createElement('div'); el.className='cell'; cal.appendChild(el); }
+      const recorded=[1,2,3,4,5,6,7];
+      for(let d=1; d<=last.getDate(); d++){
+        const el=document.createElement('div'); el.className='cell'; el.textContent=d;
+        if(d===t.getDate()) el.classList.add('today');
+        else if(recorded.includes(d)) el.classList.add('rec');
+        cal.appendChild(el);
+      }
+    }
+
+    // Health Check data (same logic, simplified)
+    const HC = [
+      { q:'この半年で2〜3kg以上の体重減少がありましたか？', cat:'栄養', opts:[
+        { label:'はい、目立つ減少がある', v:2, level:'caution', advice:'体重減少が続く場合は、かかりつけ医や管理栄養士に相談しましょう。', actions:['直近の体重変化をメモして医療機関で相談しましょう。','柔らかく食べやすい食事を意識し、食事量を確保しましょう。'] },
+        { label:'少し減った気がする', v:1, level:'warn', advice:'週に1度は体重を測って、変化を確認しましょう。', actions:['週1回の体重測定を習慣にしましょう。'] },
+        { label:'いいえ', v:0, note:'今の体重を維持できています。引き続きバランスの良い食事を続けましょう。' }
+      ] },
+      { q:'食事の時に噛みにくさや飲み込みづらさを感じますか？', cat:'口腔機能', opts:[
+        { label:'よく感じる', v:2, level:'caution', advice:'歯科に相談し、噛みやすい工夫を。', actions:['かかりつけ歯科で口腔ケアを相談しましょう。','とろみ・柔らかい食材に変えてみましょう。'] },
+        { label:'時々感じる', v:1, level:'warn', advice:'食後うがいで清潔に。', actions:['食後のうがいと舌の体操を習慣に。'] },
+        { label:'いいえ', v:0, note:'噛む力が保てています。お口の体操で維持しましょう。' }
+      ] },
+      { q:'週にどのくらい体を動かしていますか？', cat:'運動', opts:[
+        { label:'3回以上、しっかり動いている', v:0, note:'素晴らしい習慣です。' },
+        { label:'1〜2回、軽く動いている', v:1, level:'warn', advice:'無理のない運動日をもう1日増やしましょう。', actions:['同じペースの仲間と一緒に運動する日を作りましょう。'] },
+        { label:'ほとんど動いていない', v:2, level:'caution', advice:'短時間でも体を動かす日を。', actions:['椅子に座ったままできる体操から始めましょう。','運動系の部活動を活用しましょう。'] }
+      ] },
+      { q:'お薬の飲み忘れはありますか？', cat:'服薬管理', opts:[
+        { label:'よく忘れてしまう', v:2, level:'caution', advice:'お薬カレンダーやアラームで可視化を。', actions:['服薬カレンダーやスマホのアラームを活用。','家族や地域包括支援センターに相談を。'] },
+        { label:'時々忘れる', v:1, level:'warn', advice:'生活の流れとセットに。', actions:['食事や歯みがきとセットでタイミング固定。'] },
+        { label:'忘れない', v:0, note:'服薬管理ができています。' }
+      ] },
+      { q:'最近、気分が落ち込んだり、一人で過ごす時間が長いと感じますか？', cat:'こころ・交流', opts:[
+        { label:'よくある', v:2, level:'caution', advice:'身近な人や専門職に共有を。', actions:['週に一度は誰かと話す予定を入れましょう。','地域のサロンや交流活動に参加を。'] },
+        { label:'ときどきある', v:1, level:'warn', advice:'ちょっとしたおしゃべりでも効果的。', actions:['電話やオンラインでもOK。気軽に声かけを。'] },
+        { label:'あまり感じない', v:0, note:'交流が保てています。' }
+      ] }
+    ];
+
+    let hcState = { i:0, ans: Array(HC.length).fill(null) };
+
+    function initHC(){
+      hcState = { i:0, ans: Array(HC.length).fill(null) };
+      renderHC();
+    }
+    function renderHC(){
+      const q = HC[hcState.i];
+      document.getElementById('hcNum').textContent = hcState.i+1;
+      document.getElementById('hcText').textContent = q.q;
+      document.getElementById('hcTip').textContent = q.tip || '';
+      const opts = document.getElementById('hcOpts'); opts.innerHTML='';
+      q.opts.forEach((o,idx)=>{
+        const b = document.createElement('button');
+        b.className='opt'; b.textContent=o.label; b.dataset.idx=idx; b.setAttribute('data-press','');
+        if(hcState.ans[hcState.i]===idx) b.setAttribute('aria-pressed','true');
+        b.addEventListener('click', ()=>{
+          opts.querySelectorAll('.opt').forEach(x=>x.setAttribute('aria-pressed','false'));
+          b.setAttribute('aria-pressed','true');
+          hcState.ans[hcState.i]=idx;
+        });
+        opts.appendChild(b);
+      });
+      document.getElementById('hcProgress').style.width = ((hcState.i+1)/HC.length*100)+'%';
+      document.getElementById('hcNext').textContent = (hcState.i===HC.length-1)? '結果を見る':'次へ';
+      document.getElementById('hcBack').textContent = (hcState.i===0)? '健康記録に戻る':'戻る';
+    }
+
+    document.getElementById('hcNext').addEventListener('click', ()=>{
+      const a = hcState.ans[hcState.i]; if(a===null){ alert('選択肢を選んでください'); return; }
+      if(hcState.i < HC.length-1){ hcState.i++; renderHC(); }
+      else {
+        const result = calcHC();
+        localStorage.setItem(LS_RESULT_KEY, JSON.stringify(result));
+        applyHR(result); renderLatestCard(); show('health-result');
+      }
+    });
+    document.getElementById('hcBack').addEventListener('click', ()=>{
+      if(hcState.i===0){ setTab('health'); } else { hcState.i--; renderHC(); }
+    });
+
+    function calcHC(){
+      let score=0; const summary=[]; const flagged=[]; const actionSet=new Set();
+      hcState.ans.forEach((idx, qi)=>{
+        const q=HC[qi]; const o=q.opts[idx]; const v=o.v||0; score+=v;
+        summary.push({cat:q.cat, q:q.q, a:o.label, note:o.note||o.advice||''});
+        if(v>0){ flagged.push({cat:q.cat, level:o.level|| (v>=2?'caution':'warn'), advice:o.advice||''}); }
+        (o.actions||[]).forEach(a=>actionSet.add(a));
+      });
+      const max = HC.length*2; const cats=[...new Set(flagged.map(f=>f.cat))];
+      let status='good', label='安心', message='大きなリスクは見られません。この調子で生活リズムを保ちましょう。', icon='fa-solid fa-check';
+      if(score>=3 && score<=5){ status='warning'; label='気をつけたい状態'; message = cats.length? `「${cats.join('・')}」のケアを意識してみましょう。` : '少し気になる項目があります。様子を見ましょう。'; icon='fa-solid fa-exclamation'; }
+      if(score>5){ status='caution'; label='フォローが必要'; message = cats.length? `心配な項目が見つかりました。${cats.join('・')}の様子を、早めに専門職へ相談しましょう。` : '心配な項目がいくつか見つかりました。早めに専門職へ相談しましょう。'; icon='fa-solid fa-triangle-exclamation'; }
+      const actions=[...actionSet]; if(actions.length===0) actions.push('気になる点があれば、地域包括支援センターやかかりつけ医に早めに相談しましょう。');
+      return { timestamp: new Date().toISOString(), score, max, status, label, message, icon, flagged, summary, actions, total: HC.length };
+    }
+
+    function applyHR(r){
+      const badge=document.getElementById('hrBadge'); badge.className='badge '+(r.status==='good'?'good':r.status);
+      document.getElementById('hrIcon').className=r.icon;
+      document.getElementById('hrTitleTxt').textContent = `総合結果：${r.label}`;
+      document.getElementById('hrMsg').textContent = r.message;
+      document.getElementById('hrScore').textContent = `リスクスコア：${r.score} / ${r.max}`;
+      const list=document.getElementById('hrList'); list.innerHTML='';
+      r.summary.forEach(it=>{
+        const div=document.createElement('div'); div.className='card mt-12';
+        div.innerHTML = `<div style="font-size:12px; color:var(--primary); font-weight:800">${it.cat}</div><div style="margin:6px 0">${it.q}</div><div style="font-weight:700">回答：${it.a}</div><div style="color:var(--muted); font-size:13px">${it.note || '記録しました。'}</div>`;
+        list.appendChild(div);
+      });
+      const ul=document.getElementById('hrActionList'); ul.innerHTML='';
+      r.actions.forEach(a=>{ const li=document.createElement('li'); li.textContent=a; ul.appendChild(li); });
+      const bridge=document.getElementById('hrBridge');
+      if(r.flagged.length){ bridge.hidden=false; const p=r.flagged[0]; document.getElementById('hrBridgeTitle').textContent=`${p.cat}のケアを一緒に整えましょう`; document.getElementById('hrBridgeText').textContent=p.advice || '生活に小さな工夫を取り入れましょう。仲間と一緒だと続けやすいです。'; }
+      else { bridge.hidden=false; document.getElementById('hrBridgeTitle').textContent='この調子です'; document.getElementById('hrBridgeText').textContent='楽しみながら体を動かしていきましょう。部活動で仲間と交流すると、さらに保てます。'; }
+    }
+
+    function renderLatestCard(){
+      const card=document.getElementById('latestHealth'); if(!card) return;
+      const status=document.getElementById('latestStatus'); const dateEl=document.getElementById('latestDate'); const tags=document.getElementById('latestTags'); tags.innerHTML='';
+      const raw=localStorage.getItem(LS_RESULT_KEY); if(!raw){ status.textContent='まだ健康チェックを実施していません。'; dateEl.textContent='「健康チェックをする」からはじめましょう。'; return; }
+      const r=JSON.parse(raw); status.textContent=`評価：${r.label}`; dateEl.textContent=`最終更新：${fmt(new Date(r.timestamp))}`;
+      if(r.flagged?.length){ const uniq=[]; const seen=new Set(); r.flagged.forEach(t=>{ if(!seen.has(t.cat)){ uniq.push(t); seen.add(t.cat); }});
+        uniq.forEach(t=>{ const span=document.createElement('span'); span.className='tag '+(t.level==='caution'?'caution':(t.level==='warn'?'warn':'')); span.innerHTML=`<i class="fa-solid fa-circle-exclamation"></i> ${t.cat}`; tags.appendChild(span); });
+      } else { const span=document.createElement('span'); span.className='tag'; span.innerHTML='<i class="fa-regular fa-face-smile"></i> 良好な状態'; tags.appendChild(span); }
+    }
+
+    function fmt(d){ const y=d.getFullYear(); const m=String(d.getMonth()+1).padStart(2,'0'); const day=String(d.getDate()).padStart(2,'0'); const h=String(d.getHours()).padStart(2,'0'); const mm=String(d.getMinutes()).padStart(2,'0'); return `${y}/${m}/${day} ${h}:${mm}`; }
+
+    // Init
+    window.addEventListener('load', ()=>{ renderCalendar(); renderLatestCard(); });
+    // Auto-init Health Check when page shows
+    const observer = new MutationObserver(()=>{ if(document.getElementById('page-health-check').classList.contains('active')) initHC(); });
+    observer.observe(document.getElementById('pages'), { attributes:true, subtree:true, attributeFilter:['class'] });
+  </script>
+</body>
+</html>
