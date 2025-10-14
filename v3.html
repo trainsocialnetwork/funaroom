@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FUN・A・ROOM - 健康で楽しい毎日を</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", sans-serif;
+            background: linear-gradient(135deg, #FF9A56 0%, #FF6B9D 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .phone-frame {
+            width: 100%;
+            max-width: 390px;
+            height: 844px;
+            background: #1a1a1a;
+            border-radius: 45px;
+            padding: 14px;
+            box-shadow: 0 30px 90px rgba(0,0,0,0.4);
+            position: relative;
+        }
+
+        .screen {
+            width: 100%;
+            height: 100%;
+            background: #FFF8F0;
+            border-radius: 35px;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .status-bar {
+            height: 44px;
+            background: transparent;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 28px;
+            font-size: 15px;
+            font-weight: 600;
+            color: #1a1a1a;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 10;
+        }
+
+        .page {
+            display: none;
+            flex-direction: column;
+            height: 100%;
+            overflow-y: auto;
+            background: #FFF8F0;
+        }
+
+        .page.active {
+            display: flex;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #FF9A56 0%, #FFB347 100%);
+            color: white;
+            padding: 24px 28px 32px 28px;
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 50%;
+        }
+
+        .header::after {
+            content: '🌸';
+            position: absolute;
+            bottom: 10px;
+            right: 20px;
+            font-size: 48px;
+            opacity: 0.3;
+        }
+
+        .header-title {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+            letter-spacing: -0.5px;
+        }
+
+        .header-subtitle {
+            font-size: 17px;
+            opacity: 0.95;
+            font-weight: 500;
+            position: relative;
+            z-index: 1;
+        }
+
+        .content {
+            flex: 1;
+            padding: 28px;
+            overflow-y: auto;
+        }
+
+        .content::-webkit-scrollbar {
+            width: 0;
+        }
+
+        .welcome-section {
+            text-align: center;
+            padding: 60px 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 600px;
+        }
+
+        .app-logo {
+            width: 140px;
+            height: 140px;
+            background: linear-gradient(135deg, #FF9A56 0%, #FFB347 100%);
+            border-radius: 35px;
+            margin: 0 auto 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 64px;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 20px 60px rgba(255, 154, 86, 0.4);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .welcome-title {
+            font-size: 28px;
+            font-weight: 800;
+            color: #1a1a1a;
+            margin-bottom: 20px;
+            letter-spacing: -0.5px;
+        }
+
+        .welcome-text {
+            font-size: 19px;
+            color: #6B7280;
+            line-height: 1.9;
+            margin-bottom: 48px;
+            font-weight: 500;
+        }
+
+        .button {
+            background: linear-gradient(135deg, #FF9A56 0%, #FFB347 100%);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 22px 36px;
+            font-size: 20px;
+            font-weight: 700;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 30px rgba(255, 154, 86, 0.3);
+            min-height: 68px;
+            letter-spacing: 0.3px;
+        }
+
+        .button:active {
+            transform: translateY(2px);
+            box-shadow: 0 5px 15px rgba(255, 154, 86, 0.3);
+        }
+
+        .button-secondary {
+            background: white;
+            color: #FF9A56;
+            border: 3px solid #FF9A56;
+            box-shadow: 0 4px 15px rgba(255, 154, 86, 0.15);
+        }
+
+        .button-large {
+            padding: 26px 40px;
+            font-size: 22px;
+            min-height: 76px;
+        }
+
+        .input-group {
+            margin-bottom: 28px;
+        }
+
+        .input-label {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 20px 24px;
+            font-size: 18px;
+            border: 2px solid #E5E7EB;
+            border-radius: 16px;
+            transition: all 0.3s;
+            min-height: 64px;
+            background: white;
+            font-weight: 500;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #FF9A56;
+            box-shadow: 0 0 0 4px rgba(255, 154, 86, 0.1);
+        }
+
+        .card {
+            background: white;
+            border-radius: 24px;
+            padding: 24px 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(0,0,0,0.04);
+        }
+
+        .card:active {
+            transform: scale(0.98);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+        }
+
+        .card-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            color: #FF9A56;
+        }
+
+        .card-title {
+            font-size: 21px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 12px;
+            letter-spacing: -0.3px;
+        }
+
+        .card-text {
+            font-size: 17px;
+            color: #6B7280;
+            line-height: 1.8;
+            font-weight: 500;
+        }
+
+        .recommend-card {
+            background: linear-gradient(135deg, rgba(255, 154, 86, 0.08) 0%, rgba(255, 179, 71, 0.08) 100%);
+            border: 2px solid #FF9A56;
+            border-radius: 24px;
+            padding: 28px;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .recommend-card::before {
+            content: '\f005';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 32px;
+            opacity: 0.5;
+            color: #FF9A56;
+        }
+
+        .recommend-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #FF9A56;
+            margin-bottom: 12px;
+        }
+
+        .recommend-message {
+            font-size: 17px;
+            color: #1a1a1a;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .voice-assistant {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 24px;
+            padding: 28px;
+            margin-bottom: 20px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .voice-assistant::before {
+            content: '🎤';
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 32px;
+            opacity: 0.3;
+        }
+
+        .voice-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .voice-prompt {
+            font-size: 15px;
+            opacity: 0.9;
+            margin-bottom: 16px;
+        }
+
+        .voice-button {
+            background: rgba(255,255,255,0.2);
+            border: 2px solid white;
+            color: white;
+            border-radius: 16px;
+            padding: 16px 24px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .voice-button:active {
+            background: rgba(255,255,255,0.3);
+            transform: scale(0.98);
+        }
+
+        .game-card {
+            background: white;
+            border-radius: 24px;
+            padding: 28px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            position: relative;
+        }
+
+        .game-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #FF9A56 0%, #FFB347 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: white;
+            margin: 0 auto 20px;
+            box-shadow: 0 8px 24px rgba(255, 154, 86, 0.3);
+        }
+
+        .game-title {
+            font-size: 22px;
+            font-weight: 700;
+            text-align: center;
+            color: #1a1a1a;
+            margin-bottom: 12px;
+        }
+
+        .game-description {
+            font-size: 16px;
+            color: #6B7280;
+            text-align: center;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .test-area {
+            background: #F9FAFB;
+            border-radius: 16px;
+            padding: 40px 20px;
+            text-align: center;
+            margin-bottom: 20px;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .test-result {
+            font-size: 48px;
+            font-weight: 800;
+            color: #FF9A56;
+            margin-bottom: 12px;
+        }
+
+        .test-label {
+            font-size: 18px;
+            color: #6B7280;
+            font-weight: 600;
+        }
+
+        .challenge-card {
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            border-radius: 24px;
+            padding: 28px;
+            margin-bottom: 20px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .challenge-card::before {
+            content: '🏆';
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 32px;
+            opacity: 0.3;
+        }
+
+        .challenge-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .challenge-description {
+            font-size: 16px;
+            opacity: 0.95;
+            margin-bottom: 16px;
+            line-height: 1.7;
+        }
+
+        .challenge-stats {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .challenge-stat {
+            flex: 1;
+            background: rgba(255,255,255,0.2);
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .challenge-stat-number {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .challenge-stat-label {
+            font-size: 13px;
+            opacity: 0.9;
+        }
+
+        .badge-new {
+            display: inline-block;
+            background: #EF4444;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-left: 8px;
+        }
+
+        .badge-free {
+            display: inline-block;
+            background: #10B981;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-left: 8px;
+        }
+
+        .community-tabs {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            overflow-x: auto;
+        }
+
+        .community-tab {
+            background: white;
+            border: 2px solid #E5E7EB;
+            border-radius: 16px;
+            padding: 12px 20px;
+            font-size: 16px;
+            color: #6B7280;
+            cursor: pointer;
+            white-space: nowrap;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .community-tab.active {
+            background: linear-gradient(135deg, #FF9A56 0%, #FFB347 100%);
+            border-color: transparent;
+            color: white;
+            font-weight: 700;
+            box-shadow: 0 4px 15px rgba(255, 154, 86, 0.3);
+        }
+
+        .post-card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .post-avatar {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #FF9A56 0%, #FFB347 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .post-info {
+            flex: 1;
+        }
+
+        .post-name {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 2px;
+        }
+
+        .post-time {
+            font-size: 13px;
+            color: #9CA3AF;
+        }
+
+        .post-content {
+            font-size: 16px;
+            color: #374151;
+            line-height: 1.7;
+            margin-bottom: 12px;
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 20px;
+        }
+
+        .post-action {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #9CA3AF;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .post-action:active {
+            color: #FF9A56;
+        }
+
+        .bottom-nav {
+            background: white;
+            border-top: 1px solid #F3F4F6;
+            display: flex;
+            padding: 12px 8px 20px 8px;
+            flex-shrink: 0;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.03);
+        }
+
+        .nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-radius: 16px;
+        }
+
+        .nav-item:active {
+            transform: scale(0.95);
+            background: #FFF8F0;
+        }
+
+        .nav-icon {
+            width: 36px;
+            height: 36px;
+            margin-bottom: 6px;
+            font-size: 24px;
+            transition: all 0.3s;
+            color: #9CA3AF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-label {
+            font-size: 13px;
+            color: #9CA3AF;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .nav-item.active .nav-label {
+            color: #FF9A56;
+            font-weight: 700;
+        }
+
+        .nav-item.active .nav-icon {
+            transform: scale(1.1);
+            color: #FF9A56;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #FF9A56 0%, #FFB347 100%);
+            color: white;
+            border-radius: 24px;
+            padding: 32px 28px;
+            margin-bottom: 24px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(255, 154, 86, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+
+        .stat-number {
+            font-size: 56px;
+            font-weight: 800;
+            margin-bottom: 12px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-label {
+            font-size: 18px;
+            opacity: 0.95;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+        }
+
+        .back-button {
+            background: white;
+            border: 2px solid #E5E7EB;
+            border-radius: 16px;
+            padding: 14px 24px;
+            font-size: 18px;
+            color: #6B7280;
+            cursor: pointer;
+            margin-bottom: 16px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .back-button:active {
+            background: #FFF8F0;
+            transform: scale(0.98);
+        }
+
+        @media (max-width: 400px) {
+            .phone-frame {
+                border-radius: 0;
+                padding: 0;
+                max-width: 100%;
+                height: 100vh;
+            }
+            
+            .screen {
+                border-radius: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-frame">
+        <div class="screen">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+
+            <!-- スプラッシュ画面 -->
+            <div id="splash" class="page active">
+                <div class="content">
+                    <div class="welcome-section">
+                        <div class="app-logo">健</div>
+                        <h1 class="welcome-title">FUN・A・ROOM</h1>
+                        <p class="welcome-text">
+                            健康で楽しい毎日を<br>
+                            仲間と一緒に
+                        </p>
+                        <button class="button button-large" onclick="showPage('home')">
+                            はじめる
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ホーム画面 -->
+            <div id="home" class="page">
+                <div class="header">
+                    <h1 class="header-title">おはようございます</h1>
+                    <p class="header-subtitle">田中さん、今日も元気に過ごしましょう</p>
+                </div>
+                <div class="content">
+                    <div class="stat-card">
+                        <div class="stat-number">7日</div>
+                        <div class="stat-label">連続で記録しています！</div>
+                    </div>
+
+                    <div class="voice-assistant">
+                        <h3 class="voice-title">音声アシスタント FUNA</h3>
+                        <p class="voice-prompt">「OK FUNA、今日の調子はどう？」と話しかけてみましょう</p>
+                        <button class="voice-button" onclick="startVoiceAssistant()">
+                            <i class="fas fa-microphone"></i> 話しかける
+                        </button>
+                    </div>
+
+                    <div class="recommend-card">
+                        <h3 class="recommend-title">田中さんへのおすすめ</h3>
+                        <p class="recommend-message">
+                            最近、少し歩く機会が<br>
+                            減っているようですね。<br><br>
+                            みんなで楽しく体を動かしませんか？
+                        </p>
+                        <button class="button" onclick="setActiveTab('activities')">
+                            おすすめの活動を見る
+                        </button>
+                    </div>
+
+                    <div class="card" onclick="showPage('health-game')">
+                        <div class="card-icon"><i class="fas fa-gamepad"></i></div>
+                        <h2 class="card-title">健康チャレンジ<span class="badge-new">NEW</span></h2>
+                        <p class="card-text">ゲーム感覚で楽しく体力チェック<br>片足立ち・反応速度テスト</p>
+                    </div>
+                    
+                    <div class="card" onclick="setActiveTab('health')">
+                        <div class="card-icon"><i class="fas fa-heartbeat"></i></div>
+                        <h2 class="card-title">今日の記録</h2>
+                        <p class="card-text">毎日の体調を記録しましょう</p>
+                    </div>
+                </div>
+                <div class="bottom-nav">
+                    <div class="nav-item active" onclick="setActiveTab('home')">
+                        <div class="nav-icon"><i class="fas fa-home"></i></div>
+                        <div class="nav-label">ホーム</div>
+                    </div>
+                    <div class="nav-item" onclick="setActiveTab('health')">
+                        <div class="nav-icon"><i class="fas fa-heartbeat"></i></div>
+                        <div class="nav-label">健康</div>
+                    </div>
+                    <div class="nav-item" onclick="setActiveTab('community')">
+                        <div class="nav-icon"><i class="fas fa-users"></i></div>
+                        <div class="nav-label">コミュニティ</div>
+                    </div>
+                    <div class="nav-item" onclick="setActiveTab('mypage')">
+                        <div class="nav-icon"><i class="fas fa-user"></i></div>
+                        <div class="nav-label">マイページ</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 健康ゲーム画面 -->
+            <div id="health-game" class="page">
+                <div class="header">
+                    <h1 class="header-title">健康チャレンジ</h1>
+                    <p class="header-subtitle">ゲーム感覚で体力チェック</p>
+                </div>
+                <div class="content">
+                    <div class="game-card" onclick="showPage('balance-test')">
+                        <div class="game-icon">🦩</div>
+                        <h3 class="game-title">片足立ちチャレンジ</h3>
+                        <p class="game-description">
+                            バランス感覚をチェック！<br>
+                            何秒立っていられるかな？
+                        </p>
+                        <button class="button">挑戦する</button>
+                    </div>
+
+                    <div class="game-card" onclick="showPage('reaction-test')">
+                        <div class="game-icon">⚡</div>
+                        <h3 class="game-title">反応速度テスト</h3>
+                        <p class="game-description">
+                            画面が光ったらタップ！<br>
+                            あなたの反応速度は？
+                        </p>
+                        <button class="button">挑戦する</button>
+                    </div>
+
+                    <div class="recommend-card">
+                        <h3 class="recommend-title">💡 ポイント</h3>
+                        <p class="recommend-message">
+                            結果は自動で記録されます。<br>
+                            毎週挑戦して、変化を楽しみましょう！<br><br>
+                            仲間と結果を共有して<br>
+                            励まし合うこともできますよ。
+                        </p>
+                    </div>
+
+                    <button class="back-button" onclick="setActiveTab('home')">
+                        <i class="fas fa-arrow-left"></i> ホームに戻る
+                    </button>
+                </div>
+            </div>
+
+            <!-- 片足立ちテスト -->
+            <div id="balance-test" class="page">
+                <div class="header">
+                    <h1 class="header-title">片足立ちチャレンジ</h1>
+                    <p class="header-subtitle">バランス感覚をチェック</p>
+                </div>
+                <div class="content">
+                    <div class="game-card">
+                        <div class="game-icon">🦩</div>
+                        <h3 class="game-title">準備はいいですか？</h3>
+                        <p class="game-description">
+                            壁や椅子など、つかまれるものの<br>
+                            近くで行いましょう。<br><br>
+                            安全第一で、無理はしないでくださいね。
+                        </p>
+                    </div>
+
+                    <div id="balance-test-area" class="test-area">
+                        <div class="test-result">0.0秒</div>
+                        <div class="test-label">長押しして計測開始</div>
+                    </div>
+
+                    <button id="balance-start-button" class="button button-large" onmousedown="startBalanceTest()" onmouseup="stopBalanceTest()" ontouchstart="startBalanceTest()" ontouchend="stopBalanceTest()">
+                        長押しして計測
+                    </button>
+                    <br><br>
+                    <button class="back-button" onclick="showPage('health-game')">
+                        <i class="fas fa-arrow-left"></i> 戻る
+                    </button>
+                </div>
+            </div>
+
+            <!-- 反応速度テスト -->
+            <div id="reaction-test" class="page">
+                <div class="header">
+                    <h1 class="header-title">反応速度テスト</h1>
+                    <p class="header-subtitle">素早くタップしよう</p>
+                </div>
+                <div class="content">
+                    <div class="game-card">
+                        <div class="game-icon">⚡</div>
+                        <h3 class="game-title">ルール説明</h3>
+                        <p class="game-description">
+                            画面が緑色に光ったら<br>
+                            できるだけ早くタップ！<br><br>
+                            3回チャレンジして平均を記録します。
+                        </p>
+                    </div>
+
+                    <div id="reaction-test-area" class="test-area" style="background: #E5E7EB; cursor: pointer;" onclick="reactionClick()">
+                        <div id="reaction-message" style="font-size: 20px; font-weight: 700; color: #374151;">
+                            スタートボタンを押してください
+                        </div>
+                    </div>
+
+                    <button id="reaction-start-button" class="button button-large" onclick="startReactionTest()">
+                        スタート
+                    </button>
+                    <br><br>
+                    <button class="back-button" onclick="showPage('health-game')">
+                        <i class="fas fa-arrow-left"></i> 戻る
+                    </button>
+                </div>
+            </div>
+
+            <!-- 健康記録画面 -->
+            <div id="health" class="page">
+                <div class="header">
+                    <h1 class="header-title">健康記録</h1>
+                    <p class="header-subtitle">田中さんの記録を確認</p>
+                </div>
+                <div class="content">
+                    <div class="stat-card">
+                        <div class="stat-number">7日</div>
+                        <div class="stat-label">連続で記録しています！</div>
+                    </div>
+
+                    <div class="card">
+                        <h2 class="card-title"><i class="fas fa-trophy" style="margin-right: 10px; color: #FF9A56;"></i>最新のチャレンジ結果</h2>
+                        <div style="margin-top: 16px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+                                <span style="font-weight: 600;">片足立ち</span>
+                                <span style="font-weight: 700; color: #FF9A56;">32.5秒</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span style="font-weight: 600;">反応速度</span>
+                                <span style="font-weight: 700; color: #FF9A56;">0.42秒</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="button" onclick="showPage('health-game')">
+                        健康チャレンジに挑戦
+                    </button>
+                </div>
+                <div class="bottom-nav">
+                    <div class="nav-item" onclick="setActiveTab('home')">
+                        <div class="nav-icon"><i class="fas fa-home"></i></div>
+                        <div class="nav-label">ホーム</div>
+                    </div>
+                    <div class="nav-item active" onclick="setActiveTab('health')">
+                        <div class="nav-icon"><i class="fas fa-heartbeat"></i></div>
+                        <div class="nav-label">健康</div>
+                    </div>
+                    <div class="nav-item" onclick="setActiveTab('community')">
+                        <div class="nav-icon"><i class="fas fa-users"></i></div>
+                        <div class="nav-label">コミュニティ</div>
+                    </div>
+                    <div class="nav-item" onclick="setActiveTab('mypage')">
+                        <div class="nav-icon"><i class="fas fa-user"></i></div>
+                        <div class="nav-label">マイページ</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- コミュニティ画面 -->
+            <div id="community" class="page">
+                <div class="header">
+                    <h1 class="header-title">コミュニティ</h1>
+                    <p class="header-subtitle">仲間とつながろう</p>
+                </div>
+                <div class="content">
+                    <div class="community-tabs">
+                        <button class="community-tab active">みんなの投稿</button>
+                        <button class="community-tab">無料チャレンジ</button>
+                        <button class="community-tab">有料部活動</button>
+                    </div>
+
+                    <div class="challenge-card">
+                        <h3 class="challenge-title">今週のチャレンジ<span class="badge-free">無料</span></h3>
+                        <p class="challenge-description">
+                            みんなで歩数チャレンジ！<br>
+                            1週間で3万歩を目指そう
+                        </p>
+                        <div class="challenge-stats">
+                            <div class="challenge-stat">
+                                <div class="challenge-stat-number">245</div>
+                                <div class="challenge-stat-label">参加者</div>
+                            </div>
+                            <div class="challenge-stat">
+                                <div class="challenge-stat-number">あと3日</div>
+                                <div class="challenge-stat-label">残り時間</div>
+                            </div>
+                        </div>
+                        <button class="button" onclick="alert('チャレンジに参加しました！')">
+                            参加する
+                        </button>
+                    </div>
+
+                    <div class="post-card">
+                        <div class="post-header">
+                            <div class="post-avatar">佐</div>
+                            <div class="post-info">
+                                <div class="post-name">佐藤さん (60代)</div>
+                                <div class="post-time">2時間前</div>
+                            </div>
+                        </div>
+                        <div class="post-content">
+                            今日は片足立ち35秒できました！<br>
+                            先週より5秒も伸びて嬉しいです🎉
+                        </div>
+                        <div class="post-actions">
+                            <div class="post-action">
+                                <i class="far fa-thumbs-up"></i> 12
+                            </div>
+                            <div class="post-action">
+                                <i class="far fa-comment"></i> 3
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="post-card">
+                        <div class="post-header">
+                            <div class="post-avatar">鈴</div>
+                            <div class="post-info">
+                                <div class="post-name">鈴木さん (70代)</div>
+                                <div class="post-time">5時間前</div>
+                            </div>
+                        </div>
+                        <div class="post-content">
+                            朝のウォーキング部、楽しかったです！<br>
+                            来週も参加します😊
+                        </div>
+                        <div class="post-actions">
+                            <div class="post-action">
+                                <i class="far fa-thumbs-up"></i> 8
+                            </div>
+                            <div class="post-action">
+                                <i class="far fa-comment"></i> 2
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="recommend-card">
+                        <h3 class="recommend-title">有料部活動のご案内</h3>
+                        <p class="recommend-message">
+                            より専門的な指導を受けたい方へ<br><br>
+                            月額1,980円で講師付きの<br>
+                            運動教室に参加できます
+                        </p>
+                        <button class="button-secondary button" onclick="alert('準備中です')">
+                            詳しく見る
+                        </button>
+                    </div>
+                </div>
+                <div class="bottom-nav">
+                    <div class="nav-item" onclick="setActiveTab('home')">
+                        <div class="nav-icon"><i class="fas fa-home"></i></div>
+                        <div class="nav-label">ホーム</div>
+                    </div>
+                    <div class="nav-item" onclick="setActiveTab('health')">
+                        <div class="nav-icon"><i class="fas fa-heartbeat"></i></div>
+                        <div class="nav-label">健康</div>
+                    </div>
+                    <div class="nav-item active" onclick="setActiveTab('community')">
+                        <div class="nav-icon"><i class="fas fa-users"></i></div>
+                        <div class="nav-label">コミュニティ</div>
+                    </div>
+                    <div class="nav-item" onclick="setActiveTab('mypage')">
+                        <div class="nav-icon"><i class="fas fa-user"></i></div>
+                        <div class="nav-label">マイページ</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- マイページ -->
+            <div id="mypage" class="page">
+                <div class="header">
+                    <h1 class="header-title">マイページ</h1>
+                    <p class="header-subtitle">田中 太郎さん (70代)</p>
+                </div>
+                <div class="content">
+                    <div class="card">
+                        <h2 class="card-title">参加中のチャレンジ</h2>
+                        <div class="challenge-card" style="margin-top: 16px; margin-bottom: 0;">
+                            <h3 class="challenge-title">今週の歩数チャレンジ</h3>
+                            <div class="challenge-stats">
+                                <div class="challenge-stat">
+                                    <div class="challenge-stat-number">18,540</div>
+                                    <div class="challenge-stat-label">現在の歩数</div>
+                                </div>
+                                <div class="challenge-stat">
+                                    <div class="challenge-stat-number">62%</div>
+                                    <div class="challenge-stat-label">達成率</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h2 class="card-title">今月の記録</h2>
+                        <div style="margin-top: 16px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+                                <span style="font-weight: 600;">記録日数</span>
+                                <span style="font-weight: 700; color: #FF9A56;">21日</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+                                <span style="font-weight: 600;">連続記録</span>
+                                <span style="font-weight: 700; color: #FF9A56;">7日</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span style="font-weight: 600;">投稿数</span>
+                                <span style="font-weight: 700; color: #FF9A56;">5回</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="button-secondary button" onclick="alert('ログアウトしました')">
+                        ログアウト
+                    </button>
+                </div>
+                <div class="bottom-nav">
+                    <div class="nav-item" onclick="setActiveTab('home')">
+                        <div class="nav-icon"><i class="fas fa-home"></i></div>
+                        <div class="nav-label">ホーム</div>
+                    </div>
+                    <div class="nav-item" onclick="setActiveTab('health')">
+                        <div class="nav-icon"><i class="fas fa-heartbeat"></i></div>
+                        <div class="nav-label">健康</div>
+                    </div>
+                    <div class="nav-item" onclick="setActiveTab('community')">
+                        <div class="nav-icon"><i class="fas fa-users"></i></div>
+                        <div class="nav-label">コミュニティ</div>
+                    </div>
+                    <div class="nav-item active" onclick="setActiveTab('mypage')">
+                        <div class="nav-icon"><i class="fas fa-user"></i></div>
+                        <div class="nav-label">マイページ</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let balanceTimer = null;
+        let balanceStartTime = 0;
+        let balanceTime = 0;
+
+        let reactionState = null;
+
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+
+            const pageEl = document.getElementById(pageId);
+            if (!pageEl) return;
+
+            pageEl.classList.add('active');
+            pageEl.scrollTop = 0;
+            const contentEl = pageEl.querySelector('.content');
+            if (contentEl) {
+                contentEl.scrollTop = 0;
+            }
+        }
+
+        function setActiveTab(tab) {
+            const tabs = {
+                'home': 'home',
+                'health': 'health',
+                'community': 'community',
+                'mypage': 'mypage'
+            };
+
+            showPage(tabs[tab]);
+
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+
+            const labels = {
+                'home': 'ホーム',
+                'health': '健康',
+                'community': 'コミュニティ',
+                'mypage': 'マイページ'
+            };
+
+            const activeItem = Array.from(document.querySelectorAll('.nav-item')).find(item => {
+                return labels[tab] && item.textContent.includes(labels[tab]);
+            });
+
+            if (activeItem) {
+                activeItem.classList.add('active');
+            }
+        }
+
+        function startVoiceAssistant() {
+            alert('音声アシスタント機能は準備中です。\n\n「OK FUNA、今日の調子はどう？」\n「OK FUNA、片足立ちの記録を見せて」\n\nなどの音声コマンドに対応予定です。');
+        }
+
+        function startBalanceTest() {
+            if (balanceTimer) return;
+            
+            balanceStartTime = Date.now();
+            balanceTimer = setInterval(() => {
+                balanceTime = (Date.now() - balanceStartTime) / 1000;
+                document.querySelector('#balance-test-area .test-result').textContent = balanceTime.toFixed(1) + '秒';
+                document.querySelector('#balance-test-area .test-label').textContent = '計測中...';
+            }, 100);
+        }
+
+        function stopBalanceTest() {
+            if (!balanceTimer) return;
+            
+            clearInterval(balanceTimer);
+            balanceTimer = null;
+            
+            const finalTime = balanceTime.toFixed(1);
+            document.querySelector('#balance-test-area .test-label').textContent = '記録完了！';
+            
+            setTimeout(() => {
+                alert(`素晴らしい！${finalTime}秒立てました！\n\n記録を保存しました。\nコミュニティで仲間に共有しますか？`);
+                balanceTime = 0;
+                document.querySelector('#balance-test-area .test-result').textContent = '0.0秒';
+                document.querySelector('#balance-test-area .test-label').textContent = '長押しして計測開始';
+            }, 500);
+        }
+
+        function startReactionTest() {
+            const area = document.getElementById('reaction-test-area');
+            const message = document.getElementById('reaction-message');
+            const button = document.getElementById('reaction-start-button');
+            
+            button.style.display = 'none';
+            
+            reactionState = {
+                round: 0,
+                results: [],
+                waiting: true
+            };
+            
+            area.style.background = '#E5E7EB';
+            message.textContent = '待機中...';
+            message.style.color = '#374151';
+            
+            const delay = Math.random() * 3000 + 2000;
+            
+            setTimeout(() => {
+                if (!reactionState) return;
+                reactionState.startTime = Date.now();
+                reactionState.waiting = false;
+                area.style.background = '#10B981';
+                message.textContent = 'タップ！';
+                message.style.color = 'white';
+            }, delay);
+        }
+
+        function reactionClick() {
+            if (!reactionState) return;
+            
+            const area = document.getElementById('reaction-test-area');
+            const message = document.getElementById('reaction-message');
+            const button = document.getElementById('reaction-start-button');
+            
+            if (reactionState.waiting) {
+                area.style.background = '#EF4444';
+                message.textContent = 'フライング！もう一度やり直し';
+                message.style.color = 'white';
+                setTimeout(() => {
+                    reactionState = null;
+                    area.style.background = '#E5E7EB';
+                    message.textContent = 'スタートボタンを押してください';
+                    message.style.color = '#374151';
+                    button.style.display = 'block';
+                }, 2000);
+                return;
+            }
+            
+            const reactionTime = Date.now() - reactionState.startTime;
+            reactionState.results.push(reactionTime);
+            reactionState.round++;
+            
+            area.style.background = '#E5E7EB';
+            message.textContent = `${reactionTime}ms！`;
+            message.style.color = '#FF9A56';
+            
+            if (reactionState.round < 3) {
+                setTimeout(() => {
+                    message.textContent = `あと${3 - reactionState.round}回`;
+                    setTimeout(() => {
+                        startReactionTest();
+                    }, 1000);
+                }, 1500);
+            } else {
+                const average = (reactionState.results.reduce((a, b) => a + b, 0) / 3).toFixed(0);
+                setTimeout(() => {
+                    alert(`完了！\n\n平均反応速度: ${average}ms\n\n記録を保存しました。\nコミュニティで仲間に共有しますか？`);
+                    reactionState = null;
+                    message.textContent = 'スタートボタンを押してください';
+                    message.style.color = '#374151';
+                    button.style.display = 'block';
+                }, 1500);
+            }
+        }
+    </script>
+</body>
+</html>
