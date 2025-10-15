@@ -1,0 +1,1522 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>FUN・A・ROOM - 健康で楽しい毎日を</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
+            background: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .phone-frame {
+            width: 100%;
+            max-width: 430px;
+            height: 900px;
+            background: #000;
+            border-radius: 45px;
+            padding: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            position: relative;
+        }
+
+        .screen {
+            width: 100%;
+            height: 100%;
+            background: #ffffff;
+            border-radius: 35px;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .status-bar {
+            height: 48px;
+            background: #ffffff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 32px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .page {
+            display: none;
+            flex-direction: column;
+            height: 100%;
+            background: #ffffff;
+        }
+
+        .page.active {
+            display: flex;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4A90E2 0%, #5CA0F2 100%);
+            color: white;
+            padding: 28px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header-small {
+            padding: 20px 28px;
+        }
+
+        .header-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            letter-spacing: 0.5px;
+        }
+
+        .header-subtitle {
+            font-size: 18px;
+            opacity: 0.95;
+            font-weight: 400;
+        }
+
+        .content {
+            flex: 1;
+            padding: 24px 20px;
+            overflow-y: auto;
+            background: #fafafa;
+        }
+
+        .content::-webkit-scrollbar {
+            width: 0;
+        }
+
+        /* メインメニューカード */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .menu-card {
+            background: white;
+            border-radius: 20px;
+            padding: 28px 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            min-height: 140px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .menu-card:active {
+            transform: scale(0.97);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        }
+
+        .menu-card.primary {
+            grid-column: span 2;
+            background: linear-gradient(135deg, #4A90E2 0%, #5CA0F2 100%);
+            color: white;
+        }
+
+        .menu-card.success {
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            color: white;
+        }
+
+        .menu-card.warning {
+            background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+            color: white;
+        }
+
+        .menu-card i {
+            font-size: 36px;
+        }
+
+        .menu-card-title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .menu-card-text {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        /* ステータスカード */
+        .status-card {
+            background: white;
+            border-radius: 24px;
+            padding: 28px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+
+        .status-number {
+            font-size: 56px;
+            font-weight: 700;
+            color: #4A90E2;
+            margin-bottom: 4px;
+        }
+
+        .status-label {
+            font-size: 18px;
+            color: #666;
+            font-weight: 500;
+        }
+
+        /* ボタン */
+        .main-button {
+            background: linear-gradient(135deg, #4A90E2 0%, #5CA0F2 100%);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 24px;
+            font-size: 20px;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 6px 20px rgba(74, 144, 226, 0.25);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            min-height: 72px;
+        }
+
+        .main-button:active {
+            transform: scale(0.98);
+            box-shadow: 0 3px 10px rgba(74, 144, 226, 0.25);
+        }
+
+        .main-button i {
+            font-size: 24px;
+        }
+
+        .secondary-button {
+            background: white;
+            color: #4A90E2;
+            border: 2px solid #4A90E2;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .success-button {
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.25);
+        }
+
+        .back-button {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 16px;
+            padding: 14px 20px;
+            font-size: 16px;
+            color: #666;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+            transition: all 0.2s;
+            margin-bottom: 16px;
+        }
+
+        .back-button:active {
+            background: #f5f5f5;
+            transform: scale(0.98);
+        }
+
+        /* 質問画面 */
+        .question-container {
+            padding: 24px 20px;
+            background: white;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            margin-bottom: 28px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4A90E2 0%, #5CA0F2 100%);
+            transition: width 0.3s;
+            border-radius: 5px;
+        }
+
+        .question-number {
+            display: inline-block;
+            background: linear-gradient(135deg, #4A90E2 0%, #5CA0F2 100%);
+            color: white;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 700;
+            margin: 0 auto 20px;
+        }
+
+        .question-text {
+            font-size: 24px;
+            font-weight: 600;
+            color: #333;
+            text-align: center;
+            margin-bottom: 32px;
+            line-height: 1.4;
+        }
+
+        .option-button {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 12px;
+            font-size: 18px;
+            color: #333;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            width: 100%;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            min-height: 64px;
+        }
+
+        .option-button:active {
+            transform: scale(0.98);
+        }
+
+        .option-button.selected {
+            background: linear-gradient(135deg, #4A90E2 0%, #5CA0F2 100%);
+            border-color: #4A90E2;
+            color: white;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+        }
+
+        .option-button i {
+            font-size: 24px;
+        }
+
+        /* 完了画面 */
+        .complete-container {
+            padding: 48px 32px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 400px;
+            background: white;
+        }
+
+        .complete-icon {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: white;
+            margin: 0 auto 28px;
+            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3);
+        }
+
+        .complete-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 12px;
+        }
+
+        .complete-text {
+            font-size: 18px;
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 32px;
+        }
+
+        /* ゲーム画面 */
+        .game-card {
+            background: white;
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .game-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: white;
+            margin: 0 auto 20px;
+        }
+
+        .game-title {
+            font-size: 22px;
+            font-weight: 600;
+            text-align: center;
+            color: #333;
+            margin-bottom: 12px;
+        }
+
+        .game-description {
+            font-size: 16px;
+            color: #666;
+            text-align: center;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .test-area {
+            background: #f5f5f5;
+            border-radius: 16px;
+            padding: 40px 20px;
+            text-align: center;
+            margin-bottom: 20px;
+            min-height: 160px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .test-result {
+            font-size: 48px;
+            font-weight: 700;
+            color: #4A90E2;
+            margin-bottom: 8px;
+        }
+
+        .test-label {
+            font-size: 18px;
+            color: #666;
+            font-weight: 500;
+        }
+
+        /* 活動カード */
+        .activity-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .activity-image {
+            width: 100%;
+            height: 160px;
+            background: linear-gradient(135deg, #4A90E2 0%, #5CA0F2 100%);
+            background-image: url('https://static.wixstatic.com/media/07cdbc_ffa8f4d3caa343ad96d08d1e33a3d943~mv2.jpg/v1/fill/w_828,h_624,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/IMG_2782_JPG.jpg');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .activity-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%);
+            padding: 16px;
+            color: white;
+        }
+
+        .activity-content {
+            padding: 20px;
+        }
+
+        .activity-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 12px;
+        }
+
+        .activity-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .activity-info i {
+            color: #4A90E2;
+            width: 20px;
+        }
+
+        /* サポートカード */
+        .support-card {
+            background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+            border: 2px solid #F59E0B;
+            border-radius: 20px;
+            padding: 28px;
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        .support-icon {
+            font-size: 40px;
+            color: #F59E0B;
+            margin-bottom: 12px;
+        }
+
+        .support-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #92400E;
+            margin-bottom: 8px;
+        }
+
+        .support-text {
+            font-size: 16px;
+            color: #78350F;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .phone-button {
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            padding: 18px 24px;
+            font-size: 18px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .phone-button:active {
+            transform: scale(0.98);
+        }
+
+        /* 結果表示 */
+        .result-section {
+            background: white;
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .result-badge {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: white;
+        }
+
+        .result-badge.good {
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+        }
+
+        .result-badge.warning {
+            background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+        }
+
+        .result-badge.caution {
+            background: linear-gradient(135deg, #EF4444 0%, #B91C1C 100%);
+        }
+
+        .result-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #333;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        .result-text {
+            font-size: 16px;
+            color: #666;
+            line-height: 1.6;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .result-item {
+            padding: 16px;
+            border-radius: 12px;
+            background: #f8f9fa;
+            margin-bottom: 12px;
+        }
+
+        .result-category {
+            font-size: 14px;
+            font-weight: 600;
+            color: #4A90E2;
+            margin-bottom: 4px;
+        }
+
+        .result-advice {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        /* ナビゲーション */
+        .bottom-nav {
+            background: white;
+            border-top: 2px solid #f0f0f0;
+            display: flex;
+            padding: 12px 8px 20px;
+            gap: 8px;
+        }
+
+        .nav-button {
+            flex: 1;
+            background: white;
+            border: none;
+            border-radius: 12px;
+            padding: 10px 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .nav-button:active {
+            background: #f5f5f5;
+            transform: scale(0.95);
+        }
+
+        .nav-button.active {
+            background: #EBF5FF;
+        }
+
+        .nav-button i {
+            font-size: 24px;
+            color: #999;
+        }
+
+        .nav-button.active i {
+            color: #4A90E2;
+        }
+
+        .nav-button span {
+            font-size: 13px;
+            color: #999;
+            font-weight: 500;
+        }
+
+        .nav-button.active span {
+            color: #4A90E2;
+            font-weight: 600;
+        }
+
+        @media (max-width: 450px) {
+            .phone-frame {
+                border-radius: 0;
+                padding: 0;
+                height: 100vh;
+                max-width: 100%;
+            }
+            
+            .screen {
+                border-radius: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-frame">
+        <div class="screen">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100% <i class="fas fa-battery-full"></i></span>
+            </div>
+
+            <!-- ホーム画面 -->
+            <div id="home" class="page active">
+                <div class="header">
+                    <h1 class="header-title">おはようございます</h1>
+                    <p class="header-subtitle">田中さん、今日も元気に過ごしましょう</p>
+                </div>
+                
+                <div class="content">
+                    <div class="status-card">
+                        <div class="status-number">7日</div>
+                        <div class="status-label">連続で記録しています</div>
+                    </div>
+
+                    <div class="menu-grid">
+                        <div class="menu-card primary" onclick="showPage('daily-check-1')">
+                            <i class="fas fa-clipboard-check"></i>
+                            <div class="menu-card-title">今日の健康記録</div>
+                            <div class="menu-card-text">簡単3つの質問</div>
+                        </div>
+
+                        <div class="menu-card success" onclick="showPage('game-menu')">
+                            <i class="fas fa-gamepad"></i>
+                            <div class="menu-card-title">健康ゲーム</div>
+                            <div class="menu-card-text">楽しく体力測定</div>
+                        </div>
+
+                        <div class="menu-card warning" onclick="showPage('health-check-intro')">
+                            <i class="fas fa-stethoscope"></i>
+                            <div class="menu-card-title">月1健康診断</div>
+                            <div class="menu-card-text">詳しくチェック</div>
+                        </div>
+                    </div>
+
+                    <button class="main-button secondary-button" onclick="showPage('activities')">
+                        <i class="fas fa-users"></i>
+                        <span>みんなの活動を見る</span>
+                    </button>
+
+                    <div class="support-card">
+                        <div class="support-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <h3 class="support-title">お困りですか？</h3>
+                        <p class="support-text">
+                            使い方がわからない時は<br>
+                            お電話ください
+                        </p>
+                        <button class="phone-button" onclick="alert('電話：0982-XX-XXXX')">
+                            <i class="fas fa-phone"></i>
+                            <span>電話をかける</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bottom-nav">
+                    <button class="nav-button active" onclick="setActiveTab('home')">
+                        <i class="fas fa-home"></i>
+                        <span>ホーム</span>
+                    </button>
+                    <button class="nav-button" onclick="setActiveTab('records')">
+                        <i class="fas fa-calendar"></i>
+                        <span>記録</span>
+                    </button>
+                    <button class="nav-button" onclick="setActiveTab('activities')">
+                        <i class="fas fa-users"></i>
+                        <span>活動</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 毎日の健康チェック 質問1 -->
+            <div id="daily-check-1" class="page">
+                <div class="header header-small">
+                    <h1 class="header-title" style="font-size: 24px;">今日の健康記録</h1>
+                </div>
+                
+                <div class="question-container">
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 33%"></div>
+                    </div>
+                    
+                    <div class="question-number">1</div>
+                    <h2 class="question-text">今日の体調は<br>いかがですか？</h2>
+                    
+                    <button class="option-button" onclick="selectDailyOption(this, 'daily-1')">
+                        <i class="fas fa-smile"></i>
+                        <span>とても良い</span>
+                    </button>
+                    <button class="option-button" onclick="selectDailyOption(this, 'daily-1')">
+                        <i class="fas fa-meh"></i>
+                        <span>ふつう</span>
+                    </button>
+                    <button class="option-button" onclick="selectDailyOption(this, 'daily-1')">
+                        <i class="fas fa-frown"></i>
+                        <span>良くない</span>
+                    </button>
+
+                    <div style="margin-top: 32px;">
+                        <button class="main-button" onclick="nextDailyQuestion('daily-1', 'daily-check-2')">
+                            次へ
+                        </button>
+                        <button class="back-button" onclick="showPage('home')">
+                            <i class="fas fa-arrow-left"></i> ホームに戻る
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 毎日の健康チェック 質問2 -->
+            <div id="daily-check-2" class="page">
+                <div class="header header-small">
+                    <h1 class="header-title" style="font-size: 24px;">今日の健康記録</h1>
+                </div>
+                
+                <div class="question-container">
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 66%"></div>
+                    </div>
+                    
+                    <div class="question-number">2</div>
+                    <h2 class="question-text">今日は<br>歩きましたか？</h2>
+                    
+                    <button class="option-button" onclick="selectDailyOption(this, 'daily-2')">
+                        <i class="fas fa-walking"></i>
+                        <span>たくさん歩いた</span>
+                    </button>
+                    <button class="option-button" onclick="selectDailyOption(this, 'daily-2')">
+                        <i class="fas fa-shoe-prints"></i>
+                        <span>少し歩いた</span>
+                    </button>
+                    <button class="option-button" onclick="selectDailyOption(this, 'daily-2')">
+                        <i class="fas fa-home"></i>
+                        <span>あまり歩いていない</span>
+                    </button>
+
+                    <div style="margin-top: 32px;">
+                        <button class="main-button" onclick="nextDailyQuestion('daily-2', 'daily-check-3')">
+                            次へ
+                        </button>
+                        <button class="back-button" onclick="showPage('daily-check-1')">
+                            <i class="fas fa-arrow-left"></i> 戻る
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 毎日の健康チェック 質問3 -->
+            <div id="daily-check-3" class="page">
+                <div class="header header-small">
+                    <h1 class="header-title" style="font-size: 24px;">今日の健康記録</h1>
+                </div>
+                
+                <div class="question-container">
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 100%"></div>
+                    </div>
+                    
+                    <div class="question-number">3</div>
+                    <h2 class="question-text">今日は誰かと<br>話しましたか？</h2>
+                    
+                    <button class="option-button" onclick="selectDailyOption(this, 'daily-3')">
+                        <i class="fas fa-comments"></i>
+                        <span>たくさん話した</span>
+                    </button>
+                    <button class="option-button" onclick="selectDailyOption(this, 'daily-3')">
+                        <i class="fas fa-comment"></i>
+                        <span>少し話した</span>
+                    </button>
+                    <button class="option-button" onclick="selectDailyOption(this, 'daily-3')">
+                        <i class="fas fa-comment-slash"></i>
+                        <span>話していない</span>
+                    </button>
+
+                    <div style="margin-top: 32px;">
+                        <button class="main-button success-button" onclick="completeDailyCheck()">
+                            記録を完了
+                        </button>
+                        <button class="back-button" onclick="showPage('daily-check-2')">
+                            <i class="fas fa-arrow-left"></i> 戻る
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 毎日のチェック完了 -->
+            <div id="daily-complete" class="page">
+                <div class="complete-container">
+                    <div class="complete-icon">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <h2 class="complete-title">記録完了！</h2>
+                    <p class="complete-text">
+                        お疲れさまでした<br>
+                        明日も記録しましょう
+                    </p>
+                    
+                    <button class="main-button" onclick="showPage('home')">
+                        ホームに戻る
+                    </button>
+                </div>
+            </div>
+
+            <!-- ゲームメニュー -->
+            <div id="game-menu" class="page">
+                <div class="header header-small">
+                    <h1 class="header-title" style="font-size: 24px;">健康ゲーム</h1>
+                    <p class="header-subtitle">楽しく体力チェック</p>
+                </div>
+                
+                <div class="content">
+                    <div class="game-card">
+                        <div class="game-icon">
+                            <i class="fas fa-balance-scale"></i>
+                        </div>
+                        <h3 class="game-title">片足立ちチャレンジ</h3>
+                        <p class="game-description">
+                            バランス感覚を測定<br>
+                            何秒立っていられるかな？
+                        </p>
+                        <button class="main-button" onclick="showPage('balance-game')">
+                            挑戦する
+                        </button>
+                    </div>
+
+                    <div class="game-card">
+                        <div class="game-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <h3 class="game-title">反応速度テスト</h3>
+                        <p class="game-description">
+                            色が変わったらタップ！<br>
+                            反射神経を測定します
+                        </p>
+                        <button class="main-button" onclick="showPage('reaction-game')">
+                            挑戦する
+                        </button>
+                    </div>
+
+                    <button class="back-button" onclick="showPage('home')">
+                        <i class="fas fa-arrow-left"></i> ホームに戻る
+                    </button>
+                </div>
+            </div>
+
+            <!-- 片足立ちゲーム -->
+            <div id="balance-game" class="page">
+                <div class="header header-small">
+                    <h1 class="header-title" style="font-size: 24px;">片足立ちチャレンジ</h1>
+                </div>
+                
+                <div class="content">
+                    <div class="game-card">
+                        <p class="game-description" style="font-size: 18px; margin-bottom: 24px;">
+                            <i class="fas fa-info-circle" style="color: #4A90E2;"></i>
+                            壁や椅子の近くで安全に行いましょう
+                        </p>
+                        
+                        <div class="test-area">
+                            <div class="test-result" id="balance-time">0.0秒</div>
+                            <div class="test-label" id="balance-label">ボタンを長押し</div>
+                        </div>
+
+                        <button class="main-button success-button" 
+                                id="balance-button"
+                                onmousedown="startBalance()" 
+                                onmouseup="stopBalance()" 
+                                ontouchstart="startBalance()" 
+                                ontouchend="stopBalance()">
+                            <i class="fas fa-play"></i>
+                            <span>長押しで計測</span>
+                        </button>
+                    </div>
+
+                    <button class="back-button" onclick="showPage('game-menu')">
+                        <i class="fas fa-arrow-left"></i> ゲームメニューに戻る
+                    </button>
+                </div>
+            </div>
+
+            <!-- 反応速度ゲーム -->
+            <div id="reaction-game" class="page">
+                <div class="header header-small">
+                    <h1 class="header-title" style="font-size: 24px;">反応速度テスト</h1>
+                </div>
+                
+                <div class="content">
+                    <div class="game-card">
+                        <p class="game-description" style="font-size: 18px; margin-bottom: 24px;">
+                            画面が緑になったらタップ！
+                        </p>
+                        
+                        <div class="test-area" id="reaction-area" style="background: #e0e0e0; cursor: pointer; min-height: 200px;" onclick="reactionClick()">
+                            <div id="reaction-message" style="font-size: 20px; font-weight: 600; color: #666;">
+                                スタートを押してください
+                            </div>
+                        </div>
+
+                        <button class="main-button" id="reaction-start" onclick="startReaction()">
+                            <i class="fas fa-play"></i>
+                            <span>スタート</span>
+                        </button>
+                    </div>
+
+                    <button class="back-button" onclick="showPage('game-menu')">
+                        <i class="fas fa-arrow-left"></i> ゲームメニューに戻る
+                    </button>
+                </div>
+            </div>
+
+            <!-- 月1健康チェック導入 -->
+            <div id="health-check-intro" class="page">
+                <div class="header">
+                    <h1 class="header-title">月1健康診断</h1>
+                    <p class="header-subtitle">詳しく健康状態をチェック</p>
+                </div>
+                
+                <div class="content">
+                    <div class="game-card">
+                        <div class="game-icon" style="background: linear-gradient(135deg, #4A90E2 0%, #5CA0F2 100%);">
+                            <i class="fas fa-clipboard-list"></i>
+                        </div>
+                        <h3 class="game-title">フレイルチェック</h3>
+                        <p class="game-description">
+                            5つの質問で<br>
+                            健康リスクを確認します<br><br>
+                            所要時間：約3分
+                        </p>
+                        <button class="main-button" onclick="showPage('health-check-1')">
+                            診断を開始
+                        </button>
+                    </div>
+
+                    <div class="support-card">
+                        <div class="support-icon">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                        <h3 class="support-title">月に1回がおすすめ</h3>
+                        <p class="support-text">
+                            定期的にチェックすることで<br>
+                            健康状態の変化がわかります
+                        </p>
+                    </div>
+
+                    <button class="back-button" onclick="showPage('home')">
+                        <i class="fas fa-arrow-left"></i> ホームに戻る
+                    </button>
+                </div>
+            </div>
+
+            <!-- 詳細健康チェック（5問） -->
+            <div id="health-check-1" class="page">
+                <div class="header header-small">
+                    <h1 class="header-title" style="font-size: 24px;">健康診断</h1>
+                </div>
+                
+                <div class="question-container">
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 20%"></div>
+                    </div>
+                    
+                    <div class="question-number">1</div>
+                    <h2 class="question-text">最近、体重が<br>減りましたか？</h2>
+                    
+                    <button class="option-button" onclick="selectHealthOption(this, 'health-1')">
+                        <span>3kg以上減った</span>
+                    </button>
+                    <button class="option-button" onclick="selectHealthOption(this, 'health-1')">
+                        <span>少し減った</span>
+                    </button>
+                    <button class="option-button" onclick="selectHealthOption(this, 'health-1')">
+                        <span>変わらない</span>
+                    </button>
+
+                    <div style="margin-top: 32px;">
+                        <button class="main-button" onclick="nextHealthQuestion(1)">
+                            次へ
+                        </button>
+                        <button class="back-button" onclick="showPage('health-check-intro')">
+                            <i class="fas fa-arrow-left"></i> 戻る
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 健康チェック結果 -->
+            <div id="health-result" class="page">
+                <div class="header header-small">
+                    <h1 class="header-title" style="font-size: 24px;">診断結果</h1>
+                </div>
+                
+                <div class="content">
+                    <div class="result-section">
+                        <div class="result-badge good" id="result-badge">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <h2 class="result-title" id="result-title">健康状態：良好</h2>
+                        <p class="result-text" id="result-text">
+                            大きな問題は見られません。<br>
+                            この調子で健康管理を続けましょう。
+                        </p>
+                    </div>
+
+                    <div class="result-section">
+                        <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 16px;">
+                            <i class="fas fa-lightbulb" style="color: #4A90E2;"></i> アドバイス
+                        </h3>
+                        <div id="advice-list"></div>
+                    </div>
+
+                    <button class="main-button" onclick="showPage('home')">
+                        ホームに戻る
+                    </button>
+                </div>
+            </div>
+
+            <!-- 記録画面 -->
+            <div id="records" class="page">
+                <div class="header">
+                    <h1 class="header-title">健康記録</h1>
+                    <p class="header-subtitle">田中さんの記録</p>
+                </div>
+                
+                <div class="content">
+                    <div class="status-card" style="background: linear-gradient(135deg, #10B981 0%, #059669 100%); color: white;">
+                        <div class="status-number" style="color: white;">21日</div>
+                        <div class="status-label" style="color: white;">今月の記録日数</div>
+                    </div>
+
+                    <div class="result-section">
+                        <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 12px;">最新の記録</h3>
+                        <div style="font-size: 16px; line-height: 1.8;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                <span>片足立ち</span>
+                                <span style="font-weight: 600; color: #4A90E2;">32.5秒</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                <span>反応速度</span>
+                                <span style="font-weight: 600; color: #4A90E2;">0.42秒</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span>健康診断</span>
+                                <span style="font-weight: 600; color: #10B981;">良好</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="main-button" onclick="showPage('daily-check-1')">
+                        <i class="fas fa-plus"></i>
+                        <span>今日の記録をする</span>
+                    </button>
+                </div>
+
+                <div class="bottom-nav">
+                    <button class="nav-button" onclick="setActiveTab('home')">
+                        <i class="fas fa-home"></i>
+                        <span>ホーム</span>
+                    </button>
+                    <button class="nav-button active" onclick="setActiveTab('records')">
+                        <i class="fas fa-calendar"></i>
+                        <span>記録</span>
+                    </button>
+                    <button class="nav-button" onclick="setActiveTab('activities')">
+                        <i class="fas fa-users"></i>
+                        <span>活動</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 活動画面 -->
+            <div id="activities" class="page">
+                <div class="header">
+                    <h1 class="header-title">みんなの活動</h1>
+                    <p class="header-subtitle">一緒に楽しく健康づくり</p>
+                </div>
+                
+                <div class="content">
+                    <div class="activity-card">
+                        <div class="activity-image">
+                            <div class="activity-overlay">
+                                <h3 style="font-size: 20px; font-weight: 600;">朝のウォーキング</h3>
+                            </div>
+                        </div>
+                        <div class="activity-content">
+                            <h3 class="activity-title">朝のウォーキング部</h3>
+                            <div class="activity-info">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>日向市中央公園</span>
+                            </div>
+                            <div class="activity-info">
+                                <i class="fas fa-clock"></i>
+                                <span>毎週火・木 朝7時</span>
+                            </div>
+                            <div class="activity-info">
+                                <i class="fas fa-users"></i>
+                                <span>12名が参加中</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="main-button" onclick="alert('申し込みを受け付けました')">
+                        <i class="fas fa-user-plus"></i>
+                        <span>参加を申し込む</span>
+                    </button>
+
+                    <div class="support-card">
+                        <div class="support-icon">
+                            <i class="fas fa-question-circle"></i>
+                        </div>
+                        <h3 class="support-title">詳しく知りたい</h3>
+                        <p class="support-text">
+                            活動内容について<br>
+                            お気軽にお問い合わせください
+                        </p>
+                        <button class="phone-button" onclick="alert('電話：0982-XX-XXXX')">
+                            <i class="fas fa-phone"></i>
+                            <span>電話で問い合わせ</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bottom-nav">
+                    <button class="nav-button" onclick="setActiveTab('home')">
+                        <i class="fas fa-home"></i>
+                        <span>ホーム</span>
+                    </button>
+                    <button class="nav-button" onclick="setActiveTab('records')">
+                        <i class="fas fa-calendar"></i>
+                        <span>記録</span>
+                    </button>
+                    <button class="nav-button active" onclick="setActiveTab('activities')">
+                        <i class="fas fa-users"></i>
+                        <span>活動</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let dailyAnswers = {};
+        let healthAnswers = {};
+        let balanceTimer = null;
+        let balanceTime = 0;
+        let reactionState = null;
+
+        // 健康チェックの質問
+        const healthQuestions = [
+            { id: 'health-1', question: '最近、体重が<br>減りましたか？', options: ['3kg以上減った', '少し減った', '変わらない'] },
+            { id: 'health-2', question: '食事を食べる時<br>むせることがありますか？', options: ['よくある', '時々ある', 'ない'] },
+            { id: 'health-3', question: '週に何回<br>運動していますか？', options: ['ほとんどしない', '1〜2回', '3回以上'] },
+            { id: 'health-4', question: '薬の飲み忘れは<br>ありますか？', options: ['よくある', '時々ある', 'ない'] },
+            { id: 'health-5', question: '最近、気分が<br>落ち込みますか？', options: ['よくある', '時々ある', 'あまりない'] }
+        ];
+
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            const page = document.getElementById(pageId);
+            if (page) {
+                page.classList.add('active');
+                page.scrollTop = 0;
+            }
+        }
+
+        function setActiveTab(tab) {
+            showPage(tab);
+            
+            document.querySelectorAll('.nav-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            const activeBtn = document.querySelector(`.nav-button[onclick*="${tab}"]`);
+            if (activeBtn) {
+                activeBtn.classList.add('active');
+            }
+        }
+
+        // 毎日のチェック
+        function selectDailyOption(button, questionId) {
+            const container = button.parentElement;
+            container.querySelectorAll('.option-button').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            button.classList.add('selected');
+            dailyAnswers[questionId] = button.querySelector('span').textContent;
+        }
+
+        function nextDailyQuestion(currentId, nextPageId) {
+            if (!dailyAnswers[currentId]) {
+                alert('選択してください');
+                return;
+            }
+            showPage(nextPageId);
+        }
+
+        function completeDailyCheck() {
+            if (!dailyAnswers['daily-3']) {
+                alert('選択してください');
+                return;
+            }
+            dailyAnswers = {};
+            document.querySelectorAll('.option-button').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            showPage('daily-complete');
+        }
+
+        // 健康診断
+        function selectHealthOption(button, questionId) {
+            const container = button.parentElement;
+            container.querySelectorAll('.option-button').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            button.classList.add('selected');
+            healthAnswers[questionId] = button.querySelector('span').textContent;
+        }
+
+        function nextHealthQuestion(currentNum) {
+            const currentId = `health-${currentNum}`;
+            if (!healthAnswers[currentId]) {
+                alert('選択してください');
+                return;
+            }
+            
+            if (currentNum < 5) {
+                const nextNum = currentNum + 1;
+                const nextQuestion = healthQuestions[nextNum - 1];
+                
+                // 次の質問ページを動的に生成
+                const nextPageHtml = `
+                    <div class="header header-small">
+                        <h1 class="header-title" style="font-size: 24px;">健康診断</h1>
+                    </div>
+                    
+                    <div class="question-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${nextNum * 20}%"></div>
+                        </div>
+                        
+                        <div class="question-number">${nextNum}</div>
+                        <h2 class="question-text">${nextQuestion.question}</h2>
+                        
+                        ${nextQuestion.options.map(opt => `
+                            <button class="option-button" onclick="selectHealthOption(this, '${nextQuestion.id}')">
+                                <span>${opt}</span>
+                            </button>
+                        `).join('')}
+                        
+                        <div style="margin-top: 32px;">
+                            <button class="main-button" onclick="nextHealthQuestion(${nextNum})">
+                                ${nextNum === 5 ? '結果を見る' : '次へ'}
+                            </button>
+                            <button class="back-button" onclick="showPage('health-check-${currentNum}')">
+                                <i class="fas fa-arrow-left"></i> 戻る
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                let nextPage = document.getElementById(`health-check-${nextNum}`);
+                if (!nextPage) {
+                    nextPage = document.createElement('div');
+                    nextPage.id = `health-check-${nextNum}`;
+                    nextPage.className = 'page';
+                    document.querySelector('.screen').appendChild(nextPage);
+                }
+                nextPage.innerHTML = nextPageHtml;
+                showPage(`health-check-${nextNum}`);
+            } else {
+                showHealthResult();
+            }
+        }
+
+        function showHealthResult() {
+            // 簡単な結果判定
+            let score = 0;
+            Object.values(healthAnswers).forEach(answer => {
+                if (answer.includes('ない') || answer.includes('変わらない') || answer.includes('3回以上')) {
+                    score += 0;
+                } else if (answer.includes('時々') || answer.includes('少し') || answer.includes('1〜2回')) {
+                    score += 1;
+                } else {
+                    score += 2;
+                }
+            });
+            
+            const badge = document.getElementById('result-badge');
+            const title = document.getElementById('result-title');
+            const text = document.getElementById('result-text');
+            const adviceList = document.getElementById('advice-list');
+            
+            if (score <= 3) {
+                badge.className = 'result-badge good';
+                badge.innerHTML = '<i class="fas fa-check"></i>';
+                title.textContent = '健康状態：良好';
+                text.innerHTML = '大きな問題は見られません。<br>この調子で健康管理を続けましょう。';
+                adviceList.innerHTML = `
+                    <div class="result-item">
+                        <div class="result-advice">今の生活習慣を維持しましょう</div>
+                    </div>
+                `;
+            } else if (score <= 7) {
+                badge.className = 'result-badge warning';
+                badge.innerHTML = '<i class="fas fa-exclamation"></i>';
+                title.textContent = '健康状態：注意';
+                text.innerHTML = '少し気になる点があります。<br>生活習慣を見直してみましょう。';
+                adviceList.innerHTML = `
+                    <div class="result-item">
+                        <div class="result-category">運動</div>
+                        <div class="result-advice">週2〜3回の軽い運動を心がけましょう</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-category">食事</div>
+                        <div class="result-advice">バランスの良い食事を心がけましょう</div>
+                    </div>
+                `;
+            } else {
+                badge.className = 'result-badge caution';
+                badge.innerHTML = '<i class="fas fa-exclamation-triangle"></i>';
+                title.textContent = '健康状態：要相談';
+                text.innerHTML = '健康リスクが高い状態です。<br>専門家にご相談ください。';
+                adviceList.innerHTML = `
+                    <div class="result-item">
+                        <div class="result-category">重要</div>
+                        <div class="result-advice">かかりつけ医に相談することをおすすめします</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-category">サポート</div>
+                        <div class="result-advice">地域の健康相談窓口もご利用ください</div>
+                    </div>
+                `;
+            }
+            
+            healthAnswers = {};
+            showPage('health-result');
+        }
+
+        // 片足立ちゲーム
+        function startBalance() {
+            if (balanceTimer) return;
+            
+            const label = document.getElementById('balance-label');
+            label.textContent = '計測中...';
+            
+            const startTime = Date.now();
+            balanceTimer = setInterval(() => {
+                balanceTime = (Date.now() - startTime) / 1000;
+                document.getElementById('balance-time').textContent = balanceTime.toFixed(1) + '秒';
+            }, 100);
+        }
+
+        function stopBalance() {
+            if (!balanceTimer) return;
+            
+            clearInterval(balanceTimer);
+            balanceTimer = null;
+            
+            const label = document.getElementById('balance-label');
+            label.textContent = '記録完了！';
+            
+            setTimeout(() => {
+                alert(`記録：${balanceTime.toFixed(1)}秒\n\nとても良い記録です！`);
+                document.getElementById('balance-time').textContent = '0.0秒';
+                label.textContent = 'ボタンを長押し';
+                balanceTime = 0;
+            }, 500);
+        }
+
+        // 反応速度ゲーム
+        function startReaction() {
+            const area = document.getElementById('reaction-area');
+            const message = document.getElementById('reaction-message');
+            const button = document.getElementById('reaction-start');
+            
+            button.style.display = 'none';
+            area.style.background = '#e0e0e0';
+            message.textContent = '待って...';
+            message.style.color = '#666';
+            
+            reactionState = { waiting: true };
+            
+            const delay = Math.random() * 3000 + 2000;
+            setTimeout(() => {
+                if (!reactionState) return;
+                
+                area.style.background = '#10B981';
+                message.textContent = 'タップ！';
+                message.style.color = 'white';
+                reactionState.startTime = Date.now();
+                reactionState.waiting = false;
+            }, delay);
+        }
+
+        function reactionClick() {
+            if (!reactionState) return;
+            
+            const area = document.getElementById('reaction-area');
+            const message = document.getElementById('reaction-message');
+            const button = document.getElementById('reaction-start');
+            
+            if (reactionState.waiting) {
+                area.style.background = '#EF4444';
+                message.textContent = '早すぎ！';
+                message.style.color = 'white';
+            } else {
+                const time = Date.now() - reactionState.startTime;
+                area.style.background = '#4A90E2';
+                message.textContent = time + 'ミリ秒';
+                message.style.color = 'white';
+                
+                setTimeout(() => {
+                    alert(`反応速度：${time}ミリ秒\n\n良い反応速度です！`);
+                }, 500);
+            }
+            
+            setTimeout(() => {
+                area.style.background = '#e0e0e0';
+                message.textContent = 'スタートを押してください';
+                message.style.color = '#666';
+                button.style.display = 'block';
+                reactionState = null;
+            }, 2000);
+        }
+
+        // タッチイベント最適化
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function (event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+    </script>
+</body>
+</html>
