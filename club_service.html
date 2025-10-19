@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>FUN・A・ROOM Community Care Hub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
+            background: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .phone-frame {
+            width: 100%;
+            max-width: 430px;
+            height: 900px;
+            background: #000;
+            border-radius: 45px;
+            padding: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            position: relative;
+        }
+
+        .screen {
+            width: 100%;
+            height: 100%;
+            background: #ffffff;
+            border-radius: 35px;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .status-bar {
+            height: 48px;
+            background: #ffffff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 32px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #0f172a;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .page {
+            display: none;
+            flex-direction: column;
+            height: 100%;
+            background: #ffffff;
+        }
+
+        .page.active {
+            display: flex;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4B9BFF 0%, #62C4FF 50%, #6ED7C8 100%);
+            color: white;
+            padding: 28px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header::after {
+            content: "";
+            position: absolute;
+            inset: auto 32px -32px 32px;
+            height: 80px;
+            border-radius: 32px;
+            background: rgba(255,255,255,0.18);
+            filter: blur(24px);
+        }
+
+        .header-small {
+            padding: 22px 28px 18px;
+        }
+
+        .header-title {
+            font-size: 30px;
+            font-weight: 700;
+            letter-spacing: 0.4px;
+            margin-bottom: 6px;
+        }
+
+        .header-subtitle {
+            font-size: 16px;
+            opacity: 0.95;
+            font-weight: 500;
+        }
+
+        .tagline {
+            margin-top: 14px;
+            font-size: 13px;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            opacity: 0.7;
+        }
+
+        .content {
+            flex: 1;
+            padding: 24px 20px 110px;
+            overflow-y: auto;
+            background: #f8fafc;
+        }
+
+        .content::-webkit-scrollbar {
+            width: 0;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 14px;
+            color: #1f2937;
+        }
+
+        .section-subtitle {
+            font-size: 13px;
+            color: #64748b;
+            margin-bottom: 16px;
+            line-height: 1.6;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+
+        .menu-card {
+            background: white;
+            border-radius: 22px;
+            padding: 28px 18px;
+            box-shadow: 0 12px 24px rgba(15, 23, 42, 0.08);
+            cursor: pointer;
+            transition: all 0.24s ease;
+            text-align: left;
+            min-height: 160px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .menu-card::after {
+            content: "";
+            position: absolute;
+            right: -20px;
+            top: -20px;
+            width: 80px;
+            height: 80px;
+            background: rgba(255,255,255,0.18);
+            border-radius: 50%;
+        }
+
+        .menu-card.primary {
+            grid-column: span 2;
+            background: linear-gradient(135deg, #2563EB 0%, #60A5FA 60%, #A855F7 100%);
+            color: white;
+        }
+
+        .menu-card.green {
+            background: linear-gradient(135deg, #0EA5E9 0%, #14B8A6 100%);
+            color: white;
+        }
+
+        .menu-card.orange {
+            background: linear-gradient(135deg, #F59E0B 0%, #F97316 100%);
+            color: white;
+        }
+
+        .menu-card.purple {
+            background: linear-gradient(135deg, #8B5CF6 0%, #6366F1 100%);
+            color: white;
+        }
+
+        .menu-card.blue {
+            background: linear-gradient(135deg, #1D4ED8 0%, #3B82F6 100%);
+            color: white;
+        }
+
+        .menu-icon {
+            font-size: 34px;
+        }
+
+        .menu-card h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin: 16px 0 8px;
+        }
+
+        .menu-card p {
+            font-size: 14px;
+            line-height: 1.6;
+            opacity: 0.85;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.07);
+            margin-bottom: 18px;
+        }
+
+        .card.highlight {
+            background: linear-gradient(135deg, #DCFCE7 0%, #E0F2FE 100%);
+            color: #0f172a;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 10px;
+        }
+
+        .card-title span {
+            font-size: 13px;
+            font-weight: 600;
+            padding: 5px 12px;
+            border-radius: 999px;
+            margin-left: 8px;
+        }
+
+        .badge-soft {
+            background: rgba(14,165,233,0.12);
+            color: #0ea5e9;
+        }
+
+        .badge-warm {
+            background: rgba(236, 72, 153, 0.15);
+            color: #db2777;
+        }
+
+        .card-subtitle {
+            font-size: 13px;
+            color: #64748b;
+            margin-bottom: 14px;
+            line-height: 1.6;
+        }
+
+        .chip-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .chip {
+            padding: 9px 16px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .chip.blue { background: #E0F2FE; color: #1d4ed8; }
+        .chip.green { background: #DCFCE7; color: #047857; }
+        .chip.orange { background: #FEF3C7; color: #B45309; }
+        .chip.purple { background: #EDE9FE; color: #6D28D9; }
+        .chip.pink { background: #FCE7F3; color: #BE185D; }
+
+        .list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #F8FAFC;
+            border-radius: 18px;
+            padding: 14px 16px;
+        }
+
+        .list-item-content {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .list-item-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .list-item-subtitle {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .list-badge {
+            padding: 6px 12px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+            color: white;
+        }
+
+        .badge-green { background: #10B981; }
+        .badge-blue { background: #3B82F6; }
+        .badge-orange { background: #F59E0B; }
+        .badge-rose { background: #E11D48; }
+
+        .timeline {
+            display: grid;
+            gap: 12px;
+        }
+
+        .timeline-item {
+            display: grid;
+            grid-template-columns: 48px 1fr;
+            gap: 14px;
+            align-items: start;
+        }
+
+        .timeline-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: white;
+        }
+
+        .timeline-icon.blue { background: linear-gradient(135deg, #2563eb 0%, #6366f1 100%); }
+        .timeline-icon.green { background: linear-gradient(135deg, #10b981 0%, #14b8a6 100%); }
+        .timeline-icon.orange { background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%); }
+        .timeline-icon.pink { background: linear-gradient(135deg, #ec4899 0%, #f472b6 100%); }
+
+        .timeline-text h4 {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .timeline-text p {
+            font-size: 13px;
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        .pill-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .pill {
+            background: #E2E8F0;
+            color: #0f172a;
+            border-radius: 999px;
+            padding: 12px 18px;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .pill span {
+            font-weight: 500;
+            color: #475569;
+        }
+
+        .bottom-nav {
+            height: 90px;
+            background: #ffffff;
+            border-top: 1px solid #e2e8f0;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 12px 18px 18px;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            color: #94a3b8;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .nav-item.active {
+            color: #2563eb;
+        }
+
+        .nav-item i {
+            font-size: 20px;
+        }
+
+        .floating-button {
+            position: fixed;
+            bottom: 120px;
+            right: 40px;
+            background: linear-gradient(135deg, #2563EB 0%, #38BDF8 100%);
+            color: white;
+            width: 64px;
+            height: 64px;
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            box-shadow: 0 16px 32px rgba(37,99,235,0.3);
+        }
+
+        .floating-button span {
+            display: none;
+        }
+
+        @media (max-width: 520px) {
+            body {
+                padding: 16px;
+                background: #ffffff;
+            }
+            .phone-frame {
+                border-radius: 0;
+                max-width: none;
+                height: 100vh;
+                padding: 0;
+                box-shadow: none;
+            }
+            .screen {
+                border-radius: 0;
+            }
+            .floating-button {
+                right: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="phone-frame">
+    <div class="screen">
+        <div class="status-bar">
+            <span>9:41</span>
+            <span>Hyuga City</span>
+        </div>
+
+        <section id="dashboard" class="page active">
+            <div class="header">
+                <div class="header-title">Community Care Hub</div>
+                <div class="header-subtitle">ありがとうが循環する日向市の高齢者コミュニティ運営</div>
+                <div class="tagline">健康チェック × つながりづくり × 安心の見守り</div>
+            </div>
+            <div class="content">
+                <div class="section-title">今日のようこそメッセージ</div>
+                <div class="card highlight">
+                    <div class="card-title">「健康チェック」から始まる、新しいつながり</div>
+                    <div class="card-subtitle">毎日のバイタルチェックを入口に、コミュニティの活動・交流・支援をシームレスに連携。地域の感謝と安心をデザインします。</div>
+                    <div class="chip-group">
+                        <div class="chip blue"><i class="fa-solid fa-heart-pulse"></i>健康の見える化</div>
+                        <div class="chip green"><i class="fa-solid fa-people-group"></i>仲間づくり</div>
+                        <div class="chip orange"><i class="fa-solid fa-hand-holding-heart"></i>支援の輪</div>
+                    </div>
+                </div>
+
+                <div class="section-title">運営メニュー</div>
+                <div class="menu-grid">
+                    <div class="menu-card primary" data-target="community">
+                        <i class="fa-solid fa-handshake-simple menu-icon"></i>
+                        <h3>コミュニティ登録</h3>
+                        <p>活動概要・協力医療/介護・ボランティアを整理し、新しい居場所を立ち上げましょう。</p>
+                    </div>
+                    <div class="menu-card green" data-target="members">
+                        <i class="fa-solid fa-user-group menu-icon"></i>
+                        <h3>参加者サポート</h3>
+                        <p>健康状態や暮らしの声を把握し、ひとり一人に寄り添う伴走支援を。</p>
+                    </div>
+                    <div class="menu-card orange" data-target="attendance">
+                        <i class="fa-solid fa-calendar-check menu-icon"></i>
+                        <h3>出席・見守り</h3>
+                        <p>日々の参加と体調記録を連携。気になる兆しを早期に共有します。</p>
+                    </div>
+                    <div class="menu-card purple" data-target="communication">
+                        <i class="fa-solid fa-comments menu-icon"></i>
+                        <h3>連絡・緊急対応</h3>
+                        <p>定期のお知らせから緊急時の連絡網まで、安心のコミュニケーション設計。</p>
+                    </div>
+                    <div class="menu-card blue" data-target="insights">
+                        <i class="fa-solid fa-chart-line menu-icon"></i>
+                        <h3>活動レポート</h3>
+                        <p>日向市のビジョンと重ねながら、成果と気づきをチームで共有。</p>
+                    </div>
+                </div>
+
+                <div class="section-title">サービスの流れ</div>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-icon blue"><i class="fa-solid fa-heart-circle-check"></i></div>
+                        <div class="timeline-text">
+                            <h4>毎日の健康チェック</h4>
+                            <p>バイタル入力・服薬確認・気分メモを通じて、その日の様子を可視化します。</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-icon green"><i class="fa-solid fa-house-medical"></i></div>
+                        <div class="timeline-text">
+                            <h4>見守り訪問・オンライン相談</h4>
+                            <p>気になるサインがあれば、生活支援コーディネーターや医療・介護連携へ。</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-icon orange"><i class="fa-solid fa-message-heart"></i></div>
+                        <div class="timeline-text">
+                            <h4>パーソナルメッセージ</h4>
+                            <p>記録に基づいた励ましやお祝いメッセージで、ありがとうを届けます。</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-icon pink"><i class="fa-solid fa-people-arrows"></i></div>
+                        <div class="timeline-text">
+                            <h4>リアルなつながり</h4>
+                            <p>趣味活動や世代間交流イベントを企画し、地域に新たな関係性を生み出します。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-title" style="margin-top: 28px;">未来へのビジョン</div>
+                <div class="card">
+                    <div class="card-title">日向市から全国へ<span class="badge-soft">Roadmap</span></div>
+                    <div class="list">
+                        <div class="list-item">
+                            <div class="list-item-content">
+                                <div class="list-item-title">Year 1：日向市モデル構築</div>
+                                <div class="list-item-subtitle">医療・介護・地域団体が連携し、30〜50拠点で「ありがとうの循環」を実践。</div>
+                            </div>
+                            <div class="list-badge badge-blue">進行中</div>
+                        </div>
+                        <div class="list-item">
+                            <div class="list-item-content">
+                                <div class="list-item-title">Year 2-3：宮崎県内の拡大</div>
+                                <div class="list-item-subtitle">多世代が交わる居場所づくりを横展開。成功事例のナレッジ共有。</div>
+                            </div>
+                            <div class="list-badge badge-green">準備中</div>
+                        </div>
+                        <div class="list-item">
+                            <div class="list-item-content">
+                                <div class="list-item-title">Year 3-5：九州・全国へ</div>
+                                <div class="list-item-subtitle">高齢者が主役のコミュニティ運営を全国の自治体と協働で推進。</div>
+                            </div>
+                            <div class="list-badge badge-orange">構想</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="community" class="page">
+            <div class="header header-small">
+                <div class="header-title">コミュニティ登録</div>
+                <div class="header-subtitle">「最初の一歩」を丁寧に設計</div>
+            </div>
+            <div class="content">
+                <div class="card">
+                    <div class="card-title">1. 基本情報の整理<span class="badge-soft">Outline</span></div>
+                    <div class="card-subtitle">活動名、目的、対象者、連携する地域資源などを登録します。</div>
+                    <div class="chip-group">
+                        <div class="chip blue"><i class="fa-solid fa-map-location-dot"></i>拠点住所</div>
+                        <div class="chip green"><i class="fa-solid fa-clock"></i>開催曜日・時間</div>
+                        <div class="chip orange"><i class="fa-solid fa-hands-holding-circle"></i>活動内容</div>
+                        <div class="chip purple"><i class="fa-solid fa-user-shield"></i>責任者</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">2. 医療・介護連携</div>
+                    <div class="card-subtitle">地域包括支援センター、訪問看護、かかりつけ医との連絡窓口をひと目で。</div>
+                    <div class="list">
+                        <div class="list-item">
+                            <div class="list-item-content">
+                                <div class="list-item-title">連携先リスト</div>
+                                <div class="list-item-subtitle">担当者／連絡先／緊急時対応時間帯を登録</div>
+                            </div>
+                            <div class="list-badge badge-blue">登録</div>
+                        </div>
+                        <div class="list-item">
+                            <div class="list-item-content">
+                                <div class="list-item-title">支援メニュー</div>
+                                <div class="list-item-subtitle">見守り訪問、リハビリ体操、個別相談など</div>
+                            </div>
+                            <div class="list-badge badge-green">更新</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">3. ボランティア・サポーター</div>
+                    <div class="card-subtitle">学生・地域住民・企業など、多様な応援者を登録し、得意分野を活かします。</div>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-icon blue"><i class="fa-solid fa-graduation-cap"></i></div>
+                            <div class="timeline-text">
+                                <h4>学生サポーター</h4>
+                                <p>ICT支援、交流プログラムなど若者のアイデアを活用。</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-icon green"><i class="fa-solid fa-building"></i></div>
+                            <div class="timeline-text">
+                                <h4>企業協賛</h4>
+                                <p>地域企業と連携し、健康や暮らしに役立つ体験イベントを共創。</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-icon orange"><i class="fa-solid fa-seedling"></i></div>
+                            <div class="timeline-text">
+                                <h4>地域住民</h4>
+                                <p>散歩・買い物同行、昔遊びなど、日常のサポートと交流を育みます。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">4. 安全対策チェックリスト<span class="badge-warm">Safety</span></div>
+                    <div class="pill-list">
+                        <div class="pill">避難経路の共有<span>年2回の訓練</span></div>
+                        <div class="pill">AED・救急用品の確認<span>最新メンテナンス記録</span></div>
+                        <div class="pill">感染症対策計画<span>換気・消毒動線</span></div>
+                        <div class="pill">災害時連絡手順<span>家族・自治体連携</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="members" class="page">
+            <div class="header header-small">
+                <div class="header-title">参加者サポート</div>
+                <div class="header-subtitle">個別のストーリーに寄り添う</div>
+            </div>
+            <div class="content">
+                <div class="card">
+                    <div class="card-title">ウォームリスト<span class="badge-soft">今日の気づき</span></div>
+                    <div class="list">
+                        <div class="list-item">
+                            <div class="list-item-content">
+                                <div class="list-item-title">田中 美智子 さん（78）</div>
+                                <div class="list-item-subtitle">血圧：120/76｜前回欠席→本日来所予定。玄関でのサポートを手配。</div>
+                            </div>
+                            <div class="list-badge badge-green">OK</div>
+                        </div>
+                        <div class="list-item">
+                            <div class="list-item-content">
+                                <div class="list-item-title">佐藤 義夫 さん（82）</div>
+                                <div class="list-item-subtitle">健康チェック未入力。生活支援コーディネーターが14時に電話予定。</div>
+                            </div>
+                            <div class="list-badge badge-orange">要確認</div>
+                        </div>
+                        <div class="list-item">
+                            <div class="list-item-content">
+                                <div class="list-item-title">李 春花 さん（75）</div>
+                                <div class="list-item-subtitle">最近の気分「少しさみしい」。お茶会へのお誘いメッセージを送信。</div>
+                            </div>
+                            <div class="list-badge badge-blue">ケア中</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">プロフィールビューア</div>
+                    <div class="card-subtitle">健康、生活、趣味、緊急連絡先を一枚で確認できます。</div>
+                    <div class="chip-group">
+                        <div class="chip purple"><i class="fa-solid fa-heart"></i>健康履歴</div>
+                        <div class="chip blue"><i class="fa-solid fa-book-open"></i>ライフストーリー</div>
+                        <div class="chip orange"><i class="fa-solid fa-music"></i>得意・好きなこと</div>
+                        <div class="chip pink"><i class="fa-solid fa-phone-volume"></i>家族連絡先</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">ケアプラン共有</div>
+                    <div class="card-subtitle">介護保険サービスや地域支援の状況を関係者と共有し、支援が重ならないようにします。</div>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-icon blue"><i class="fa-solid fa-file-medical"></i></div>
+                            <div class="timeline-text">
+                                <h4>プランメモ</h4>
+                                <p>本人の目標や医師の指示、家族の希望を集約。</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-icon green"><i class="fa-solid fa-share-nodes"></i></div>
+                            <div class="timeline-text">
+                                <h4>共有メンバー管理</h4>
+                                <p>ケアマネジャー、地域包括、ボランティアでアクセス権限を設定。</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-icon orange"><i class="fa-solid fa-bell"></i></div>
+                            <div class="timeline-text">
+                                <h4>フォローアップ通知</h4>
+                                <p>大切な予定や服薬タイミングを自動でリマインド。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="attendance" class="page">
+            <div class="header header-small">
+                <div class="header-title">出席・見守り</div>
+                <div class="header-subtitle">小さな変化をキャッチする</div>
+            </div>
+            <div class="content">
+                <div class="card">
+                    <div class="card-title">本日の出席状況<span class="badge-soft">Live</span></div>
+                    <div class="list">
+                        <div class="list-item">
+                            <div class="list-item-content">
+                                <div class="list-item-title">参加予定 28名</div>
+                                <div class="list-item-subtitle">来所 21｜オンライン参加 4｜体調不良連絡 2｜要フォロー 1</div>
+                            </div>
+                            <div class="list-badge badge-blue">更新 10:15</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">健康チェックダッシュボード</div>
+                    <div class="card-subtitle">朝の入力データから、気になる兆しを自動抽出します。</div>
+                    <div class="list">
+                        <div class="list-item">
+                            <div class="list-item-content">
+                                <div class="list-item-title">安静時心拍の上昇</div>
+                                <div class="list-item-subtitle">3名に変化あり。看護師へメッセージ送信済み。</div>
+                            </div>
+                            <div class="list-badge badge-orange">注意</div>
+                        </div>
+                        <div class="list-item">
+                            <div class="list-item-content">
+                                <div class="list-item-title">活動意欲コメント</div>
+                                <div class="list-item-subtitle">「散歩に行きたい」「踊りたい」など前向きな声 12件。</div>
+                            </div>
+                            <div class="list-badge badge-green">GOOD</div>
+                        </div>
+                        <div class="list-item">
+                            <div class="list-item-content">
+                                <div class="list-item-title">睡眠時間の変化</div>
+                                <div class="list-item-subtitle">平均 5.8h → 6.4h。運動プログラムの効果をシェア。</div>
+                            </div>
+                            <div class="list-badge badge-blue">共有</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">安心サポート記録</div>
+                    <div class="card-subtitle">送迎や付き添いが必要な方をタスク化し、スタッフ間で引き継ぎます。</div>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-icon blue"><i class="fa-solid fa-van-shuttle"></i></div>
+                            <div class="timeline-text">
+                                <h4>送迎サポート</h4>
+                                <p>午後の創作教室：上田さん宅へ14:00迎え。ボランティアの山本さんが担当。</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-icon green"><i class="fa-solid fa-walkie-talkie"></i></div>
+                            <div class="timeline-text">
+                                <h4>巡回見守り</h4>
+                                <p>体調不良の連絡があった方へ電話。状況記録と連絡先に自動共有。</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-icon orange"><i class="fa-solid fa-mug-hot"></i></div>
+                            <div class="timeline-text">
+                                <h4>休憩サポート</h4>
+                                <p>水分補給や休憩スペースの案内を通知。熱中症警戒時に全員へ配信。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="communication" class="page">
+            <div class="header header-small">
+                <div class="header-title">連絡・緊急対応</div>
+                <div class="header-subtitle">安心の情報共有ネットワーク</div>
+            </div>
+            <div class="content">
+                <div class="card">
+                    <div class="card-title">本日のお知らせテンプレート</div>
+                    <div class="card-subtitle">イベント案内・健康情報・お礼メッセージをワンタップ送信。</div>
+                    <div class="list">
+                        <div class="list-item">
+                            <div class="list-item-content">
+                                <div class="list-item-title">朝のリマインド</div>
+                                <div class="list-item-subtitle">集合時間、持ち物、服装などを共有。翻訳機能付き。</div>
+                            </div>
+                            <div class="list-badge badge-blue">送信済</div>
+                        </div>
+                        <div class="list-item">
+                            <div class="list-item-content">
+                                <div class="list-item-title">ありがとうメッセージ</div>
+                                <div class="list-item-subtitle">ボランティアへの感謝や参加者の活躍を紹介。</div>
+                            </div>
+                            <div class="list-badge badge-green">下書き</div>
+                        </div>
+                        <div class="list-item">
+                            <div class="list-item-content">
+                                <div class="list-item-title">健康アラート共有</div>
+                                <div class="list-item-subtitle">熱中症警戒情報など外部データとも連携。</div>
+                            </div>
+                            <div class="list-badge badge-orange">準備中</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">緊急連絡先ハブ<span class="badge-warm">SOS</span></div>
+                    <div class="card-subtitle">家族・医療・自治体の連絡体制を可視化。タップで即時発信できます。</div>
+                    <div class="chip-group">
+                        <div class="chip pink"><i class="fa-solid fa-user-plus"></i>家族・キーパーソン</div>
+                        <div class="chip blue"><i class="fa-solid fa-hospital"></i>医療機関</div>
+                        <div class="chip green"><i class="fa-solid fa-shield-heart"></i>地域包括支援</div>
+                        <div class="chip orange"><i class="fa-solid fa-fire-extinguisher"></i>消防・警察</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">連絡履歴タイムライン</div>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-icon blue"><i class="fa-solid fa-bullhorn"></i></div>
+                            <div class="timeline-text">
+                                <h4>2024/03/18 09:05 安否確認</h4>
+                                <p>地震後の一斉安否確認。全員応答完了。</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-icon green"><i class="fa-solid fa-hands-praying"></i></div>
+                            <div class="timeline-text">
+                                <h4>2024/03/17 18:40 お礼メッセージ</h4>
+                                <p>健康フェスタ協力者へ感謝の写真とメッセージを共有。</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-icon orange"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                            <div class="timeline-text">
+                                <h4>2024/03/16 12:10 熱中症アラート</h4>
+                                <p>高温注意情報を受け、屋外活動を屋内に変更した記録。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="insights" class="page">
+            <div class="header header-small">
+                <div class="header-title">活動レポート</div>
+                <div class="header-subtitle">感謝と成果を見える化</div>
+            </div>
+            <div class="content">
+                <div class="card">
+                    <div class="card-title">ありがとう指標<span class="badge-soft">Monthly</span></div>
+                    <div class="card-subtitle">参加者・家族・ボランティアから届いた「ありがとう」を数と声で振り返ります。</div>
+                    <div class="list">
+                        <div class="list-item">
+                            <div class="list-item-content">
+                                <div class="list-item-title">感謝メッセージ 86件</div>
+                                <div class="list-item-subtitle">「散歩に付き添ってくれて安心した」などホットな声。</div>
+                            </div>
+                            <div class="list-badge badge-rose">+18%</div>
+                        </div>
+                        <div class="list-item">
+                            <div class="list-item-content">
+                                <div class="list-item-title">新しい参加 12名</div>
+                                <div class="list-item-subtitle">健康チェックを入口とした紹介で参加が増加。</div>
+                            </div>
+                            <div class="list-badge badge-green">+4</div>
+                        </div>
+                        <div class="list-item">
+                            <div class="list-item-content">
+                                <div class="list-item-title">医療・介護連携 24件</div>
+                                <div class="list-item-subtitle">訪問看護・リハビリ等の連携実績。</div>
+                            </div>
+                            <div class="list-badge badge-blue">共有済</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">活動レコメンド</div>
+                    <div class="card-subtitle">データからおすすめの次アクションを提示します。</div>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-icon blue"><i class="fa-solid fa-person-walking"></i></div>
+                            <div class="timeline-text">
+                                <h4>歩行サークルの強化</h4>
+                                <p>「運動したい」の声が増加。週2回→週3回へ拡充提案。</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-icon green"><i class="fa-solid fa-seedling"></i></div>
+                            <div class="timeline-text">
+                                <h4>地域菜園プロジェクト</h4>
+                                <p>食生活改善と交流を兼ねた屋外活動。高校との連携案。</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-icon orange"><i class="fa-solid fa-gift"></i></div>
+                            <div class="timeline-text">
+                                <h4>誕生日サプライズキット</h4>
+                                <p>誕生日の参加者へ、メッセージカードと地域のお菓子を自動準備。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">自治体・企業向けレポート出力</div>
+                    <div class="card-subtitle">日向市のビジョン「健康」「ありがとう」「生きがい」に沿って、成果を共有します。</div>
+                    <div class="pill-list">
+                        <div class="pill">健康：平均歩数 +18%<span>バイタル連携／運動プログラム</span></div>
+                        <div class="pill">ありがとう：感謝ストーリー 24件<span>写真・コメント付き</span></div>
+                        <div class="pill">生きがい：新しい挑戦 6件<span>学び・趣味・地域貢献</span></div>
+                        <div class="pill">安心：緊急対応時間 12分<span>連絡網シミュレーション結果</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <nav class="bottom-nav">
+            <div class="nav-item active" data-target="dashboard">
+                <i class="fa-solid fa-house"></i>
+                <span>ホーム</span>
+            </div>
+            <div class="nav-item" data-target="community">
+                <i class="fa-solid fa-handshake"></i>
+                <span>登録</span>
+            </div>
+            <div class="nav-item" data-target="members">
+                <i class="fa-solid fa-user-group"></i>
+                <span>参加者</span>
+            </div>
+            <div class="nav-item" data-target="communication">
+                <i class="fa-solid fa-comments"></i>
+                <span>連絡</span>
+            </div>
+        </nav>
+    </div>
+</div>
+
+<div class="floating-button" data-target="attendance">
+    <i class="fa-solid fa-chart-simple"></i>
+    <span>今日の状況</span>
+</div>
+
+<script>
+    const menuCards = document.querySelectorAll('.menu-card');
+    const navItems = document.querySelectorAll('.nav-item');
+    const floatingButton = document.querySelector('.floating-button');
+    const pages = document.querySelectorAll('.page');
+
+    function showPage(id) {
+        pages.forEach(page => {
+            page.classList.toggle('active', page.id === id);
+        });
+        navItems.forEach(item => {
+            item.classList.toggle('active', item.dataset.target === id);
+        });
+    }
+
+    menuCards.forEach(card => {
+        card.addEventListener('click', () => {
+            showPage(card.dataset.target);
+        });
+    });
+
+    navItems.forEach(item => {
+        item.addEventListener('click', () => {
+            showPage(item.dataset.target);
+        });
+    });
+
+    floatingButton.addEventListener('click', () => {
+        showPage(floatingButton.dataset.target);
+    });
+</script>
+</body>
+</html>
