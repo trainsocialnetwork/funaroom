@@ -951,6 +951,18 @@
                             <div class="menu-card-title">月1健康診断</div>
                             <div class="menu-card-text">詳しくチェック</div>
                         </div>
+
+                        <div class="menu-card" style="background: linear-gradient(135deg, #10B981 0%, #059669 100%); color: white;" onclick="openFingerRingTest('home')">
+                            <i class="fas fa-hand-paper"></i>
+                            <div class="menu-card-title">指輪っかテスト</div>
+                            <div class="menu-card-text">ふくらはぎをセルフチェック</div>
+                        </div>
+
+                        <div class="menu-card" style="background: linear-gradient(135deg, #F472B6 0%, #EC4899 100%); color: white;" onclick="startOralCheck('home')">
+                            <i class="fas fa-smile"></i>
+                            <div class="menu-card-title">口腔フレイル</div>
+                            <div class="menu-card-text">お口の状態を確認</div>
+                        </div>
                     </div>
 
                     <button class="main-button secondary-button" onclick="showPage('activities')">
@@ -1158,6 +1170,34 @@
                         </button>
                     </div>
 
+                    <div class="game-card">
+                        <div class="game-icon" style="background: linear-gradient(135deg, #10B981 0%, #059669 100%);">
+                            <i class="fas fa-hand-paper"></i>
+                        </div>
+                        <h3 class="game-title">指輪っかテスト</h3>
+                        <p class="game-description">
+                            親指と人差し指で<br>
+                            ふくらはぎをチェック
+                        </p>
+                        <button class="main-button" onclick="openFingerRingTest('game-menu')">
+                            チェックする
+                        </button>
+                    </div>
+
+                    <div class="game-card">
+                        <div class="game-icon" style="background: linear-gradient(135deg, #F472B6 0%, #EC4899 100%);">
+                            <i class="fas fa-smile"></i>
+                        </div>
+                        <h3 class="game-title">口腔フレイルチェック</h3>
+                        <p class="game-description">
+                            お口の機能の変化を<br>
+                            簡単に確認しましょう
+                        </p>
+                        <button class="main-button" onclick="startOralCheck('game-menu')">
+                            診断を始める
+                        </button>
+                    </div>
+
                     <button class="back-button" onclick="showPage('home')">
                         <i class="fas fa-arrow-left"></i> ホームに戻る
                     </button>
@@ -1252,6 +1292,34 @@
                         </button>
                     </div>
 
+                    <div class="game-card">
+                        <div class="game-icon" style="background: linear-gradient(135deg, #10B981 0%, #059669 100%);">
+                            <i class="fas fa-hand-paper"></i>
+                        </div>
+                        <h3 class="game-title">指輪っかテスト</h3>
+                        <p class="game-description">
+                            親指と人差し指で<br>
+                            ふくらはぎをチェック
+                        </p>
+                        <button class="main-button" onclick="openFingerRingTest('health-check-intro')">
+                            チェックする
+                        </button>
+                    </div>
+
+                    <div class="game-card">
+                        <div class="game-icon" style="background: linear-gradient(135deg, #F472B6 0%, #EC4899 100%);">
+                            <i class="fas fa-smile"></i>
+                        </div>
+                        <h3 class="game-title">口腔フレイルチェック</h3>
+                        <p class="game-description">
+                            お口の機能の変化を<br>
+                            簡単に確認しましょう
+                        </p>
+                        <button class="main-button" onclick="startOralCheck('health-check-intro')">
+                            診断を始める
+                        </button>
+                    </div>
+
                     <div class="support-card">
                         <div class="support-icon">
                             <i class="fas fa-lightbulb"></i>
@@ -1265,6 +1333,106 @@
 
                     <button class="back-button" onclick="showPage('home')">
                         <i class="fas fa-arrow-left"></i> ホームに戻る
+                    </button>
+                </div>
+            </div>
+
+            <!-- 指輪っかテスト -->
+            <div id="finger-ring-test" class="page">
+                <div class="header header-small">
+                    <h1 class="header-title" style="font-size: 24px;">指輪っかテスト</h1>
+                </div>
+
+                <div class="content">
+                    <div class="game-card">
+                        <h3 class="game-title">チェック方法</h3>
+                        <p class="game-description">
+                            両手の親指と人差し指で輪を作り、ふくらはぎの一番太いところを囲みます。<br><br>
+                            きつさやすき間を確認して、筋肉量の目安にしましょう。
+                        </p>
+                    </div>
+
+                    <div class="game-card">
+                        <h3 class="game-title">結果を選んでください</h3>
+                        <div id="finger-ring-options" style="display: flex; flex-direction: column; gap: 12px; margin-top: 16px;">
+                            <button class="option-button" onclick="handleFingerRing('tight', this)">
+                                <span>指が届かず輪が閉じない</span>
+                            </button>
+                            <button class="option-button" onclick="handleFingerRing('fit', this)">
+                                <span>ちょうどふくらはぎに触れる</span>
+                            </button>
+                            <button class="option-button" onclick="handleFingerRing('loose', this)">
+                                <span>輪が余ってすき間ができる</span>
+                            </button>
+                        </div>
+
+                        <div id="finger-ring-result" class="result-section" style="display: none; margin-top: 20px;">
+                            <div id="finger-ring-badge" class="result-badge good">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div id="finger-ring-title" class="result-title">結果を表示します</div>
+                            <div id="finger-ring-text" class="result-text">選択すると結果が表示されます。</div>
+                        </div>
+                    </div>
+
+                    <button class="back-button" onclick="backFromFingerRing()">
+                        <i class="fas fa-arrow-left"></i> 戻る
+                    </button>
+                </div>
+            </div>
+
+            <!-- 口腔フレイルチェック -->
+            <div id="oral-check-1" class="page">
+                <div class="header header-small">
+                    <h1 class="header-title" style="font-size: 24px;">口腔フレイルチェック</h1>
+                </div>
+
+                <div class="question-container">
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 20%"></div>
+                    </div>
+
+                    <div class="question-number">1</div>
+                    <h2 class="question-text">硬いものが<br>食べにくくなりましたか？</h2>
+
+                    <button class="option-button" data-value="1" onclick="selectOralOption(this, 'oral-1', 1)">
+                        <span>はい</span>
+                    </button>
+                    <button class="option-button" data-value="0" onclick="selectOralOption(this, 'oral-1', 0)">
+                        <span>いいえ</span>
+                    </button>
+
+                    <div style="margin-top: 32px;">
+                        <button class="main-button" onclick="nextOralQuestion(1)">
+                            次へ
+                        </button>
+                        <button class="back-button" onclick="backFromOralCheck()">
+                            <i class="fas fa-arrow-left"></i> 戻る
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="oral-result" class="page">
+                <div class="header header-small">
+                    <h1 class="header-title" style="font-size: 24px;">口腔フレイルチェック</h1>
+                </div>
+
+                <div class="content">
+                    <div class="result-section">
+                        <div id="oral-result-badge" class="result-badge good">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <div id="oral-result-title" class="result-title">結果を表示します</div>
+                        <div id="oral-result-text" class="result-text">チェックが終わると結果が表示されます。</div>
+                        <div id="oral-advice-list"></div>
+                    </div>
+
+                    <button class="main-button success-button" onclick="startOralCheck()">
+                        もう一度チェック
+                    </button>
+                    <button class="back-button" onclick="backFromOralCheck()">
+                        <i class="fas fa-arrow-left"></i> 戻る
                     </button>
                 </div>
             </div>
@@ -1650,6 +1818,9 @@
     <script>
         let dailyAnswers = {};
         let healthAnswers = {};
+        let oralAnswers = {};
+        let fingerRingOrigin = 'health-check-intro';
+        let oralCheckOrigin = 'health-check-intro';
         let balanceTimer = null;
         let balanceTime = 0;
         let reactionState = null;
@@ -1661,6 +1832,14 @@
             { id: 'health-3', question: '週に何回<br>運動していますか？', options: ['ほとんどしない', '1〜2回', '3回以上'] },
             { id: 'health-4', question: '薬の飲み忘れは<br>ありますか？', options: ['よくある', '時々ある', 'ない'] },
             { id: 'health-5', question: '最近、気分が<br>落ち込みますか？', options: ['よくある', '時々ある', 'あまりない'] }
+        ];
+
+        const oralQuestions = [
+            { id: 'oral-1', question: '硬いものが<br>食べにくくなりましたか？', options: [{ text: 'はい', value: 1 }, { text: 'いいえ', value: 0 }] },
+            { id: 'oral-2', question: '食事中に<br>むせることが増えましたか？', options: [{ text: 'はい', value: 1 }, { text: 'いいえ', value: 0 }] },
+            { id: 'oral-3', question: '口が乾燥しやすいと<br>感じますか？', options: [{ text: 'はい', value: 1 }, { text: 'いいえ', value: 0 }] },
+            { id: 'oral-4', question: '滑舌が悪くなったと<br>感じますか？', options: [{ text: 'はい', value: 1 }, { text: 'いいえ', value: 0 }] },
+            { id: 'oral-5', question: '人と話す機会が<br>減りましたか？', options: [{ text: 'はい', value: 1 }, { text: 'いいえ', value: 0 }] }
         ];
 
         // 部活動データ
@@ -1789,6 +1968,274 @@
         // 参加申し込み
         function joinActivity() {
             alert('参加申し込みを受け付けました！\n\n担当者から連絡がありますので、しばらくお待ちください。');
+        }
+
+        // 指輪っかテスト
+        function openFingerRingTest(origin = 'health-check-intro') {
+            fingerRingOrigin = origin || 'health-check-intro';
+            resetFingerRingTest();
+            showPage('finger-ring-test');
+        }
+
+        function backFromFingerRing() {
+            showPage(fingerRingOrigin || 'health-check-intro');
+        }
+
+        function resetFingerRingTest() {
+            const optionContainer = document.getElementById('finger-ring-options');
+            if (optionContainer) {
+                optionContainer.querySelectorAll('.option-button').forEach(btn => {
+                    btn.classList.remove('selected');
+                });
+            }
+
+            const resultBox = document.getElementById('finger-ring-result');
+            const badge = document.getElementById('finger-ring-badge');
+            const title = document.getElementById('finger-ring-title');
+            const text = document.getElementById('finger-ring-text');
+
+            if (resultBox) {
+                resultBox.style.display = 'none';
+            }
+            if (badge) {
+                badge.className = 'result-badge good';
+                badge.innerHTML = '<i class="fas fa-check"></i>';
+            }
+            if (title) {
+                title.textContent = '結果を表示します';
+            }
+            if (text) {
+                text.textContent = '選択すると結果が表示されます。';
+            }
+        }
+
+        function handleFingerRing(result, button) {
+            const optionContainer = document.getElementById('finger-ring-options');
+            if (optionContainer) {
+                optionContainer.querySelectorAll('.option-button').forEach(btn => {
+                    btn.classList.remove('selected');
+                });
+            }
+            if (button) {
+                button.classList.add('selected');
+            }
+
+            const resultBox = document.getElementById('finger-ring-result');
+            const badge = document.getElementById('finger-ring-badge');
+            const title = document.getElementById('finger-ring-title');
+            const text = document.getElementById('finger-ring-text');
+
+            if (!resultBox || !badge || !title || !text) return;
+
+            if (result === 'tight') {
+                badge.className = 'result-badge good';
+                badge.innerHTML = '<i class="fas fa-check"></i>';
+                title.textContent = '筋力は十分です';
+                text.innerHTML = 'ふくらはぎがしっかりしている状態です。<br>今の運動習慣を続けましょう。';
+            } else if (result === 'fit') {
+                badge.className = 'result-badge warning';
+                badge.innerHTML = '<i class="fas fa-exclamation"></i>';
+                title.textContent = 'やや注意が必要です';
+                text.innerHTML = '筋肉量が少し低下している可能性があります。<br>軽い筋トレや散歩を取り入れましょう。';
+            } else {
+                badge.className = 'result-badge caution';
+                badge.innerHTML = '<i class="fas fa-exclamation-triangle"></i>';
+                title.textContent = 'サルコペニアのリスクあり';
+                text.innerHTML = '筋肉量がかなり低下している可能性があります。<br>専門家に相談することをおすすめします。';
+            }
+
+            resultBox.style.display = 'block';
+        }
+
+        // 口腔フレイルチェック
+        function startOralCheck(origin) {
+            if (origin) {
+                oralCheckOrigin = origin;
+            } else if (!oralCheckOrigin) {
+                oralCheckOrigin = 'health-check-intro';
+            }
+            oralAnswers = {};
+
+            const firstPage = document.getElementById('oral-check-1');
+            if (firstPage) {
+                firstPage.querySelectorAll('.option-button').forEach(btn => {
+                    btn.classList.remove('selected');
+                });
+            }
+
+            for (let i = 2; i <= oralQuestions.length; i++) {
+                const page = document.getElementById(`oral-check-${i}`);
+                if (page) {
+                    page.innerHTML = '';
+                    page.className = 'page';
+                }
+            }
+
+            const badge = document.getElementById('oral-result-badge');
+            const title = document.getElementById('oral-result-title');
+            const text = document.getElementById('oral-result-text');
+            const adviceList = document.getElementById('oral-advice-list');
+
+            if (badge) {
+                badge.className = 'result-badge good';
+                badge.innerHTML = '<i class="fas fa-check"></i>';
+            }
+            if (title) {
+                title.textContent = '結果を表示します';
+            }
+            if (text) {
+                text.textContent = 'チェックが終わると結果が表示されます。';
+            }
+            if (adviceList) {
+                adviceList.innerHTML = '';
+            }
+
+            showPage('oral-check-1');
+        }
+
+        function backFromOralCheck() {
+            showPage(oralCheckOrigin || 'health-check-intro');
+        }
+
+        function selectOralOption(button, questionId, value) {
+            const container = button.parentElement;
+            if (container) {
+                container.querySelectorAll('.option-button').forEach(btn => {
+                    btn.classList.remove('selected');
+                });
+            }
+
+            button.classList.add('selected');
+            button.dataset.value = value;
+            oralAnswers[questionId] = value;
+        }
+
+        function nextOralQuestion(currentNum) {
+            const currentId = `oral-${currentNum}`;
+            if (typeof oralAnswers[currentId] === 'undefined') {
+                alert('選択してください');
+                return;
+            }
+
+            const total = oralQuestions.length;
+
+            if (currentNum < total) {
+                const nextNum = currentNum + 1;
+                const nextQuestion = oralQuestions[nextNum - 1];
+                const progress = (nextNum / total) * 100;
+
+                const nextPageHtml = `
+                    <div class="header header-small">
+                        <h1 class="header-title" style="font-size: 24px;">口腔フレイルチェック</h1>
+                    </div>
+
+                    <div class="question-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${progress}%"></div>
+                        </div>
+
+                        <div class="question-number">${nextNum}</div>
+                        <h2 class="question-text">${nextQuestion.question}</h2>
+
+                        ${nextQuestion.options.map(opt => `
+                            <button class="option-button" data-value="${opt.value}" onclick="selectOralOption(this, '${nextQuestion.id}', ${opt.value})">
+                                <span>${opt.text}</span>
+                            </button>
+                        `).join('')}
+
+                        <div style="margin-top: 32px;">
+                            <button class="main-button" onclick="nextOralQuestion(${nextNum})">
+                                ${nextNum === total ? '結果を見る' : '次へ'}
+                            </button>
+                            <button class="back-button" onclick="showPage('oral-check-${currentNum}')">
+                                <i class="fas fa-arrow-left"></i> 戻る
+                            </button>
+                        </div>
+                    </div>
+                `;
+
+                let nextPage = document.getElementById(`oral-check-${nextNum}`);
+                if (!nextPage) {
+                    nextPage = document.createElement('div');
+                    nextPage.id = `oral-check-${nextNum}`;
+                    nextPage.className = 'page';
+                    const screen = document.querySelector('.screen');
+                    if (screen) {
+                        screen.appendChild(nextPage);
+                    }
+                }
+
+                nextPage.innerHTML = nextPageHtml;
+
+                const storedValue = oralAnswers[nextQuestion.id];
+                if (typeof storedValue !== 'undefined') {
+                    nextPage.querySelectorAll('.option-button').forEach(btn => {
+                        if (Number(btn.dataset.value) === storedValue) {
+                            btn.classList.add('selected');
+                        }
+                    });
+                }
+
+                showPage(`oral-check-${nextNum}`);
+            } else {
+                showOralResult();
+            }
+        }
+
+        function showOralResult() {
+            const score = Object.values(oralAnswers).reduce((sum, value) => sum + Number(value || 0), 0);
+
+            const badge = document.getElementById('oral-result-badge');
+            const title = document.getElementById('oral-result-title');
+            const text = document.getElementById('oral-result-text');
+            const adviceList = document.getElementById('oral-advice-list');
+
+            if (badge && title && text && adviceList) {
+                if (score === 0) {
+                    badge.className = 'result-badge good';
+                    badge.innerHTML = '<i class="fas fa-check"></i>';
+                    title.textContent = '口腔の健康状態：良好';
+                    text.innerHTML = '特に気になる点はありません。<br>今のケアを続けましょう。';
+                    adviceList.innerHTML = `
+                        <div class="result-item">
+                            <div class="result-advice">今の歯みがきと食習慣を続けましょう</div>
+                        </div>
+                    `;
+                } else if (score <= 2) {
+                    badge.className = 'result-badge warning';
+                    badge.innerHTML = '<i class="fas fa-exclamation"></i>';
+                    title.textContent = '口腔の健康状態：注意';
+                    text.innerHTML = '軽い口腔フレイルが疑われます。<br>日頃のケアを少し強化しましょう。';
+                    adviceList.innerHTML = `
+                        <div class="result-item">
+                            <div class="result-category">ケア</div>
+                            <div class="result-advice">口や舌をよく動かす体操を取り入れましょう</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-category">食事</div>
+                            <div class="result-advice">よく噛むことを意識して食事を楽しみましょう</div>
+                        </div>
+                    `;
+                } else {
+                    badge.className = 'result-badge caution';
+                    badge.innerHTML = '<i class="fas fa-exclamation-triangle"></i>';
+                    title.textContent = '口腔の健康状態：要相談';
+                    text.innerHTML = '口腔機能の低下が心配されます。<br>歯科医師や専門家に相談しましょう。';
+                    adviceList.innerHTML = `
+                        <div class="result-item">
+                            <div class="result-category">受診</div>
+                            <div class="result-advice">歯科での検診やリハビリ相談を受けましょう</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-category">トレーニング</div>
+                            <div class="result-advice">口の体操や声出しトレーニングを毎日行いましょう</div>
+                        </div>
+                    `;
+                }
+            }
+
+            oralAnswers = {};
+            showPage('oral-result');
         }
 
         // 毎日のチェック
