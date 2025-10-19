@@ -2,9 +2,9 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>FUN・A・ROOM Community Care Hub</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>コミュニティ管理システム</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -14,1004 +14,2416 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
-            background: #f5f5f5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            padding: 20px;
-        }
-
-        .phone-frame {
-            width: 100%;
-            max-width: 430px;
-            height: 900px;
-            background: #000;
-            border-radius: 45px;
-            padding: 12px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            position: relative;
+            overflow-x: hidden;
         }
 
         .screen {
-            width: 100%;
-            height: 100%;
-            background: #ffffff;
-            border-radius: 35px;
-            overflow: hidden;
+            max-width: 480px;
+            margin: 0 auto;
+            min-height: 100vh;
+            background: #f5f7fa;
             position: relative;
             display: flex;
             flex-direction: column;
-        }
-
-        .status-bar {
-            height: 48px;
-            background: #ffffff;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 32px;
-            font-size: 16px;
-            font-weight: 600;
-            color: #0f172a;
-            border-bottom: 1px solid #f0f0f0;
         }
 
         .page {
             display: none;
             flex-direction: column;
-            height: 100%;
-            background: #ffffff;
+            flex: 1;
         }
 
         .page.active {
             display: flex;
         }
 
-        .header {
-            background: linear-gradient(135deg, #3B82F6 0%, #6366F1 100%);
+        /* ログイン画面 */
+        .login-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .login-logo {
+            width: 100px;
+            height: 100px;
+            background: white;
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: #667eea;
+            margin-bottom: 24px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        }
+
+        .login-title {
+            font-size: 28px;
+            font-weight: 700;
             color: white;
-            padding: 28px;
-            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .login-subtitle {
+            font-size: 16px;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 40px;
+        }
+
+        .login-form {
+            width: 100%;
+            max-width: 360px;
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 16px;
+            background: rgba(255,255,255,0.95);
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            margin-bottom: 16px;
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 18px;
+            background: white;
+            color: #667eea;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .login-button:active {
+            transform: scale(0.98);
+        }
+
+        /* ヘッダー */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 60px 24px 40px;
+            color: white;
             position: relative;
         }
 
-        .header::after {
-            content: "";
-            position: absolute;
-            inset: auto 32px -32px 32px;
-            height: 80px;
-            border-radius: 32px;
-            background: rgba(255,255,255,0.18);
-            filter: blur(24px);
-        }
-
         .header-small {
-            padding: 22px 28px 18px;
+            padding: 40px 24px 30px;
         }
 
         .header-title {
-            font-size: 30px;
+            font-size: 32px;
             font-weight: 700;
-            letter-spacing: 0.4px;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
         }
 
         .header-subtitle {
             font-size: 16px;
-            opacity: 0.95;
-            font-weight: 500;
+            opacity: 0.9;
         }
 
-        .tagline {
-            margin-top: 14px;
-            font-size: 13px;
-            letter-spacing: 1.2px;
-            text-transform: uppercase;
-            opacity: 0.7;
+        .header-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            opacity: 0.9;
+            margin-top: 8px;
         }
 
+        /* コンテンツ */
         .content {
             flex: 1;
-            padding: 24px 20px 110px;
+            padding: 20px;
             overflow-y: auto;
-            background: #f8fafc;
+            padding-bottom: 90px;
         }
 
-        .content::-webkit-scrollbar {
-            width: 0;
+        /* カード */
+        .menu-card {
+            background: white;
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .menu-card:active {
+            transform: scale(0.98);
+        }
+
+        .menu-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            border-radius: 0 20px 0 100%;
+        }
+
+        .card-icon {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: white;
+            margin-bottom: 16px;
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .card-description {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .card-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+
+        /* 統計カード */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            margin: 0 auto 12px;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: #888;
+        }
+
+        /* ボタン */
+        .main-button {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .main-button:active {
+            transform: scale(0.98);
+        }
+
+        .secondary-button {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .danger-button {
+            background: linear-gradient(135deg, #EF4444 0%, #B91C1C 100%);
+        }
+
+        .back-button {
+            width: 100%;
+            padding: 16px;
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .back-button:active {
+            transform: scale(0.98);
+        }
+
+        /* フォーム */
+        .form-container {
+            background: white;
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .form-label .required {
+            color: #EF4444;
+            margin-left: 4px;
+        }
+
+        .form-input,
+        .form-textarea,
+        .form-select {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.2s;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-hint {
+            font-size: 13px;
+            color: #888;
+            margin-top: 4px;
+        }
+
+        /* リスト */
+        .list-item {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .list-item:active {
+            transform: scale(0.98);
+        }
+
+        .list-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 12px;
+        }
+
+        .list-item-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .list-item-badge {
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .list-item-info {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .list-item-meta {
+            display: flex;
+            gap: 16px;
+            padding-top: 12px;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .list-item-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: #888;
+        }
+
+        /* メンバーカード */
+        .member-card {
+            background: white;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .member-avatar {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .member-info {
+            flex: 1;
+        }
+
+        .member-name {
+            font-size: 16px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 4px;
+        }
+
+        .member-detail {
+            font-size: 13px;
+            color: #888;
+        }
+
+        .member-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .icon-button {
+            width: 40px;
+            height: 40px;
+            background: #f5f7fa;
+            border: none;
+            border-radius: 10px;
+            color: #667eea;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: all 0.2s;
+        }
+
+        .icon-button:active {
+            transform: scale(0.9);
+        }
+
+        .icon-button.danger {
+            color: #EF4444;
+        }
+
+        /* イベントカード */
+        .event-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border-left: 4px solid #667eea;
+        }
+
+        .event-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 12px;
+        }
+
+        .event-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .event-type {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .event-info {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 12px;
+        }
+
+        .event-info i {
+            width: 20px;
+            color: #667eea;
+        }
+
+        .event-stats {
+            display: flex;
+            gap: 16px;
+            padding-top: 12px;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .event-stat {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: #888;
+        }
+
+        /* 活動報告カード */
+        .report-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .report-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #e0e0e0 0%, #f5f5f5 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: #ccc;
+        }
+
+        .report-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 12px;
+        }
+
+        .report-date {
+            font-size: 14px;
+            color: #888;
+        }
+
+        .report-content {
+            font-size: 15px;
+            line-height: 1.7;
+            color: #666;
+            margin-bottom: 16px;
+        }
+
+        .report-stats {
+            display: flex;
+            gap: 20px;
+            font-size: 14px;
+            color: #888;
+        }
+
+        .report-stats span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* 通知カード */
+        .notification-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border-left: 4px solid #667eea;
+        }
+
+        .notification-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 8px;
+        }
+
+        .notification-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .notification-time {
+            font-size: 12px;
+            color: #888;
+        }
+
+        .notification-content {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* 出席管理 */
+        .attendance-list {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .attendance-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .attendance-item:last-child {
+            border-bottom: none;
+        }
+
+        .attendance-name {
+            font-size: 15px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .attendance-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .attendance-button {
+            padding: 8px 16px;
+            border: 2px solid #e0e0e0;
+            background: white;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .attendance-button.present {
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            color: white;
+            border-color: #10B981;
+        }
+
+        .attendance-button.absent {
+            background: linear-gradient(135deg, #EF4444 0%, #B91C1C 100%);
+            color: white;
+            border-color: #EF4444;
+        }
+
+        /* 底部導航 */
+        .bottom-nav {
+            background: white;
+            border-top: 2px solid #f0f0f0;
+            display: flex;
+            padding: 12px 8px 20px;
+            gap: 8px;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        .nav-button {
+            flex: 1;
+            background: white;
+            border: none;
+            border-radius: 12px;
+            padding: 10px 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .nav-button:active {
+            background: #f5f5f5;
+            transform: scale(0.95);
+        }
+
+        .nav-button.active {
+            background: #EBF5FF;
+        }
+
+        .nav-button i {
+            font-size: 24px;
+            color: #888;
+        }
+
+        .nav-button.active i {
+            color: #667eea;
+        }
+
+        .nav-button span {
+            font-size: 11px;
+            color: #888;
+        }
+
+        .nav-button.active span {
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        /* 空状態 */
+        .empty-state {
+            text-align: center;
+            padding: 60px 24px;
+        }
+
+        .empty-icon {
+            font-size: 64px;
+            color: #e0e0e0;
+            margin-bottom: 16px;
+        }
+
+        .empty-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .empty-text {
+            font-size: 14px;
+            color: #888;
+            line-height: 1.5;
+        }
+
+        /* モーダル */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 24px;
+            max-width: 400px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        /* 画像アップロード */
+        .image-upload {
+            width: 100%;
+            height: 200px;
+            border: 2px dashed #e0e0e0;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: #f8f9fa;
+        }
+
+        .image-upload:hover {
+            border-color: #667eea;
+            background: #EBF5FF;
+        }
+
+        .image-upload i {
+            font-size: 48px;
+            color: #ccc;
+            margin-bottom: 12px;
+        }
+
+        .image-upload-text {
+            font-size: 14px;
+            color: #888;
+        }
+
+        /* 緊急連絡先 */
+        .emergency-contact {
+            background: #FEF2F2;
+            border: 2px solid #FEE2E2;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+
+        .emergency-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #EF4444;
+            margin-bottom: 8px;
+        }
+
+        .emergency-info {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .phone-button {
+            width: 100%;
+            padding: 16px;
+            background: #10B981;
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-size: 18px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 12px;
+        }
+
+        .phone-button:active {
+            transform: scale(0.98);
+        }
+
+        /* 完了画面 */
+        .complete-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 24px;
+            text-align: center;
+        }
+
+        .complete-icon {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 64px;
+            color: white;
+            margin-bottom: 24px;
+        }
+
+        .complete-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 12px;
+        }
+
+        .complete-text {
+            font-size: 16px;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 32px;
+        }
+
+        /* セクションヘッダー */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
         }
 
         .section-title {
             font-size: 18px;
             font-weight: 700;
-            margin-bottom: 14px;
-            color: #1f2937;
+            color: #333;
         }
 
-        .section-subtitle {
-            font-size: 13px;
-            color: #64748b;
-            margin-bottom: 16px;
-            line-height: 1.6;
-        }
-
-        .menu-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-            margin-bottom: 28px;
-        }
-
-        .menu-card {
-            background: white;
-            border-radius: 22px;
-            padding: 28px 18px;
-            box-shadow: 0 12px 24px rgba(15, 23, 42, 0.08);
-            cursor: pointer;
-            transition: all 0.24s ease;
-            text-align: left;
-            min-height: 160px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .menu-card::after {
-            content: "";
-            position: absolute;
-            right: -20px;
-            top: -20px;
-            width: 80px;
-            height: 80px;
-            background: rgba(255,255,255,0.18);
-            border-radius: 50%;
-        }
-
-        .menu-card.primary {
-            grid-column: span 2;
-            background: linear-gradient(135deg, #2563EB 0%, #60A5FA 60%, #A855F7 100%);
-            color: white;
-        }
-
-        .menu-card.green {
-            background: linear-gradient(135deg, #0EA5E9 0%, #14B8A6 100%);
-            color: white;
-        }
-
-        .menu-card.orange {
-            background: linear-gradient(135deg, #F59E0B 0%, #F97316 100%);
-            color: white;
-        }
-
-        .menu-card.purple {
-            background: linear-gradient(135deg, #8B5CF6 0%, #6366F1 100%);
-            color: white;
-        }
-
-        .menu-card.blue {
-            background: linear-gradient(135deg, #1D4ED8 0%, #3B82F6 100%);
-            color: white;
-        }
-
-        .menu-icon {
-            font-size: 34px;
-        }
-
-        .menu-card h3 {
-            font-size: 20px;
-            font-weight: 700;
-            margin: 16px 0 8px;
-        }
-
-        .menu-card p {
+        .section-link {
             font-size: 14px;
-            line-height: 1.6;
-            opacity: 0.85;
+            color: #667eea;
+            font-weight: 600;
+            cursor: pointer;
         }
 
-        .card {
+        /* フィルター */
+        .filter-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+        }
+
+        .filter-tab {
+            padding: 10px 20px;
             background: white;
+            border: 2px solid #e0e0e0;
             border-radius: 20px;
-            padding: 20px;
-            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.07);
-            margin-bottom: 18px;
-        }
-
-        .card.highlight {
-            background: linear-gradient(135deg, #DCFCE7 0%, #E0F2FE 100%);
-            color: #0f172a;
-        }
-
-        .card-title {
-            font-size: 16px;
-            font-weight: 700;
-            color: #0f172a;
-            margin-bottom: 10px;
-        }
-
-        .card-title span {
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 600;
-            padding: 5px 12px;
-            border-radius: 999px;
-            margin-left: 8px;
+            color: #666;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
         }
 
-        .badge-soft {
-            background: rgba(14,165,233,0.12);
-            color: #0ea5e9;
-        }
-
-        .badge-warm {
-            background: rgba(236, 72, 153, 0.15);
-            color: #db2777;
-        }
-
-        .card-subtitle {
-            font-size: 13px;
-            color: #64748b;
-            margin-bottom: 14px;
-            line-height: 1.6;
-        }
-
-        .chip-group {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        .chip {
-            padding: 9px 16px;
-            border-radius: 999px;
-            font-size: 13px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .chip.blue { background: #E0F2FE; color: #1d4ed8; }
-        .chip.green { background: #DCFCE7; color: #047857; }
-        .chip.orange { background: #FEF3C7; color: #B45309; }
-        .chip.purple { background: #EDE9FE; color: #6D28D9; }
-        .chip.pink { background: #FCE7F3; color: #BE185D; }
-
-        .list {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .list-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: #F8FAFC;
-            border-radius: 18px;
-            padding: 14px 16px;
-        }
-
-        .list-item-content {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .list-item-title {
-            font-size: 15px;
-            font-weight: 700;
-            color: #0f172a;
-        }
-
-        .list-item-subtitle {
-            font-size: 12px;
-            color: #64748b;
-        }
-
-        .list-badge {
-            padding: 6px 12px;
-            border-radius: 999px;
-            font-size: 12px;
-            font-weight: 700;
+        .filter-tab.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
+            border-color: #667eea;
         }
 
-        .badge-green { background: #10B981; }
-        .badge-blue { background: #3B82F6; }
-        .badge-orange { background: #F59E0B; }
-        .badge-rose { background: #E11D48; }
-
-        .timeline {
-            display: grid;
-            gap: 12px;
-        }
-
-        .timeline-item {
-            display: grid;
-            grid-template-columns: 48px 1fr;
-            gap: 14px;
-            align-items: start;
-        }
-
-        .timeline-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            color: white;
-        }
-
-        .timeline-icon.blue { background: linear-gradient(135deg, #2563eb 0%, #6366f1 100%); }
-        .timeline-icon.green { background: linear-gradient(135deg, #10b981 0%, #14b8a6 100%); }
-        .timeline-icon.orange { background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%); }
-        .timeline-icon.pink { background: linear-gradient(135deg, #ec4899 0%, #f472b6 100%); }
-
-        .timeline-text h4 {
-            font-size: 15px;
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-
-        .timeline-text p {
-            font-size: 13px;
-            color: #64748b;
-            line-height: 1.6;
-        }
-
-        .pill-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .pill {
-            background: #E2E8F0;
-            color: #0f172a;
-            border-radius: 999px;
-            padding: 12px 18px;
-            font-size: 13px;
-            font-weight: 600;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .pill span {
-            font-weight: 500;
-            color: #475569;
-        }
-
-        .bottom-nav {
-            height: 90px;
-            background: #ffffff;
-            border-top: 1px solid #e2e8f0;
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
+        /* ヘッダーアクション */
+        .header-action {
             position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 12px 18px 18px;
-        }
-
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            color: #94a3b8;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .nav-item.active {
-            color: #2563eb;
-        }
-
-        .nav-item i {
-            font-size: 20px;
-        }
-
-        .floating-button {
-            position: fixed;
-            bottom: 120px;
-            right: 40px;
-            background: linear-gradient(135deg, #2563EB 0%, #38BDF8 100%);
+            top: 40px;
+            right: 24px;
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            border-radius: 10px;
             color: white;
-            width: 64px;
-            height: 64px;
-            border-radius: 24px;
+            font-size: 20px;
+            cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 26px;
-            box-shadow: 0 16px 32px rgba(37,99,235,0.3);
         }
 
-        .floating-button span {
-            display: none;
-        }
-
-        @media (max-width: 520px) {
-            body {
-                padding: 16px;
-                background: #ffffff;
-            }
-            .phone-frame {
-                border-radius: 0;
-                max-width: none;
-                height: 100vh;
-                padding: 0;
-                box-shadow: none;
-            }
-            .screen {
-                border-radius: 0;
-            }
-            .floating-button {
-                right: 20px;
-            }
+        .header-action:active {
+            background: rgba(255,255,255,0.3);
         }
     </style>
 </head>
 <body>
-<div class="phone-frame">
     <div class="screen">
-        <div class="status-bar">
-            <span>9:41</span>
-            <span>Hyuga City</span>
+        <!-- ログイン画面 -->
+        <div id="login" class="page active">
+            <div class="login-container">
+                <div class="login-logo">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h1 class="login-title">コミュニティ管理</h1>
+                <p class="login-subtitle">リーダー専用システム</p>
+                
+                <div class="login-form">
+                    <input type="email" class="login-input" placeholder="メールアドレス" id="email">
+                    <input type="password" class="login-input" placeholder="パスワード" id="password">
+                    <button class="login-button" onclick="login()">ログイン</button>
+                </div>
+            </div>
         </div>
 
-        <section id="dashboard" class="page active">
+        <!-- ホーム画面 -->
+        <div id="home" class="page">
             <div class="header">
-                <div class="header-title">Community Care Hub</div>
-                <div class="header-subtitle">ありがとうが循環する日向市の高齢者コミュニティ運営</div>
-                <div class="tagline">健康チェック × つながりづくり × 安心の見守り</div>
+                <h1 class="header-title">バスケットボール部</h1>
+                <div class="header-info">
+                    <i class="fas fa-user"></i>
+                    <span>山田太郎さん</span>
+                </div>
+                <button class="header-action" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
             </div>
+            
             <div class="content">
-                <div class="section-title">今日のようこそメッセージ</div>
-                <div class="card highlight">
-                    <div class="card-title">「健康チェック」から始まる、新しいつながり</div>
-                    <div class="card-subtitle">毎日のバイタルチェックを入口に、コミュニティの活動・交流・支援をシームレスに連携。地域の感謝と安心をデザインします。</div>
-                    <div class="chip-group">
-                        <div class="chip blue"><i class="fa-solid fa-heart-pulse"></i>健康の見える化</div>
-                        <div class="chip green"><i class="fa-solid fa-people-group"></i>仲間づくり</div>
-                        <div class="chip orange"><i class="fa-solid fa-hand-holding-heart"></i>支援の輪</div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-value">24</div>
+                        <div class="stat-label">メンバー数</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div class="stat-value">87%</div>
+                        <div class="stat-label">今月の出席率</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-calendar"></i>
+                        </div>
+                        <div class="stat-value">12</div>
+                        <div class="stat-label">今月のイベント</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-newspaper"></i>
+                        </div>
+                        <div class="stat-value">8</div>
+                        <div class="stat-label">活動報告</div>
                     </div>
                 </div>
 
-                <div class="section-title">運営メニュー</div>
-                <div class="menu-grid">
-                    <div class="menu-card primary" data-target="community">
-                        <i class="fa-solid fa-handshake-simple menu-icon"></i>
-                        <h3>コミュニティ登録</h3>
-                        <p>活動概要・協力医療/介護・ボランティアを整理し、新しい居場所を立ち上げましょう。</p>
+                <div class="menu-card" onclick="showPage('members')">
+                    <div class="card-icon">
+                        <i class="fas fa-user-friends"></i>
                     </div>
-                    <div class="menu-card green" data-target="members">
-                        <i class="fa-solid fa-user-group menu-icon"></i>
-                        <h3>参加者サポート</h3>
-                        <p>健康状態や暮らしの声を把握し、ひとり一人に寄り添う伴走支援を。</p>
-                    </div>
-                    <div class="menu-card orange" data-target="attendance">
-                        <i class="fa-solid fa-calendar-check menu-icon"></i>
-                        <h3>出席・見守り</h3>
-                        <p>日々の参加と体調記録を連携。気になる兆しを早期に共有します。</p>
-                    </div>
-                    <div class="menu-card purple" data-target="communication">
-                        <i class="fa-solid fa-comments menu-icon"></i>
-                        <h3>連絡・緊急対応</h3>
-                        <p>定期のお知らせから緊急時の連絡網まで、安心のコミュニケーション設計。</p>
-                    </div>
-                    <div class="menu-card blue" data-target="insights">
-                        <i class="fa-solid fa-chart-line menu-icon"></i>
-                        <h3>活動レポート</h3>
-                        <p>日向市のビジョンと重ねながら、成果と気づきをチームで共有。</p>
-                    </div>
+                    <h3 class="card-title">メンバー管理</h3>
+                    <p class="card-description">
+                        参加者の登録・編集・緊急連絡先管理
+                    </p>
+                    <span class="card-badge">24名登録</span>
                 </div>
 
-                <div class="section-title">サービスの流れ</div>
-                <div class="timeline">
-                    <div class="timeline-item">
-                        <div class="timeline-icon blue"><i class="fa-solid fa-heart-circle-check"></i></div>
-                        <div class="timeline-text">
-                            <h4>毎日の健康チェック</h4>
-                            <p>バイタル入力・服薬確認・気分メモを通じて、その日の様子を可視化します。</p>
-                        </div>
+                <div class="menu-card" onclick="showPage('events')">
+                    <div class="card-icon">
+                        <i class="fas fa-calendar-alt"></i>
                     </div>
-                    <div class="timeline-item">
-                        <div class="timeline-icon green"><i class="fa-solid fa-house-medical"></i></div>
-                        <div class="timeline-text">
-                            <h4>見守り訪問・オンライン相談</h4>
-                            <p>気になるサインがあれば、生活支援コーディネーターや医療・介護連携へ。</p>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-icon orange"><i class="fa-solid fa-message-heart"></i></div>
-                        <div class="timeline-text">
-                            <h4>パーソナルメッセージ</h4>
-                            <p>記録に基づいた励ましやお祝いメッセージで、ありがとうを届けます。</p>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-icon pink"><i class="fa-solid fa-people-arrows"></i></div>
-                        <div class="timeline-text">
-                            <h4>リアルなつながり</h4>
-                            <p>趣味活動や世代間交流イベントを企画し、地域に新たな関係性を生み出します。</p>
-                        </div>
-                    </div>
+                    <h3 class="card-title">イベント管理</h3>
+                    <p class="card-description">
+                        定期練習・試合・イベントの作成と管理
+                    </p>
+                    <span class="card-badge">次回: 10/20 18:00</span>
                 </div>
 
-                <div class="section-title" style="margin-top: 28px;">未来へのビジョン</div>
-                <div class="card">
-                    <div class="card-title">日向市から全国へ<span class="badge-soft">Roadmap</span></div>
-                    <div class="list">
-                        <div class="list-item">
-                            <div class="list-item-content">
-                                <div class="list-item-title">Year 1：日向市モデル構築</div>
-                                <div class="list-item-subtitle">医療・介護・地域団体が連携し、30〜50拠点で「ありがとうの循環」を実践。</div>
-                            </div>
-                            <div class="list-badge badge-blue">進行中</div>
-                        </div>
-                        <div class="list-item">
-                            <div class="list-item-content">
-                                <div class="list-item-title">Year 2-3：宮崎県内の拡大</div>
-                                <div class="list-item-subtitle">多世代が交わる居場所づくりを横展開。成功事例のナレッジ共有。</div>
-                            </div>
-                            <div class="list-badge badge-green">準備中</div>
-                        </div>
-                        <div class="list-item">
-                            <div class="list-item-content">
-                                <div class="list-item-title">Year 3-5：九州・全国へ</div>
-                                <div class="list-item-subtitle">高齢者が主役のコミュニティ運営を全国の自治体と協働で推進。</div>
-                            </div>
-                            <div class="list-badge badge-orange">構想</div>
-                        </div>
+                <div class="menu-card" onclick="showPage('reports')">
+                    <div class="card-icon">
+                        <i class="fas fa-file-alt"></i>
                     </div>
+                    <h3 class="card-title">活動報告</h3>
+                    <p class="card-description">
+                        練習や試合の報告を写真付きで投稿
+                    </p>
+                    <span class="card-badge">8件の報告</span>
+                </div>
+
+                <div class="menu-card" onclick="showPage('notifications')">
+                    <div class="card-icon">
+                        <i class="fas fa-bullhorn"></i>
+                    </div>
+                    <h3 class="card-title">連絡・通知</h3>
+                    <p class="card-description">
+                        メンバーへの一斉連絡・お知らせ
+                    </p>
+                </div>
+
+                <div class="menu-card" onclick="showPage('analytics')">
+                    <div class="card-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="card-title">統計・分析</h3>
+                    <p class="card-description">
+                        出席状況・参加率の詳細分析
+                    </p>
                 </div>
             </div>
-        </section>
 
-        <section id="community" class="page">
+            <div class="bottom-nav">
+                <button class="nav-button active" onclick="showPage('home')">
+                    <i class="fas fa-home"></i>
+                    <span>ホーム</span>
+                </button>
+                <button class="nav-button" onclick="showPage('events')">
+                    <i class="fas fa-calendar"></i>
+                    <span>イベント</span>
+                </button>
+                <button class="nav-button" onclick="showPage('reports')">
+                    <i class="fas fa-newspaper"></i>
+                    <span>報告</span>
+                </button>
+                <button class="nav-button" onclick="showPage('settings')">
+                    <i class="fas fa-cog"></i>
+                    <span>設定</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- メンバー管理 -->
+        <div id="members" class="page">
             <div class="header header-small">
-                <div class="header-title">コミュニティ登録</div>
-                <div class="header-subtitle">「最初の一歩」を丁寧に設計</div>
+                <h1 class="header-title" style="font-size: 24px;">メンバー管理</h1>
+                <p class="header-subtitle">24名が登録されています</p>
             </div>
+            
             <div class="content">
-                <div class="card">
-                    <div class="card-title">1. 基本情報の整理<span class="badge-soft">Outline</span></div>
-                    <div class="card-subtitle">活動名、目的、対象者、連携する地域資源などを登録します。</div>
-                    <div class="chip-group">
-                        <div class="chip blue"><i class="fa-solid fa-map-location-dot"></i>拠点住所</div>
-                        <div class="chip green"><i class="fa-solid fa-clock"></i>開催曜日・時間</div>
-                        <div class="chip orange"><i class="fa-solid fa-hands-holding-circle"></i>活動内容</div>
-                        <div class="chip purple"><i class="fa-solid fa-user-shield"></i>責任者</div>
+                <div class="member-card">
+                    <div class="member-avatar">山</div>
+                    <div class="member-info">
+                        <div class="member-name">山田太郎</div>
+                        <div class="member-detail">090-1234-5678 | 部長</div>
+                    </div>
+                    <div class="member-actions">
+                        <button class="icon-button" onclick="showMemberDetail('山田太郎', '部長', '090-1234-5678', '父: 090-1111-2222', 'yamada@example.com')">
+                            <i class="fas fa-info-circle"></i>
+                        </button>
+                        <button class="icon-button" onclick="editMember()">
+                            <i class="fas fa-edit"></i>
+                        </button>
                     </div>
                 </div>
 
-                <div class="card">
-                    <div class="card-title">2. 医療・介護連携</div>
-                    <div class="card-subtitle">地域包括支援センター、訪問看護、かかりつけ医との連絡窓口をひと目で。</div>
-                    <div class="list">
-                        <div class="list-item">
-                            <div class="list-item-content">
-                                <div class="list-item-title">連携先リスト</div>
-                                <div class="list-item-subtitle">担当者／連絡先／緊急時対応時間帯を登録</div>
-                            </div>
-                            <div class="list-badge badge-blue">登録</div>
-                        </div>
-                        <div class="list-item">
-                            <div class="list-item-content">
-                                <div class="list-item-title">支援メニュー</div>
-                                <div class="list-item-subtitle">見守り訪問、リハビリ体操、個別相談など</div>
-                            </div>
-                            <div class="list-badge badge-green">更新</div>
-                        </div>
+                <div class="member-card">
+                    <div class="member-avatar">佐</div>
+                    <div class="member-info">
+                        <div class="member-name">佐藤花子</div>
+                        <div class="member-detail">090-2345-6789 | 副部長</div>
+                    </div>
+                    <div class="member-actions">
+                        <button class="icon-button" onclick="showMemberDetail('佐藤花子', '副部長', '090-2345-6789', '母: 090-3333-4444', 'sato@example.com')">
+                            <i class="fas fa-info-circle"></i>
+                        </button>
+                        <button class="icon-button" onclick="editMember()">
+                            <i class="fas fa-edit"></i>
+                        </button>
                     </div>
                 </div>
 
-                <div class="card">
-                    <div class="card-title">3. ボランティア・サポーター</div>
-                    <div class="card-subtitle">学生・地域住民・企業など、多様な応援者を登録し、得意分野を活かします。</div>
-                    <div class="timeline">
-                        <div class="timeline-item">
-                            <div class="timeline-icon blue"><i class="fa-solid fa-graduation-cap"></i></div>
-                            <div class="timeline-text">
-                                <h4>学生サポーター</h4>
-                                <p>ICT支援、交流プログラムなど若者のアイデアを活用。</p>
-                            </div>
-                        </div>
-                        <div class="timeline-item">
-                            <div class="timeline-icon green"><i class="fa-solid fa-building"></i></div>
-                            <div class="timeline-text">
-                                <h4>企業協賛</h4>
-                                <p>地域企業と連携し、健康や暮らしに役立つ体験イベントを共創。</p>
-                            </div>
-                        </div>
-                        <div class="timeline-item">
-                            <div class="timeline-icon orange"><i class="fa-solid fa-seedling"></i></div>
-                            <div class="timeline-text">
-                                <h4>地域住民</h4>
-                                <p>散歩・買い物同行、昔遊びなど、日常のサポートと交流を育みます。</p>
-                            </div>
-                        </div>
+                <div class="member-card">
+                    <div class="member-avatar">鈴</div>
+                    <div class="member-info">
+                        <div class="member-name">鈴木一郎</div>
+                        <div class="member-detail">090-3456-7890 | 部員</div>
+                    </div>
+                    <div class="member-actions">
+                        <button class="icon-button" onclick="showMemberDetail('鈴木一郎', '部員', '090-3456-7890', '父: 090-5555-6666', 'suzuki@example.com')">
+                            <i class="fas fa-info-circle"></i>
+                        </button>
+                        <button class="icon-button" onclick="editMember()">
+                            <i class="fas fa-edit"></i>
+                        </button>
                     </div>
                 </div>
 
-                <div class="card">
-                    <div class="card-title">4. 安全対策チェックリスト<span class="badge-warm">Safety</span></div>
-                    <div class="pill-list">
-                        <div class="pill">避難経路の共有<span>年2回の訓練</span></div>
-                        <div class="pill">AED・救急用品の確認<span>最新メンテナンス記録</span></div>
-                        <div class="pill">感染症対策計画<span>換気・消毒動線</span></div>
-                        <div class="pill">災害時連絡手順<span>家族・自治体連携</span></div>
-                    </div>
-                </div>
+                <button class="main-button" onclick="showPage('add-member')">
+                    <i class="fas fa-user-plus"></i>
+                    メンバーを追加
+                </button>
+
+                <button class="back-button" onclick="showPage('home')">
+                    <i class="fas fa-arrow-left"></i>
+                    ホームに戻る
+                </button>
             </div>
-        </section>
 
-        <section id="members" class="page">
+            <div class="bottom-nav">
+                <button class="nav-button" onclick="showPage('home')">
+                    <i class="fas fa-home"></i>
+                    <span>ホーム</span>
+                </button>
+                <button class="nav-button" onclick="showPage('events')">
+                    <i class="fas fa-calendar"></i>
+                    <span>イベント</span>
+                </button>
+                <button class="nav-button" onclick="showPage('reports')">
+                    <i class="fas fa-newspaper"></i>
+                    <span>報告</span>
+                </button>
+                <button class="nav-button" onclick="showPage('settings')">
+                    <i class="fas fa-cog"></i>
+                    <span>設定</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- メンバー追加 -->
+        <div id="add-member" class="page">
             <div class="header header-small">
-                <div class="header-title">参加者サポート</div>
-                <div class="header-subtitle">個別のストーリーに寄り添う</div>
+                <h1 class="header-title" style="font-size: 24px;">メンバー追加</h1>
             </div>
+            
             <div class="content">
-                <div class="card">
-                    <div class="card-title">ウォームリスト<span class="badge-soft">今日の気づき</span></div>
-                    <div class="list">
-                        <div class="list-item">
-                            <div class="list-item-content">
-                                <div class="list-item-title">田中 美智子 さん（78）</div>
-                                <div class="list-item-subtitle">血圧：120/76｜前回欠席→本日来所予定。玄関でのサポートを手配。</div>
-                            </div>
-                            <div class="list-badge badge-green">OK</div>
-                        </div>
-                        <div class="list-item">
-                            <div class="list-item-content">
-                                <div class="list-item-title">佐藤 義夫 さん（82）</div>
-                                <div class="list-item-subtitle">健康チェック未入力。生活支援コーディネーターが14時に電話予定。</div>
-                            </div>
-                            <div class="list-badge badge-orange">要確認</div>
-                        </div>
-                        <div class="list-item">
-                            <div class="list-item-content">
-                                <div class="list-item-title">李 春花 さん（75）</div>
-                                <div class="list-item-subtitle">最近の気分「少しさみしい」。お茶会へのお誘いメッセージを送信。</div>
-                            </div>
-                            <div class="list-badge badge-blue">ケア中</div>
-                        </div>
+                <div class="form-container">
+                    <div class="form-group">
+                        <label class="form-label">氏名<span class="required">*</span></label>
+                        <input type="text" class="form-input" placeholder="山田太郎">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">役職</label>
+                        <select class="form-select">
+                            <option>部員</option>
+                            <option>副部長</option>
+                            <option>部長</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">電話番号<span class="required">*</span></label>
+                        <input type="tel" class="form-input" placeholder="090-1234-5678">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">メールアドレス</label>
+                        <input type="email" class="form-input" placeholder="example@mail.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">緊急連絡先<span class="required">*</span></label>
+                        <input type="text" class="form-input" placeholder="保護者名">
+                        <input type="tel" class="form-input" placeholder="090-1111-2222" style="margin-top: 8px;">
+                        <p class="form-hint">保護者または緊急時の連絡先を入力してください</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">備考</label>
+                        <textarea class="form-textarea" placeholder="アレルギーや注意事項など"></textarea>
                     </div>
                 </div>
 
-                <div class="card">
-                    <div class="card-title">プロフィールビューア</div>
-                    <div class="card-subtitle">健康、生活、趣味、緊急連絡先を一枚で確認できます。</div>
-                    <div class="chip-group">
-                        <div class="chip purple"><i class="fa-solid fa-heart"></i>健康履歴</div>
-                        <div class="chip blue"><i class="fa-solid fa-book-open"></i>ライフストーリー</div>
-                        <div class="chip orange"><i class="fa-solid fa-music"></i>得意・好きなこと</div>
-                        <div class="chip pink"><i class="fa-solid fa-phone-volume"></i>家族連絡先</div>
-                    </div>
-                </div>
+                <button class="main-button" onclick="addMember()">
+                    <i class="fas fa-check"></i>
+                    メンバーを追加
+                </button>
 
-                <div class="card">
-                    <div class="card-title">ケアプラン共有</div>
-                    <div class="card-subtitle">介護保険サービスや地域支援の状況を関係者と共有し、支援が重ならないようにします。</div>
-                    <div class="timeline">
-                        <div class="timeline-item">
-                            <div class="timeline-icon blue"><i class="fa-solid fa-file-medical"></i></div>
-                            <div class="timeline-text">
-                                <h4>プランメモ</h4>
-                                <p>本人の目標や医師の指示、家族の希望を集約。</p>
-                            </div>
-                        </div>
-                        <div class="timeline-item">
-                            <div class="timeline-icon green"><i class="fa-solid fa-share-nodes"></i></div>
-                            <div class="timeline-text">
-                                <h4>共有メンバー管理</h4>
-                                <p>ケアマネジャー、地域包括、ボランティアでアクセス権限を設定。</p>
-                            </div>
-                        </div>
-                        <div class="timeline-item">
-                            <div class="timeline-icon orange"><i class="fa-solid fa-bell"></i></div>
-                            <div class="timeline-text">
-                                <h4>フォローアップ通知</h4>
-                                <p>大切な予定や服薬タイミングを自動でリマインド。</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <button class="back-button" onclick="showPage('members')">
+                    <i class="fas fa-arrow-left"></i>
+                    キャンセル
+                </button>
             </div>
-        </section>
 
-        <section id="attendance" class="page">
+            <div class="bottom-nav">
+                <button class="nav-button" onclick="showPage('home')">
+                    <i class="fas fa-home"></i>
+                    <span>ホーム</span>
+                </button>
+                <button class="nav-button" onclick="showPage('events')">
+                    <i class="fas fa-calendar"></i>
+                    <span>イベント</span>
+                </button>
+                <button class="nav-button" onclick="showPage('reports')">
+                    <i class="fas fa-newspaper"></i>
+                    <span>報告</span>
+                </button>
+                <button class="nav-button" onclick="showPage('settings')">
+                    <i class="fas fa-cog"></i>
+                    <span>設定</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- イベント管理 -->
+        <div id="events" class="page">
             <div class="header header-small">
-                <div class="header-title">出席・見守り</div>
-                <div class="header-subtitle">小さな変化をキャッチする</div>
+                <h1 class="header-title" style="font-size: 24px;">イベント管理</h1>
             </div>
+            
             <div class="content">
-                <div class="card">
-                    <div class="card-title">本日の出席状況<span class="badge-soft">Live</span></div>
-                    <div class="list">
-                        <div class="list-item">
-                            <div class="list-item-content">
-                                <div class="list-item-title">参加予定 28名</div>
-                                <div class="list-item-subtitle">来所 21｜オンライン参加 4｜体調不良連絡 2｜要フォロー 1</div>
-                            </div>
-                            <div class="list-badge badge-blue">更新 10:15</div>
+                <div class="filter-tabs">
+                    <button class="filter-tab active">すべて</button>
+                    <button class="filter-tab">定期練習</button>
+                    <button class="filter-tab">試合</button>
+                    <button class="filter-tab">特別イベント</button>
+                </div>
+
+                <div class="event-card" onclick="showPage('event-detail')">
+                    <div class="event-header">
+                        <h3 class="event-title">通常練習</h3>
+                        <span class="event-type">定期</span>
+                    </div>
+                    <div class="event-info">
+                        <div><i class="far fa-calendar"></i> 毎週火・木・土</div>
+                        <div><i class="far fa-clock"></i> 18:00 - 20:00</div>
+                        <div><i class="fas fa-map-marker-alt"></i> 市民体育館</div>
+                    </div>
+                    <div class="event-stats">
+                        <div class="event-stat">
+                            <i class="fas fa-users"></i>
+                            <span>平均参加: 18人</span>
+                        </div>
+                        <div class="event-stat">
+                            <i class="fas fa-percentage"></i>
+                            <span>出席率: 85%</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="card">
-                    <div class="card-title">健康チェックダッシュボード</div>
-                    <div class="card-subtitle">朝の入力データから、気になる兆しを自動抽出します。</div>
-                    <div class="list">
-                        <div class="list-item">
-                            <div class="list-item-content">
-                                <div class="list-item-title">安静時心拍の上昇</div>
-                                <div class="list-item-subtitle">3名に変化あり。看護師へメッセージ送信済み。</div>
-                            </div>
-                            <div class="list-badge badge-orange">注意</div>
-                        </div>
-                        <div class="list-item">
-                            <div class="list-item-content">
-                                <div class="list-item-title">活動意欲コメント</div>
-                                <div class="list-item-subtitle">「散歩に行きたい」「踊りたい」など前向きな声 12件。</div>
-                            </div>
-                            <div class="list-badge badge-green">GOOD</div>
-                        </div>
-                        <div class="list-item">
-                            <div class="list-item-content">
-                                <div class="list-item-title">睡眠時間の変化</div>
-                                <div class="list-item-subtitle">平均 5.8h → 6.4h。運動プログラムの効果をシェア。</div>
-                            </div>
-                            <div class="list-badge badge-blue">共有</div>
+                <div class="event-card">
+                    <div class="event-header">
+                        <h3 class="event-title">練習試合 vs 南高校</h3>
+                        <span class="event-type" style="background: linear-gradient(135deg, #EF4444 0%, #B91C1C 100%);">試合</span>
+                    </div>
+                    <div class="event-info">
+                        <div><i class="far fa-calendar"></i> 10月25日(金)</div>
+                        <div><i class="far fa-clock"></i> 16:00 - 18:00</div>
+                        <div><i class="fas fa-map-marker-alt"></i> 南高校体育館</div>
+                    </div>
+                    <div class="event-stats">
+                        <div class="event-stat">
+                            <i class="fas fa-check-circle"></i>
+                            <span>参加予定: 15人</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="card">
-                    <div class="card-title">安心サポート記録</div>
-                    <div class="card-subtitle">送迎や付き添いが必要な方をタスク化し、スタッフ間で引き継ぎます。</div>
-                    <div class="timeline">
-                        <div class="timeline-item">
-                            <div class="timeline-icon blue"><i class="fa-solid fa-van-shuttle"></i></div>
-                            <div class="timeline-text">
-                                <h4>送迎サポート</h4>
-                                <p>午後の創作教室：上田さん宅へ14:00迎え。ボランティアの山本さんが担当。</p>
-                            </div>
-                        </div>
-                        <div class="timeline-item">
-                            <div class="timeline-icon green"><i class="fa-solid fa-walkie-talkie"></i></div>
-                            <div class="timeline-text">
-                                <h4>巡回見守り</h4>
-                                <p>体調不良の連絡があった方へ電話。状況記録と連絡先に自動共有。</p>
-                            </div>
-                        </div>
-                        <div class="timeline-item">
-                            <div class="timeline-icon orange"><i class="fa-solid fa-mug-hot"></i></div>
-                            <div class="timeline-text">
-                                <h4>休憩サポート</h4>
-                                <p>水分補給や休憩スペースの案内を通知。熱中症警戒時に全員へ配信。</p>
-                            </div>
+                <div class="event-card">
+                    <div class="event-header">
+                        <h3 class="event-title">保護者参観日</h3>
+                        <span class="event-type" style="background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);">特別</span>
+                    </div>
+                    <div class="event-info">
+                        <div><i class="far fa-calendar"></i> 11月3日(日)</div>
+                        <div><i class="far fa-clock"></i> 10:00 - 12:00</div>
+                        <div><i class="fas fa-map-marker-alt"></i> 市民体育館</div>
+                    </div>
+                    <div class="event-stats">
+                        <div class="event-stat">
+                            <i class="fas fa-users"></i>
+                            <span>参加予定: 20人</span>
                         </div>
                     </div>
                 </div>
+
+                <button class="main-button" onclick="showPage('add-event')">
+                    <i class="fas fa-plus"></i>
+                    イベントを追加
+                </button>
+
+                <button class="back-button" onclick="showPage('home')">
+                    <i class="fas fa-arrow-left"></i>
+                    ホームに戻る
+                </button>
             </div>
-        </section>
 
-        <section id="communication" class="page">
+            <div class="bottom-nav">
+                <button class="nav-button" onclick="showPage('home')">
+                    <i class="fas fa-home"></i>
+                    <span>ホーム</span>
+                </button>
+                <button class="nav-button active" onclick="showPage('events')">
+                    <i class="fas fa-calendar"></i>
+                    <span>イベント</span>
+                </button>
+                <button class="nav-button" onclick="showPage('reports')">
+                    <i class="fas fa-newspaper"></i>
+                    <span>報告</span>
+                </button>
+                <button class="nav-button" onclick="showPage('settings')">
+                    <i class="fas fa-cog"></i>
+                    <span>設定</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- イベント追加 -->
+        <div id="add-event" class="page">
             <div class="header header-small">
-                <div class="header-title">連絡・緊急対応</div>
-                <div class="header-subtitle">安心の情報共有ネットワーク</div>
+                <h1 class="header-title" style="font-size: 24px;">イベント追加</h1>
             </div>
+            
             <div class="content">
-                <div class="card">
-                    <div class="card-title">本日のお知らせテンプレート</div>
-                    <div class="card-subtitle">イベント案内・健康情報・お礼メッセージをワンタップ送信。</div>
-                    <div class="list">
-                        <div class="list-item">
-                            <div class="list-item-content">
-                                <div class="list-item-title">朝のリマインド</div>
-                                <div class="list-item-subtitle">集合時間、持ち物、服装などを共有。翻訳機能付き。</div>
-                            </div>
-                            <div class="list-badge badge-blue">送信済</div>
-                        </div>
-                        <div class="list-item">
-                            <div class="list-item-content">
-                                <div class="list-item-title">ありがとうメッセージ</div>
-                                <div class="list-item-subtitle">ボランティアへの感謝や参加者の活躍を紹介。</div>
-                            </div>
-                            <div class="list-badge badge-green">下書き</div>
-                        </div>
-                        <div class="list-item">
-                            <div class="list-item-content">
-                                <div class="list-item-title">健康アラート共有</div>
-                                <div class="list-item-subtitle">熱中症警戒情報など外部データとも連携。</div>
-                            </div>
-                            <div class="list-badge badge-orange">準備中</div>
-                        </div>
+                <div class="form-container">
+                    <div class="form-group">
+                        <label class="form-label">イベント名<span class="required">*</span></label>
+                        <input type="text" class="form-input" placeholder="例: 通常練習">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">種類<span class="required">*</span></label>
+                        <select class="form-select">
+                            <option>定期練習</option>
+                            <option>試合</option>
+                            <option>特別イベント</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">日時<span class="required">*</span></label>
+                        <input type="date" class="form-input">
+                        <input type="time" class="form-input" style="margin-top: 8px;" placeholder="開始時刻">
+                        <input type="time" class="form-input" style="margin-top: 8px;" placeholder="終了時刻">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">場所<span class="required">*</span></label>
+                        <input type="text" class="form-input" placeholder="例: 市民体育館">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">詳細</label>
+                        <textarea class="form-textarea" placeholder="イベントの詳細説明"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">定期イベント</label>
+                        <select class="form-select">
+                            <option>単発イベント</option>
+                            <option>毎週</option>
+                            <option>隔週</option>
+                            <option>毎月</option>
+                        </select>
                     </div>
                 </div>
 
-                <div class="card">
-                    <div class="card-title">緊急連絡先ハブ<span class="badge-warm">SOS</span></div>
-                    <div class="card-subtitle">家族・医療・自治体の連絡体制を可視化。タップで即時発信できます。</div>
-                    <div class="chip-group">
-                        <div class="chip pink"><i class="fa-solid fa-user-plus"></i>家族・キーパーソン</div>
-                        <div class="chip blue"><i class="fa-solid fa-hospital"></i>医療機関</div>
-                        <div class="chip green"><i class="fa-solid fa-shield-heart"></i>地域包括支援</div>
-                        <div class="chip orange"><i class="fa-solid fa-fire-extinguisher"></i>消防・警察</div>
-                    </div>
-                </div>
+                <button class="main-button" onclick="addEvent()">
+                    <i class="fas fa-check"></i>
+                    イベントを追加
+                </button>
 
-                <div class="card">
-                    <div class="card-title">連絡履歴タイムライン</div>
-                    <div class="timeline">
-                        <div class="timeline-item">
-                            <div class="timeline-icon blue"><i class="fa-solid fa-bullhorn"></i></div>
-                            <div class="timeline-text">
-                                <h4>2024/03/18 09:05 安否確認</h4>
-                                <p>地震後の一斉安否確認。全員応答完了。</p>
-                            </div>
-                        </div>
-                        <div class="timeline-item">
-                            <div class="timeline-icon green"><i class="fa-solid fa-hands-praying"></i></div>
-                            <div class="timeline-text">
-                                <h4>2024/03/17 18:40 お礼メッセージ</h4>
-                                <p>健康フェスタ協力者へ感謝の写真とメッセージを共有。</p>
-                            </div>
-                        </div>
-                        <div class="timeline-item">
-                            <div class="timeline-icon orange"><i class="fa-solid fa-triangle-exclamation"></i></div>
-                            <div class="timeline-text">
-                                <h4>2024/03/16 12:10 熱中症アラート</h4>
-                                <p>高温注意情報を受け、屋外活動を屋内に変更した記録。</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <button class="back-button" onclick="showPage('events')">
+                    <i class="fas fa-arrow-left"></i>
+                    キャンセル
+                </button>
             </div>
-        </section>
 
-        <section id="insights" class="page">
+            <div class="bottom-nav">
+                <button class="nav-button" onclick="showPage('home')">
+                    <i class="fas fa-home"></i>
+                    <span>ホーム</span>
+                </button>
+                <button class="nav-button active" onclick="showPage('events')">
+                    <i class="fas fa-calendar"></i>
+                    <span>イベント</span>
+                </button>
+                <button class="nav-button" onclick="showPage('reports')">
+                    <i class="fas fa-newspaper"></i>
+                    <span>報告</span>
+                </button>
+                <button class="nav-button" onclick="showPage('settings')">
+                    <i class="fas fa-cog"></i>
+                    <span>設定</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- イベント詳細 -->
+        <div id="event-detail" class="page">
             <div class="header header-small">
-                <div class="header-title">活動レポート</div>
-                <div class="header-subtitle">感謝と成果を見える化</div>
+                <h1 class="header-title" style="font-size: 24px;">通常練習</h1>
+                <p class="header-subtitle">定期イベント</p>
             </div>
+            
             <div class="content">
-                <div class="card">
-                    <div class="card-title">ありがとう指標<span class="badge-soft">Monthly</span></div>
-                    <div class="card-subtitle">参加者・家族・ボランティアから届いた「ありがとう」を数と声で振り返ります。</div>
-                    <div class="list">
-                        <div class="list-item">
-                            <div class="list-item-content">
-                                <div class="list-item-title">感謝メッセージ 86件</div>
-                                <div class="list-item-subtitle">「散歩に付き添ってくれて安心した」などホットな声。</div>
-                            </div>
-                            <div class="list-badge badge-rose">+18%</div>
-                        </div>
-                        <div class="list-item">
-                            <div class="list-item-content">
-                                <div class="list-item-title">新しい参加 12名</div>
-                                <div class="list-item-subtitle">健康チェックを入口とした紹介で参加が増加。</div>
-                            </div>
-                            <div class="list-badge badge-green">+4</div>
-                        </div>
-                        <div class="list-item">
-                            <div class="list-item-content">
-                                <div class="list-item-title">医療・介護連携 24件</div>
-                                <div class="list-item-subtitle">訪問看護・リハビリ等の連携実績。</div>
-                            </div>
-                            <div class="list-badge badge-blue">共有済</div>
+                <div class="form-container">
+                    <div class="form-group">
+                        <label class="form-label">開催情報</label>
+                        <div style="padding: 14px; background: #f5f7fa; border-radius: 12px; font-size: 15px; line-height: 1.8;">
+                            <div><i class="far fa-calendar"></i> 毎週火・木・土</div>
+                            <div><i class="far fa-clock"></i> 18:00 - 20:00</div>
+                            <div><i class="fas fa-map-marker-alt"></i> 市民体育館</div>
                         </div>
                     </div>
                 </div>
 
-                <div class="card">
-                    <div class="card-title">活動レコメンド</div>
-                    <div class="card-subtitle">データからおすすめの次アクションを提示します。</div>
-                    <div class="timeline">
-                        <div class="timeline-item">
-                            <div class="timeline-icon blue"><i class="fa-solid fa-person-walking"></i></div>
-                            <div class="timeline-text">
-                                <h4>歩行サークルの強化</h4>
-                                <p>「運動したい」の声が増加。週2回→週3回へ拡充提案。</p>
-                            </div>
+                <div class="section-header">
+                    <h3 class="section-title">最近の出席</h3>
+                </div>
+
+                <div class="list-item">
+                    <div class="list-item-header">
+                        <h3 class="list-item-title">10月17日(木)</h3>
+                        <span class="list-item-badge">完了</span>
+                    </div>
+                    <div class="list-item-meta">
+                        <div class="list-item-meta-item">
+                            <i class="fas fa-check-circle" style="color: #10B981;"></i>
+                            <span>出席: 18人</span>
                         </div>
-                        <div class="timeline-item">
-                            <div class="timeline-icon green"><i class="fa-solid fa-seedling"></i></div>
-                            <div class="timeline-text">
-                                <h4>地域菜園プロジェクト</h4>
-                                <p>食生活改善と交流を兼ねた屋外活動。高校との連携案。</p>
-                            </div>
-                        </div>
-                        <div class="timeline-item">
-                            <div class="timeline-icon orange"><i class="fa-solid fa-gift"></i></div>
-                            <div class="timeline-text">
-                                <h4>誕生日サプライズキット</h4>
-                                <p>誕生日の参加者へ、メッセージカードと地域のお菓子を自動準備。</p>
-                            </div>
+                        <div class="list-item-meta-item">
+                            <i class="fas fa-times-circle" style="color: #EF4444;"></i>
+                            <span>欠席: 3人</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="card">
-                    <div class="card-title">自治体・企業向けレポート出力</div>
-                    <div class="card-subtitle">日向市のビジョン「健康」「ありがとう」「生きがい」に沿って、成果を共有します。</div>
-                    <div class="pill-list">
-                        <div class="pill">健康：平均歩数 +18%<span>バイタル連携／運動プログラム</span></div>
-                        <div class="pill">ありがとう：感謝ストーリー 24件<span>写真・コメント付き</span></div>
-                        <div class="pill">生きがい：新しい挑戦 6件<span>学び・趣味・地域貢献</span></div>
-                        <div class="pill">安心：緊急対応時間 12分<span>連絡網シミュレーション結果</span></div>
+                <div class="list-item" onclick="showPage('take-attendance')">
+                    <div class="list-item-header">
+                        <h3 class="list-item-title">10月19日(土)</h3>
+                        <span class="list-item-badge" style="background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);">今日</span>
+                    </div>
+                    <div class="list-item-info">
+                        タップして出席を記録
                     </div>
                 </div>
-            </div>
-        </section>
 
-        <nav class="bottom-nav">
-            <div class="nav-item active" data-target="dashboard">
-                <i class="fa-solid fa-house"></i>
-                <span>ホーム</span>
+                <button class="main-button" onclick="showPage('take-attendance')">
+                    <i class="fas fa-clipboard-check"></i>
+                    今日の出席を記録
+                </button>
+
+                <button class="back-button" onclick="showPage('events')">
+                    <i class="fas fa-arrow-left"></i>
+                    イベント一覧に戻る
+                </button>
             </div>
-            <div class="nav-item" data-target="community">
-                <i class="fa-solid fa-handshake"></i>
-                <span>登録</span>
+
+            <div class="bottom-nav">
+                <button class="nav-button" onclick="showPage('home')">
+                    <i class="fas fa-home"></i>
+                    <span>ホーム</span>
+                </button>
+                <button class="nav-button active" onclick="showPage('events')">
+                    <i class="fas fa-calendar"></i>
+                    <span>イベント</span>
+                </button>
+                <button class="nav-button" onclick="showPage('reports')">
+                    <i class="fas fa-newspaper"></i>
+                    <span>報告</span>
+                </button>
+                <button class="nav-button" onclick="showPage('settings')">
+                    <i class="fas fa-cog"></i>
+                    <span>設定</span>
+                </button>
             </div>
-            <div class="nav-item" data-target="members">
-                <i class="fa-solid fa-user-group"></i>
-                <span>参加者</span>
+        </div>
+
+        <!-- 出席記録 -->
+        <div id="take-attendance" class="page">
+            <div class="header header-small">
+                <h1 class="header-title" style="font-size: 24px;">出席記録</h1>
+                <p class="header-subtitle">10月19日(土) 通常練習</p>
             </div>
-            <div class="nav-item" data-target="communication">
-                <i class="fa-solid fa-comments"></i>
-                <span>連絡</span>
+            
+            <div class="content">
+                <div class="attendance-list">
+                    <div class="attendance-item">
+                        <div class="attendance-name">山田太郎</div>
+                        <div class="attendance-buttons">
+                            <button class="attendance-button present" onclick="toggleAttendance(this, 'present')">出席</button>
+                            <button class="attendance-button" onclick="toggleAttendance(this, 'absent')">欠席</button>
+                        </div>
+                    </div>
+                    <div class="attendance-item">
+                        <div class="attendance-name">佐藤花子</div>
+                        <div class="attendance-buttons">
+                            <button class="attendance-button present" onclick="toggleAttendance(this, 'present')">出席</button>
+                            <button class="attendance-button" onclick="toggleAttendance(this, 'absent')">欠席</button>
+                        </div>
+                    </div>
+                    <div class="attendance-item">
+                        <div class="attendance-name">鈴木一郎</div>
+                        <div class="attendance-buttons">
+                            <button class="attendance-button" onclick="toggleAttendance(this, 'present')">出席</button>
+                            <button class="attendance-button absent" onclick="toggleAttendance(this, 'absent')">欠席</button>
+                        </div>
+                    </div>
+                    <div class="attendance-item">
+                        <div class="attendance-name">田中美咲</div>
+                        <div class="attendance-buttons">
+                            <button class="attendance-button present" onclick="toggleAttendance(this, 'present')">出席</button>
+                            <button class="attendance-button" onclick="toggleAttendance(this, 'absent')">欠席</button>
+                        </div>
+                    </div>
+                    <div class="attendance-item">
+                        <div class="attendance-name">伊藤健太</div>
+                        <div class="attendance-buttons">
+                            <button class="attendance-button present" onclick="toggleAttendance(this, 'present')">出席</button>
+                            <button class="attendance-button" onclick="toggleAttendance(this, 'absent')">欠席</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-container">
+                    <div style="display: flex; justify-content: space-around; padding: 12px 0;">
+                        <div style="text-align: center;">
+                            <div style="font-size: 24px; font-weight: 700; color: #10B981;">4</div>
+                            <div style="font-size: 13px; color: #888;">出席</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 24px; font-weight: 700; color: #EF4444;">1</div>
+                            <div style="font-size: 13px; color: #888;">欠席</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 24px; font-weight: 700; color: #888;">19</div>
+                            <div style="font-size: 13px; color: #888;">未記録</div>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="main-button" onclick="saveAttendance()">
+                    <i class="fas fa-check"></i>
+                    出席記録を保存
+                </button>
+
+                <button class="back-button" onclick="showPage('event-detail')">
+                    <i class="fas fa-arrow-left"></i>
+                    キャンセル
+                </button>
             </div>
-        </nav>
+
+            <div class="bottom-nav">
+                <button class="nav-button" onclick="showPage('home')">
+                    <i class="fas fa-home"></i>
+                    <span>ホーム</span>
+                </button>
+                <button class="nav-button active" onclick="showPage('events')">
+                    <i class="fas fa-calendar"></i>
+                    <span>イベント</span>
+                </button>
+                <button class="nav-button" onclick="showPage('reports')">
+                    <i class="fas fa-newspaper"></i>
+                    <span>報告</span>
+                </button>
+                <button class="nav-button" onclick="showPage('settings')">
+                    <i class="fas fa-cog"></i>
+                    <span>設定</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- 活動報告 -->
+        <div id="reports" class="page">
+            <div class="header header-small">
+                <h1 class="header-title" style="font-size: 24px;">活動報告</h1>
+            </div>
+            
+            <div class="content">
+                <div class="report-card">
+                    <div class="report-image">
+                        <i class="fas fa-basketball-ball"></i>
+                    </div>
+                    <div class="report-header">
+                        <div class="report-date">2024年10月17日</div>
+                    </div>
+                    <div class="report-content">
+                        今日の練習は3対3のゲーム形式で行いました。新入部員も積極的にプレーに参加してくれて、とても良い雰囲気でした！来週の練習試合に向けて、さらにチームワークを高めていきましょう。
+                    </div>
+                    <div class="report-stats">
+                        <span><i class="fas fa-users"></i> 参加: 18人</span>
+                    </div>
+                </div>
+
+                <div class="report-card">
+                    <div class="report-image">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <div class="report-header">
+                        <div class="report-date">2024年10月15日</div>
+                    </div>
+                    <div class="report-content">
+                        市内大会の予選が終了しました。結果は準優勝！全員が最後まで全力でプレーし、素晴らしいチームワークを見せてくれました。次は県大会に向けて頑張りましょう！
+                    </div>
+                    <div class="report-stats">
+                        <span><i class="fas fa-users"></i> 参加: 15人</span>
+                    </div>
+                </div>
+
+                <button class="main-button" onclick="showPage('add-report')">
+                    <i class="fas fa-plus"></i>
+                    活動報告を投稿
+                </button>
+
+                <button class="back-button" onclick="showPage('home')">
+                    <i class="fas fa-arrow-left"></i>
+                    ホームに戻る
+                </button>
+            </div>
+
+            <div class="bottom-nav">
+                <button class="nav-button" onclick="showPage('home')">
+                    <i class="fas fa-home"></i>
+                    <span>ホーム</span>
+                </button>
+                <button class="nav-button" onclick="showPage('events')">
+                    <i class="fas fa-calendar"></i>
+                    <span>イベント</span>
+                </button>
+                <button class="nav-button active" onclick="showPage('reports')">
+                    <i class="fas fa-newspaper"></i>
+                    <span>報告</span>
+                </button>
+                <button class="nav-button" onclick="showPage('settings')">
+                    <i class="fas fa-cog"></i>
+                    <span>設定</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- 活動報告投稿 -->
+        <div id="add-report" class="page">
+            <div class="header header-small">
+                <h1 class="header-title" style="font-size: 24px;">活動報告投稿</h1>
+            </div>
+            
+            <div class="content">
+                <div class="form-container">
+                    <div class="form-group">
+                        <label class="form-label">写真</label>
+                        <div class="image-upload" onclick="uploadImage()">
+                            <i class="fas fa-camera"></i>
+                            <p class="image-upload-text">タップして写真を追加</p>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">報告内容<span class="required">*</span></label>
+                        <textarea class="form-textarea" placeholder="今日の活動内容を記入してください" style="min-height: 150px;"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">関連イベント</label>
+                        <select class="form-select">
+                            <option>選択してください</option>
+                            <option>通常練習 (10/19)</option>
+                            <option>練習試合 vs 南高校 (10/25)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">参加人数</label>
+                        <input type="number" class="form-input" placeholder="18">
+                    </div>
+                </div>
+
+                <button class="main-button" onclick="addReport()">
+                    <i class="fas fa-paper-plane"></i>
+                    投稿する
+                </button>
+
+                <button class="back-button" onclick="showPage('reports')">
+                    <i class="fas fa-arrow-left"></i>
+                    キャンセル
+                </button>
+            </div>
+
+            <div class="bottom-nav">
+                <button class="nav-button" onclick="showPage('home')">
+                    <i class="fas fa-home"></i>
+                    <span>ホーム</span>
+                </button>
+                <button class="nav-button" onclick="showPage('events')">
+                    <i class="fas fa-calendar"></i>
+                    <span>イベント</span>
+                </button>
+                <button class="nav-button active" onclick="showPage('reports')">
+                    <i class="fas fa-newspaper"></i>
+                    <span>報告</span>
+                </button>
+                <button class="nav-button" onclick="showPage('settings')">
+                    <i class="fas fa-cog"></i>
+                    <span>設定</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- 連絡・通知 -->
+        <div id="notifications" class="page">
+            <div class="header header-small">
+                <h1 class="header-title" style="font-size: 24px;">連絡・通知</h1>
+            </div>
+            
+            <div class="content">
+                <div class="notification-card">
+                    <div class="notification-header">
+                        <div class="notification-title">練習試合のお知らせ</div>
+                        <div class="notification-time">10/18 送信</div>
+                    </div>
+                    <div class="notification-content">
+                        10月25日(金)16:00より、南高校との練習試合を行います。参加可能な方は10月22日までに連絡をお願いします。
+                    </div>
+                </div>
+
+                <div class="notification-card">
+                    <div class="notification-header">
+                        <div class="notification-title">体育館利用について</div>
+                        <div class="notification-time">10/15 送信</div>
+                    </div>
+                    <div class="notification-content">
+                        来週10月24日(木)は体育館の改修工事のため、練習は中止となります。ご了承ください。
+                    </div>
+                </div>
+
+                <button class="main-button" onclick="showPage('send-notification')">
+                    <i class="fas fa-paper-plane"></i>
+                    新しい連絡を送信
+                </button>
+
+                <button class="back-button" onclick="showPage('home')">
+                    <i class="fas fa-arrow-left"></i>
+                    ホームに戻る
+                </button>
+            </div>
+
+            <div class="bottom-nav">
+                <button class="nav-button" onclick="showPage('home')">
+                    <i class="fas fa-home"></i>
+                    <span>ホーム</span>
+                </button>
+                <button class="nav-button" onclick="showPage('events')">
+                    <i class="fas fa-calendar"></i>
+                    <span>イベント</span>
+                </button>
+                <button class="nav-button" onclick="showPage('reports')">
+                    <i class="fas fa-newspaper"></i>
+                    <span>報告</span>
+                </button>
+                <button class="nav-button" onclick="showPage('settings')">
+                    <i class="fas fa-cog"></i>
+                    <span>設定</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- 連絡送信 -->
+        <div id="send-notification" class="page">
+            <div class="header header-small">
+                <h1 class="header-title" style="font-size: 24px;">連絡送信</h1>
+            </div>
+            
+            <div class="content">
+                <div class="form-container">
+                    <div class="form-group">
+                        <label class="form-label">件名<span class="required">*</span></label>
+                        <input type="text" class="form-input" placeholder="例: 練習試合のお知らせ">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">本文<span class="required">*</span></label>
+                        <textarea class="form-textarea" placeholder="メンバーへの連絡内容を記入してください" style="min-height: 200px;"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">送信先</label>
+                        <select class="form-select">
+                            <option>全メンバー (24名)</option>
+                            <option>部長・副部長のみ</option>
+                            <option>個別選択...</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">送信方法</label>
+                        <div style="display: flex; gap: 8px;">
+                            <label style="flex: 1; padding: 12px; border: 2px solid #e0e0e0; border-radius: 12px; cursor: pointer; text-align: center;">
+                                <input type="checkbox" checked style="margin-right: 6px;">
+                                アプリ通知
+                            </label>
+                            <label style="flex: 1; padding: 12px; border: 2px solid #e0e0e0; border-radius: 12px; cursor: pointer; text-align: center;">
+                                <input type="checkbox" style="margin-right: 6px;">
+                                メール
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="main-button" onclick="sendNotification()">
+                    <i class="fas fa-paper-plane"></i>
+                    送信する
+                </button>
+
+                <button class="back-button" onclick="showPage('notifications')">
+                    <i class="fas fa-arrow-left"></i>
+                    キャンセル
+                </button>
+            </div>
+
+            <div class="bottom-nav">
+                <button class="nav-button" onclick="showPage('home')">
+                    <i class="fas fa-home"></i>
+                    <span>ホーム</span>
+                </button>
+                <button class="nav-button" onclick="showPage('events')">
+                    <i class="fas fa-calendar"></i>
+                    <span>イベント</span>
+                </button>
+                <button class="nav-button" onclick="showPage('reports')">
+                    <i class="fas fa-newspaper"></i>
+                    <span>報告</span>
+                </button>
+                <button class="nav-button" onclick="showPage('settings')">
+                    <i class="fas fa-cog"></i>
+                    <span>設定</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- 統計・分析 -->
+        <div id="analytics" class="page">
+            <div class="header header-small">
+                <h1 class="header-title" style="font-size: 24px;">統計・分析</h1>
+                <p class="header-subtitle">2024年10月</p>
+            </div>
+            
+            <div class="content">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div class="stat-value">87%</div>
+                        <div class="stat-label">平均出席率</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-calendar"></i>
+                        </div>
+                        <div class="stat-value">12</div>
+                        <div class="stat-label">開催イベント</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-user-check"></i>
+                        </div>
+                        <div class="stat-value">21</div>
+                        <div class="stat-label">アクティブ</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="stat-value">+5%</div>
+                        <div class="stat-label">前月比</div>
+                    </div>
+                </div>
+
+                <div class="section-header">
+                    <h3 class="section-title">出席率トップ5</h3>
+                </div>
+
+                <div class="member-card">
+                    <div class="member-avatar">山</div>
+                    <div class="member-info">
+                        <div class="member-name">山田太郎</div>
+                        <div class="member-detail">出席: 12/12回</div>
+                    </div>
+                    <div style="font-size: 24px; font-weight: 700; color: #10B981;">100%</div>
+                </div>
+
+                <div class="member-card">
+                    <div class="member-avatar">佐</div>
+                    <div class="member-info">
+                        <div class="member-name">佐藤花子</div>
+                        <div class="member-detail">出席: 11/12回</div>
+                    </div>
+                    <div style="font-size: 24px; font-weight: 700; color: #10B981;">92%</div>
+                </div>
+
+                <div class="member-card">
+                    <div class="member-avatar">田</div>
+                    <div class="member-info">
+                        <div class="member-name">田中美咲</div>
+                        <div class="member-detail">出席: 11/12回</div>
+                    </div>
+                    <div style="font-size: 24px; font-weight: 700; color: #10B981;">92%</div>
+                </div>
+
+                <div class="section-header" style="margin-top: 24px;">
+                    <h3 class="section-title">イベント別出席率</h3>
+                </div>
+
+                <div class="list-item">
+                    <div class="list-item-header">
+                        <h3 class="list-item-title">通常練習</h3>
+                    </div>
+                    <div class="list-item-meta">
+                        <div class="list-item-meta-item">
+                            <i class="fas fa-percentage"></i>
+                            <span>出席率: 85%</span>
+                        </div>
+                        <div class="list-item-meta-item">
+                            <i class="fas fa-calendar"></i>
+                            <span>開催: 9回</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="list-item">
+                    <div class="list-item-header">
+                        <h3 class="list-item-title">練習試合</h3>
+                    </div>
+                    <div class="list-item-meta">
+                        <div class="list-item-meta-item">
+                            <i class="fas fa-percentage"></i>
+                            <span>出席率: 92%</span>
+                        </div>
+                        <div class="list-item-meta-item">
+                            <i class="fas fa-calendar"></i>
+                            <span>開催: 2回</span>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="back-button" onclick="showPage('home')">
+                    <i class="fas fa-arrow-left"></i>
+                    ホームに戻る
+                </button>
+            </div>
+
+            <div class="bottom-nav">
+                <button class="nav-button" onclick="showPage('home')">
+                    <i class="fas fa-home"></i>
+                    <span>ホーム</span>
+                </button>
+                <button class="nav-button" onclick="showPage('events')">
+                    <i class="fas fa-calendar"></i>
+                    <span>イベント</span>
+                </button>
+                <button class="nav-button" onclick="showPage('reports')">
+                    <i class="fas fa-newspaper"></i>
+                    <span>報告</span>
+                </button>
+                <button class="nav-button" onclick="showPage('settings')">
+                    <i class="fas fa-cog"></i>
+                    <span>設定</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- 設定 -->
+        <div id="settings" class="page">
+            <div class="header header-small">
+                <h1 class="header-title" style="font-size: 24px;">設定</h1>
+            </div>
+            
+            <div class="content">
+                <div class="menu-card">
+                    <div class="card-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="card-title">コミュニティ情報</h3>
+                    <p class="card-description">
+                        部活動名・活動内容の編集
+                    </p>
+                </div>
+
+                <div class="menu-card">
+                    <div class="card-icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h3 class="card-title">アカウント情報</h3>
+                    <p class="card-description">
+                        メールアドレス・パスワード変更
+                    </p>
+                </div>
+
+                <div class="menu-card" onclick="showPage('change-password')">
+                    <div class="card-icon">
+                        <i class="fas fa-key"></i>
+                    </div>
+                    <h3 class="card-title">パスワード変更</h3>
+                    <p class="card-description">
+                        セキュリティのため定期的に変更
+                    </p>
+                </div>
+
+                <div class="menu-card">
+                    <div class="card-icon">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <h3 class="card-title">通知設定</h3>
+                    <p class="card-description">
+                        プッシュ通知・メール通知の設定
+                    </p>
+                </div>
+
+                <div class="menu-card">
+                    <div class="card-icon">
+                        <i class="fas fa-question-circle"></i>
+                    </div>
+                    <h3 class="card-title">ヘルプ</h3>
+                    <p class="card-description">
+                        使い方・よくある質問
+                    </p>
+                </div>
+
+                <button class="back-button" onclick="showPage('home')">
+                    <i class="fas fa-arrow-left"></i>
+                    ホームに戻る
+                </button>
+            </div>
+
+            <div class="bottom-nav">
+                <button class="nav-button" onclick="showPage('home')">
+                    <i class="fas fa-home"></i>
+                    <span>ホーム</span>
+                </button>
+                <button class="nav-button" onclick="showPage('events')">
+                    <i class="fas fa-calendar"></i>
+                    <span>イベント</span>
+                </button>
+                <button class="nav-button" onclick="showPage('reports')">
+                    <i class="fas fa-newspaper"></i>
+                    <span>報告</span>
+                </button>
+                <button class="nav-button active" onclick="showPage('settings')">
+                    <i class="fas fa-cog"></i>
+                    <span>設定</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- パスワード変更 -->
+        <div id="change-password" class="page">
+            <div class="header header-small">
+                <h1 class="header-title" style="font-size: 24px;">パスワード変更</h1>
+            </div>
+            
+            <div class="content">
+                <div class="form-container">
+                    <div class="form-group">
+                        <label class="form-label">現在のパスワード<span class="required">*</span></label>
+                        <input type="password" class="form-input" placeholder="現在のパスワードを入力">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">新しいパスワード<span class="required">*</span></label>
+                        <input type="password" class="form-input" placeholder="新しいパスワードを入力">
+                        <p class="form-hint">8文字以上、英数字を含めてください</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">新しいパスワード（確認）<span class="required">*</span></label>
+                        <input type="password" class="form-input" placeholder="もう一度入力してください">
+                    </div>
+                </div>
+
+                <button class="main-button" onclick="changePassword()">
+                    <i class="fas fa-check"></i>
+                    パスワードを変更
+                </button>
+
+                <button class="back-button" onclick="showPage('settings')">
+                    <i class="fas fa-arrow-left"></i>
+                    キャンセル
+                </button>
+            </div>
+
+            <div class="bottom-nav">
+                <button class="nav-button" onclick="showPage('home')">
+                    <i class="fas fa-home"></i>
+                    <span>ホーム</span>
+                </button>
+                <button class="nav-button" onclick="showPage('events')">
+                    <i class="fas fa-calendar"></i>
+                    <span>イベント</span>
+                </button>
+                <button class="nav-button" onclick="showPage('reports')">
+                    <i class="fas fa-newspaper"></i>
+                    <span>報告</span>
+                </button>
+                <button class="nav-button active" onclick="showPage('settings')">
+                    <i class="fas fa-cog"></i>
+                    <span>設定</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- メンバー詳細モーダル -->
+        <div id="member-modal" class="modal">
+            <div class="modal-content">
+                <h2 class="modal-title" id="modal-member-name">山田太郎</h2>
+                
+                <div class="form-group">
+                    <label class="form-label">役職</label>
+                    <div style="padding: 14px; background: #f5f7fa; border-radius: 12px; font-size: 16px;" id="modal-member-role">
+                        部長
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">本人連絡先</label>
+                    <div style="padding: 14px; background: #f5f7fa; border-radius: 12px; font-size: 16px;" id="modal-member-phone">
+                        090-1234-5678
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">メールアドレス</label>
+                    <div style="padding: 14px; background: #f5f7fa; border-radius: 12px; font-size: 16px;" id="modal-member-email">
+                        yamada@example.com
+                    </div>
+                </div>
+
+                <div class="emergency-contact">
+                    <div class="emergency-label">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        緊急連絡先
+                    </div>
+                    <div class="emergency-info" id="modal-emergency-contact">
+                        父: 090-1111-2222
+                    </div>
+                </div>
+
+                <button class="phone-button" onclick="makeCall()">
+                    <i class="fas fa-phone"></i>
+                    緊急連絡先に電話
+                </button>
+
+                <button class="back-button" onclick="closeModal()">
+                    閉じる
+                </button>
+            </div>
+        </div>
+
+        <!-- 完了モーダル -->
+        <div id="complete-modal" class="modal">
+            <div class="modal-content">
+                <div style="text-align: center;">
+                    <div class="complete-icon" style="margin: 20px auto;">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <h2 class="complete-title" id="complete-modal-title">完了しました</h2>
+                    <p class="complete-text" id="complete-modal-text">
+                        処理が正常に完了しました
+                    </p>
+                    <button class="main-button" onclick="closeCompleteModal()">
+                        OK
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
 
-<div class="floating-button" data-target="attendance">
-    <i class="fa-solid fa-chart-simple"></i>
-    <span>今日の状況</span>
-</div>
+    <script>
+        // ページ切り替え
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
 
-<script>
-    const menuCards = document.querySelectorAll('.menu-card');
-    const navItems = document.querySelectorAll('.nav-item');
-    const floatingButton = document.querySelector('.floating-button');
-    const pages = document.querySelectorAll('.page');
+            // スクロール位置をリセット
+            const content = document.getElementById(pageId).querySelector('.content');
+            if (content) {
+                content.scrollTop = 0;
+            }
+        }
 
-    function showPage(id) {
-        pages.forEach(page => {
-            page.classList.toggle('active', page.id === id);
+        // ログイン
+        function login() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            if (!email || !password) {
+                alert('メールアドレスとパスワードを入力してください');
+                return;
+            }
+
+            // 実際のアプリではここで認証処理
+            console.log('ログイン:', { email, password });
+            showPage('home');
+        }
+
+        // ログアウト
+        function logout() {
+            if (confirm('ログアウトしますか？')) {
+                showPage('login');
+            }
+        }
+
+        // メンバー詳細表示
+        function showMemberDetail(name, role, phone, emergency, email) {
+            document.getElementById('modal-member-name').textContent = name;
+            document.getElementById('modal-member-role').textContent = role;
+            document.getElementById('modal-member-phone').textContent = phone;
+            document.getElementById('modal-member-email').textContent = email;
+            document.getElementById('modal-emergency-contact').textContent = emergency;
+            document.getElementById('member-modal').classList.add('active');
+        }
+
+        // モーダルを閉じる
+        function closeModal() {
+            document.getElementById('member-modal').classList.remove('active');
+        }
+
+        // 完了モーダルを閉じる
+        function closeCompleteModal() {
+            document.getElementById('complete-modal').classList.remove('active');
+        }
+
+        // 完了モーダルを表示
+        function showCompleteModal(title, text, returnPage) {
+            document.getElementById('complete-modal-title').textContent = title;
+            document.getElementById('complete-modal-text').textContent = text;
+            document.getElementById('complete-modal').classList.add('active');
+            
+            setTimeout(() => {
+                closeCompleteModal();
+                if (returnPage) {
+                    showPage(returnPage);
+                }
+            }, 2000);
+        }
+
+        // メンバー追加
+        function addMember() {
+            // 実際のアプリではここでデータ送信
+            showCompleteModal('メンバーを追加しました', '新しいメンバーが登録されました', 'members');
+        }
+
+        // メンバー編集
+        function editMember() {
+            alert('メンバー編集画面に移動します\n（実装予定）');
+        }
+
+        // イベント追加
+        function addEvent() {
+            // 実際のアプリではここでデータ送信
+            showCompleteModal('イベントを追加しました', '新しいイベントが作成されました', 'events');
+        }
+
+        // 出席記録切り替え
+        function toggleAttendance(button, type) {
+            const buttons = button.parentElement.querySelectorAll('.attendance-button');
+            buttons.forEach(btn => {
+                btn.classList.remove('present', 'absent');
+            });
+            
+            if (type === 'present') {
+                button.classList.add('present');
+            } else if (type === 'absent') {
+                button.classList.add('absent');
+            }
+
+            // 統計を更新（簡易版）
+            updateAttendanceStats();
+        }
+
+        // 出席統計更新
+        function updateAttendanceStats() {
+            // 実際のアプリではここで統計を計算
+        }
+
+        // 出席記録保存
+        function saveAttendance() {
+            showCompleteModal('出席記録を保存しました', '出席状況が記録されました', 'event-detail');
+        }
+
+        // 活動報告投稿
+        function addReport() {
+            showCompleteModal('活動報告を投稿しました', 'メンバーに通知されました', 'reports');
+        }
+
+        // 画像アップロード
+        function uploadImage() {
+            alert('写真を選択してください\n（実際のアプリではカメラまたはギャラリーが起動します）');
+        }
+
+        // 連絡送信
+        function sendNotification() {
+            showCompleteModal('連絡を送信しました', 'メンバーに通知されました', 'notifications');
+        }
+
+        // パスワード変更
+        function changePassword() {
+            showCompleteModal('パスワードを変更しました', 'セキュリティが向上しました', 'settings');
+        }
+
+        // 緊急連絡
+        function makeCall() {
+            alert('緊急連絡先に電話をかけます\n（実際のアプリでは電話アプリが起動します）');
+        }
+
+        // タッチイベント最適化
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function (event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+
+        // モーダル背景クリックで閉じる
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.classList.remove('active');
+                }
+            });
         });
-        navItems.forEach(item => {
-            item.classList.toggle('active', item.dataset.target === id);
-        });
-    }
-
-    menuCards.forEach(card => {
-        card.addEventListener('click', () => {
-            showPage(card.dataset.target);
-        });
-    });
-
-    navItems.forEach(item => {
-        item.addEventListener('click', () => {
-            showPage(item.dataset.target);
-        });
-    });
-
-    floatingButton.addEventListener('click', () => {
-        showPage(floatingButton.dataset.target);
-    });
-</script>
+    </script>
 </body>
 </html>
