@@ -951,6 +951,18 @@
                             <div class="menu-card-title">月1健康診断</div>
                             <div class="menu-card-text">詳しくチェック</div>
                         </div>
+
+                        <div class="menu-card" style="background: linear-gradient(135deg, #10B981 0%, #059669 100%); color: white;" onclick="openFingerRingTest('home')">
+                            <i class="fas fa-hand-paper"></i>
+                            <div class="menu-card-title">指輪っかテスト</div>
+                            <div class="menu-card-text">ふくらはぎをセルフチェック</div>
+                        </div>
+
+                        <div class="menu-card" style="background: linear-gradient(135deg, #F472B6 0%, #EC4899 100%); color: white;" onclick="startOralCheck('home')">
+                            <i class="fas fa-smile"></i>
+                            <div class="menu-card-title">口腔フレイル</div>
+                            <div class="menu-card-text">お口の状態を確認</div>
+                        </div>
                     </div>
 
                     <button class="main-button secondary-button" onclick="showPage('activities')">
@@ -1158,6 +1170,34 @@
                         </button>
                     </div>
 
+                    <div class="game-card">
+                        <div class="game-icon" style="background: linear-gradient(135deg, #10B981 0%, #059669 100%);">
+                            <i class="fas fa-hand-paper"></i>
+                        </div>
+                        <h3 class="game-title">指輪っかテスト</h3>
+                        <p class="game-description">
+                            親指と人差し指で<br>
+                            ふくらはぎをチェック
+                        </p>
+                        <button class="main-button" onclick="openFingerRingTest('game-menu')">
+                            チェックする
+                        </button>
+                    </div>
+
+                    <div class="game-card">
+                        <div class="game-icon" style="background: linear-gradient(135deg, #F472B6 0%, #EC4899 100%);">
+                            <i class="fas fa-smile"></i>
+                        </div>
+                        <h3 class="game-title">口腔フレイルチェック</h3>
+                        <p class="game-description">
+                            お口の機能の変化を<br>
+                            簡単に確認しましょう
+                        </p>
+                        <button class="main-button" onclick="startOralCheck('game-menu')">
+                            診断を始める
+                        </button>
+                    </div>
+
                     <button class="back-button" onclick="showPage('home')">
                         <i class="fas fa-arrow-left"></i> ホームに戻る
                     </button>
@@ -1261,7 +1301,7 @@
                             親指と人差し指で<br>
                             ふくらはぎをチェック
                         </p>
-                        <button class="main-button" onclick="openFingerRingTest()">
+                        <button class="main-button" onclick="openFingerRingTest('health-check-intro')">
                             チェックする
                         </button>
                     </div>
@@ -1275,7 +1315,7 @@
                             お口の機能の変化を<br>
                             簡単に確認しましょう
                         </p>
-                        <button class="main-button" onclick="startOralCheck()">
+                        <button class="main-button" onclick="startOralCheck('health-check-intro')">
                             診断を始める
                         </button>
                     </div>
@@ -1335,7 +1375,7 @@
                         </div>
                     </div>
 
-                    <button class="back-button" onclick="showPage('health-check-intro')">
+                    <button class="back-button" onclick="backFromFingerRing()">
                         <i class="fas fa-arrow-left"></i> 戻る
                     </button>
                 </div>
@@ -1779,6 +1819,8 @@
         let dailyAnswers = {};
         let healthAnswers = {};
         let oralAnswers = {};
+        let fingerRingOrigin = 'health-check-intro';
+        let oralCheckOrigin = 'health-check-intro';
         let balanceTimer = null;
         let balanceTime = 0;
         let reactionState = null;
@@ -1929,9 +1971,14 @@
         }
 
         // 指輪っかテスト
-        function openFingerRingTest() {
+        function openFingerRingTest(origin = 'health-check-intro') {
+            fingerRingOrigin = origin || 'health-check-intro';
             resetFingerRingTest();
             showPage('finger-ring-test');
+        }
+
+        function backFromFingerRing() {
+            showPage(fingerRingOrigin || 'health-check-intro');
         }
 
         function resetFingerRingTest() {
@@ -2001,7 +2048,12 @@
         }
 
         // 口腔フレイルチェック
-        function startOralCheck() {
+        function startOralCheck(origin) {
+            if (origin) {
+                oralCheckOrigin = origin;
+            } else if (!oralCheckOrigin) {
+                oralCheckOrigin = 'health-check-intro';
+            }
             oralAnswers = {};
 
             const firstPage = document.getElementById('oral-check-1');
@@ -2039,6 +2091,10 @@
             }
 
             showPage('oral-check-1');
+        }
+
+        function backFromOralCheck() {
+            showPage(oralCheckOrigin || 'health-check-intro');
         }
 
         function selectOralOption(button, questionId, value) {
