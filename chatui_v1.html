@@ -92,6 +92,18 @@
             margin-bottom: 18px;
             gap: 12px;
             align-items: flex-start;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .message.assistant {
@@ -152,6 +164,8 @@
             font-weight: 600;
             letter-spacing: 0.04em;
             box-shadow: inset 0 -2px 0 rgba(37, 99, 235, 0.08);
+            cursor: pointer;
+            transition: all 0.2s;
         }
 
         .quick-button i {
@@ -203,6 +217,12 @@
             padding: 12px 18px;
             font-size: 16px;
             box-shadow: 0 8px 18px rgba(37, 99, 235, 0.25);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .card-button:active {
+            transform: scale(0.97);
         }
 
         .card-button.secondary {
@@ -254,6 +274,8 @@
             color: #1e3a8a;
             text-align: center;
             letter-spacing: 0.03em;
+            cursor: pointer;
+            transition: all 0.2s;
         }
 
         .reply-button:active {
@@ -294,6 +316,72 @@
             background: #fff7ed;
             border-left: 6px solid #f97316;
         }
+
+        .history-section {
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 16px;
+            margin: 16px 0;
+        }
+
+        .history-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #64748b;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .history-item {
+            background: #fff;
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid #e2e8f0;
+        }
+
+        .history-item:hover {
+            background: #f1f5f9;
+        }
+
+        .history-item:active {
+            transform: scale(0.98);
+        }
+
+        .history-date {
+            font-size: 14px;
+            font-weight: 600;
+            color: #4A90E2;
+            margin-bottom: 4px;
+        }
+
+        .history-content {
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 450px) {
+            body {
+                padding: 0;
+            }
+            .phone-frame {
+                border-radius: 0;
+                padding: 0;
+                height: 100vh;
+                max-width: 100%;
+            }
+            .screen {
+                border-radius: 0;
+            }
+        }
     </style>
 </head>
 <body>
@@ -307,240 +395,479 @@
                 <div class="assistant-name">FUN・A・ROOM ケアナビ</div>
                 <div class="assistant-subtitle">田中さん、今日も元気に過ごしましょう。困ったらいつでも声をかけてくださいね。</div>
             </div>
-            <div class="chat-body">
-                <div class="message assistant">
-                    <div class="avatar">F</div>
-                    <div class="bubble">
-                        おはようございます。今日はどのメニューから始めますか？大きなボタンから選べば大丈夫です。
-                        <div class="quick-actions">
-                            <button class="quick-button"><i class="fa-solid fa-pen-to-square"></i>今日の記録</button>
-                            <button class="quick-button"><i class="fa-solid fa-gamepad"></i>健康ゲーム</button>
-                            <button class="quick-button"><i class="fa-solid fa-stethoscope"></i>月1健康診断</button>
-                            <button class="quick-button"><i class="fa-solid fa-people-group"></i>部活動を見る</button>
-                            <button class="quick-button"><i class="fa-solid fa-phone"></i>電話サポート</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="message user">
-                    <div class="avatar"><i class="fa-solid fa-user"></i></div>
-                    <div class="bubble">今日の記録をお願いします。</div>
-                </div>
-
-                <div class="message assistant">
-                    <div class="avatar">F</div>
-                    <div class="bubble">
-                        体調はいかがですか？
-                        <div class="quick-actions">
-                            <button class="quick-button"><i class="fa-regular fa-face-smile"></i>元気</button>
-                            <button class="quick-button"><i class="fa-regular fa-face-meh"></i>いつも通り</button>
-                            <button class="quick-button"><i class="fa-regular fa-face-frown"></i>疲れ気味</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="message assistant">
-                    <div class="avatar">F</div>
-                    <div class="bubble">
-                        食事はしっかりとれましたか？（2問目 / 全3問）
-                        <div class="quick-actions">
-                            <button class="quick-button">はい</button>
-                            <button class="quick-button">いいえ</button>
-                            <button class="quick-button">覚えていない</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="message assistant">
-                    <div class="avatar">F</div>
-                    <div class="bubble">
-                        最後に今日の歩数を教えてください。
-                        <div class="card">
-                            <div class="section-title">歩数入力</div>
-                            <p>今日の歩数に近い数値を選んでください。</p>
-                            <div class="action-row">
-                                <button class="card-button secondary">1,000歩未満</button>
-                                <button class="card-button secondary">1,000〜4,999歩</button>
-                                <button class="card-button secondary">5,000〜7,999歩</button>
-                                <button class="card-button secondary">8,000歩以上</button>
-                            </div>
-                            <div class="progress"><span>3 / 3</span> 問目です。いつでも「やめる」と言えば中止できます。</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="message assistant">
-                    <div class="avatar">F</div>
-                    <div class="bubble">
-                        今日の記録が完了しました。毎日続けると体調の変化が分かりやすくなりますよ。
-                        <div class="quick-actions">
-                            <button class="quick-button"><i class="fa-solid fa-arrow-rotate-left"></i>もう一度記録</button>
-                            <button class="quick-button"><i class="fa-solid fa-house"></i>他のメニューへ</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="message user">
-                    <div class="avatar"><i class="fa-solid fa-user"></i></div>
-                    <div class="bubble">健康ゲームも見せて。</div>
-                </div>
-
-                <div class="message assistant">
-                    <div class="avatar">F</div>
-                    <div class="bubble">
-                        楽しく身体を動かしましょう。やりたいゲームを選んでください。
-                        <div class="card">
-                            <h3>健康ゲームメニュー</h3>
-                            <div class="tag"><i class="fa-solid fa-heart-pulse"></i>&nbsp;安全第一</div>
-                            <p>それぞれのゲームは、開始前に周りの安全を確認してください。</p>
-                            <div class="action-row">
-                                <button class="card-button"><i class="fa-solid fa-person-walking"></i>&nbsp;片足立ちチャレンジ</button>
-                                <button class="card-button"><i class="fa-solid fa-bolt"></i>&nbsp;反応速度テスト</button>
-                                <button class="card-button"><i class="fa-solid fa-ring"></i>&nbsp;指輪っかテスト</button>
-                                <button class="card-button"><i class="fa-solid fa-mouth"></i>&nbsp;口腔フレイルチェック</button>
-                            </div>
-                            <div class="action-row">
-                                <button class="card-button secondary">ゲームの遊び方</button>
-                                <button class="card-button secondary">結果を見る</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="message assistant">
-                    <div class="avatar">F</div>
-                    <div class="bubble">
-                        例：片足立ちチャレンジの流れです。
-                        <div class="card">
-                            <h3><i class="fa-solid fa-person-walking"></i> 片足立ちチャレンジ</h3>
-                            <p>1. 周りに危ないものがないか確認しましょう。</p>
-                            <p>2. 「スタート」を押して片足立ち、倒れそうになったら「ストップ」。</p>
-                            <p class="secondary">結果は記録され、グラフで確認できます。</p>
-                            <div class="action-row">
-                                <button class="card-button"><i class="fa-solid fa-play"></i>&nbsp;スタート</button>
-                                <button class="card-button secondary"><i class="fa-solid fa-circle-info"></i>&nbsp;注意事項</button>
-                                <button class="card-button secondary"><i class="fa-solid fa-rotate-left"></i>&nbsp;メニューに戻る</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="message assistant">
-                    <div class="avatar">F</div>
-                    <div class="bubble">
-                        月1健康診断（フレイルチェック）もいつでもできます。準備はよろしいですか？
-                        <div class="card">
-                            <h3>フレイルチェック</h3>
-                            <p>全5問です。所要時間は3分ほど。ゆっくり進めましょう。</p>
-                            <div class="progress"><span>1 / 5</span>問目です。</div>
-                            <p>最近、体重が減りましたか？</p>
-                            <div class="action-row">
-                                <button class="card-button secondary">はい</button>
-                                <button class="card-button secondary">いいえ</button>
-                                <button class="card-button secondary">わからない</button>
-                            </div>
-                            <div class="divider"></div>
-                            <p class="secondary">いつでも「中止」ボタンで終了できます。結果はアドバイス付きで表示されます。</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="message assistant">
-                    <div class="avatar">F</div>
-                    <div class="bubble">
-                        フレイルチェックの結果です。
-                        <div class="card">
-                            <h3>健康状態：良好</h3>
-                            <p>引き続き今の習慣を大切にしましょう。水分補給と睡眠がポイントです。</p>
-                            <div class="action-row">
-                                <button class="card-button"><i class="fa-solid fa-share"></i>&nbsp;結果を共有</button>
-                                <button class="card-button secondary"><i class="fa-solid fa-house"></i>&nbsp;ホームに戻る</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="message user">
-                    <div class="avatar"><i class="fa-solid fa-user"></i></div>
-                    <div class="bubble">最近の記録を見たい。</div>
-                </div>
-
-                <div class="message assistant">
-                    <div class="avatar">F</div>
-                    <div class="bubble">
-                        直近3日分の記録です。気になる日付を選べます。
-                        <div class="card">
-                            <h3>最近の記録</h3>
-                            <p><strong>12/12</strong> 元気・歩数8,200歩</p>
-                            <p><strong>12/11</strong> 少し疲れ・歩数5,100歩</p>
-                            <p><strong>12/10</strong> 元気・歩数7,300歩</p>
-                            <div class="action-row">
-                                <button class="card-button secondary">12/12を見る</button>
-                                <button class="card-button secondary">もっと前を見る</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="message user">
-                    <div class="avatar"><i class="fa-solid fa-user"></i></div>
-                    <div class="bubble">部活動の情報を教えて。</div>
-                </div>
-
-                <div class="message assistant">
-                    <div class="avatar">F</div>
-                    <div class="bubble">
-                        興味のある部活動を選んでください。
-                        <div class="card">
-                            <h3>おすすめ部活動</h3>
-                            <p><strong>ウォーキング部</strong>：毎週火曜・午前10時 / 市民公園</p>
-                            <p><strong>いきいきヨガ</strong>：毎週木曜・午後2時 / コミュニティセンター</p>
-                            <p><strong>カラオケ交流会</strong>：月2回・午後1時 / FUN・A・ROOM</p>
-                            <div class="action-row">
-                                <button class="card-button secondary">ウォーキング部</button>
-                                <button class="card-button secondary">ヨガサークル</button>
-                                <button class="card-button secondary">他の部を探す</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="message assistant">
-                    <div class="avatar">F</div>
-                    <div class="bubble support-card">
-                        <strong><i class="fa-solid fa-phone"></i> サポートが必要ですか？</strong><br>
-                        ボタンを押すと、専任スタッフに電話がつながります。緊急の際はすぐに押してください。
-                        <div class="quick-actions">
-                            <button class="quick-button"><i class="fa-solid fa-phone-volume"></i>今すぐ電話する</button>
-                            <button class="quick-button"><i class="fa-solid fa-comments"></i>折り返し希望</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="message assistant">
-                    <div class="avatar">F</div>
-                    <div class="bubble">
-                        ほかにお手伝いできることはありますか？
-                        <div class="quick-actions">
-                            <button class="quick-button">今日の記録をもう一度</button>
-                            <button class="quick-button">健康ゲーム</button>
-                            <button class="quick-button">部活動</button>
-                            <button class="quick-button">困りごと相談</button>
-                        </div>
-                    </div>
-                </div>
+            <div class="chat-body" id="chatBody">
+                <!-- 会話はJavaScriptで動的に追加されます -->
             </div>
             <div class="chat-footer">
                 <div class="footer-title">かんたん操作ボタン</div>
                 <div class="reply-grid">
-                    <button class="reply-button"><i class="fa-solid fa-pen-to-square"></i> 記録する</button>
-                    <button class="reply-button"><i class="fa-solid fa-gamepad"></i> ゲーム</button>
-                    <button class="reply-button"><i class="fa-solid fa-stethoscope"></i> 健康診断</button>
-                    <button class="reply-button"><i class="fa-solid fa-people-group"></i> 部活動</button>
-                    <button class="reply-button full"><i class="fa-solid fa-phone"></i> 電話で相談する</button>
+                    <button class="reply-button" onclick="startDailyCheck()"><i class="fa-solid fa-pen-to-square"></i> 記録する</button>
+                    <button class="reply-button" onclick="showGameMenu()"><i class="fa-solid fa-gamepad"></i> ゲーム</button>
+                    <button class="reply-button" onclick="showHealthCheck()"><i class="fa-solid fa-stethoscope"></i> 健康診断</button>
+                    <button class="reply-button" onclick="showActivities()"><i class="fa-solid fa-people-group"></i> 部活動</button>
+                    <button class="reply-button full" onclick="showHistory()"><i class="fa-solid fa-clock-rotate-left"></i> 履歴を見る</button>
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+        // 状態管理
+        let conversationHistory = [];
+        let currentConversation = [];
+        let dailyAnswers = {};
+        let healthAnswers = {};
+        let currentQuestion = 0;
+
+        // 初期メッセージを表示
+        function init() {
+            showWelcomeMessage();
+        }
+
+        // ウェルカムメッセージ
+        function showWelcomeMessage() {
+            clearChat();
+            addAssistantMessage(
+                'おはようございます。今日はどのメニューから始めますか？大きなボタンから選べば大丈夫です。',
+                `<div class="quick-actions">
+                    <button class="quick-button" onclick="startDailyCheck()"><i class="fa-solid fa-pen-to-square"></i>今日の記録</button>
+                    <button class="quick-button" onclick="showGameMenu()"><i class="fa-solid fa-gamepad"></i>健康ゲーム</button>
+                    <button class="quick-button" onclick="showHealthCheck()"><i class="fa-solid fa-stethoscope"></i>月1健康診断</button>
+                    <button class="quick-button" onclick="showActivities()"><i class="fa-solid fa-people-group"></i>部活動を見る</button>
+                </div>`
+            );
+        }
+
+        // チャットをクリア
+        function clearChat() {
+            const chatBody = document.getElementById('chatBody');
+            chatBody.innerHTML = '';
+            currentConversation = [];
+        }
+
+        // アシスタントメッセージを追加
+        function addAssistantMessage(text, html = '') {
+            const chatBody = document.getElementById('chatBody');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message assistant';
+            messageDiv.innerHTML = `
+                <div class="avatar">F</div>
+                <div class="bubble">
+                    ${text}
+                    ${html}
+                </div>
+            `;
+            chatBody.appendChild(messageDiv);
+            chatBody.scrollTop = chatBody.scrollHeight;
+
+            // 会話を記録
+            currentConversation.push({
+                type: 'assistant',
+                content: text,
+                timestamp: new Date()
+            });
+        }
+
+        // ユーザーメッセージを追加
+        function addUserMessage(text) {
+            const chatBody = document.getElementById('chatBody');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message user';
+            messageDiv.innerHTML = `
+                <div class="avatar"><i class="fa-solid fa-user"></i></div>
+                <div class="bubble">${text}</div>
+            `;
+            chatBody.appendChild(messageDiv);
+            chatBody.scrollTop = chatBody.scrollHeight;
+
+            // 会話を記録
+            currentConversation.push({
+                type: 'user',
+                content: text,
+                timestamp: new Date()
+            });
+        }
+
+        // 今日の記録を開始
+        function startDailyCheck() {
+            addUserMessage('今日の記録をお願いします。');
+
+            setTimeout(() => {
+                dailyAnswers = {};
+                currentQuestion = 0;
+                askDailyQuestion(0);
+            }, 500);
+        }
+
+        // 日々の質問
+        const dailyQuestions = [
+            {
+                question: '体調はいかがですか?',
+                options: [
+                    { text: '元気', icon: 'fa-regular fa-face-smile' },
+                    { text: 'いつも通り', icon: 'fa-regular fa-face-meh' },
+                    { text: '疲れ気味', icon: 'fa-regular fa-face-frown' }
+                ]
+            },
+            {
+                question: '食事はしっかりとれましたか?',
+                options: [
+                    { text: 'はい', icon: null },
+                    { text: 'いいえ', icon: null },
+                    { text: '覚えていない', icon: null }
+                ]
+            },
+            {
+                question: '最後に今日の歩数を教えてください。',
+                type: 'steps'
+            }
+        ];
+
+        // 日々の質問を表示
+        function askDailyQuestion(index) {
+            if (index >= dailyQuestions.length) {
+                completeDailyCheck();
+                return;
+            }
+
+            const q = dailyQuestions[index];
+            let html = '';
+
+            if (q.type === 'steps') {
+                html = `
+                    <div class="card">
+                        <div class="section-title">歩数入力</div>
+                        <p>今日の歩数に近い数値を選んでください。</p>
+                        <div class="action-row">
+                            <button class="card-button secondary" onclick="answerDaily(${index}, '1,000歩未満')">1,000歩未満</button>
+                            <button class="card-button secondary" onclick="answerDaily(${index}, '1,000〜4,999歩')">1,000〜4,999歩</button>
+                            <button class="card-button secondary" onclick="answerDaily(${index}, '5,000〜7,999歩')">5,000〜7,999歩</button>
+                            <button class="card-button secondary" onclick="answerDaily(${index}, '8,000歩以上')">8,000歩以上</button>
+                        </div>
+                        <div class="progress"><span>${index + 1} / ${dailyQuestions.length}</span> 問目です。</div>
+                    </div>
+                `;
+            } else {
+                const buttons = q.options.map(opt => {
+                    const icon = opt.icon ? `<i class="${opt.icon}"></i>` : '';
+                    return `<button class="quick-button" onclick="answerDaily(${index}, '${opt.text}')">${icon}${opt.text}</button>`;
+                }).join('');
+
+                html = `<div class="quick-actions">${buttons}</div>`;
+            }
+
+            const questionText = q.type === 'steps' ? q.question :
+                `${q.question}${index < dailyQuestions.length - 1 ? ` (${index + 1}問目 / 全${dailyQuestions.length}問)` : ''}`;
+
+            addAssistantMessage(questionText, html);
+        }
+
+        // 日々の質問への回答
+        function answerDaily(index, answer) {
+            dailyAnswers[`question${index}`] = answer;
+            addUserMessage(answer);
+
+            setTimeout(() => {
+                askDailyQuestion(index + 1);
+            }, 500);
+        }
+
+        // 日々のチェック完了
+        function completeDailyCheck() {
+            addAssistantMessage(
+                '今日の記録が完了しました。毎日続けると体調の変化が分かりやすくなりますよ。',
+                `<div class="quick-actions">
+                    <button class="quick-button" onclick="startDailyCheck()"><i class="fa-solid fa-arrow-rotate-left"></i>もう一度記録</button>
+                    <button class="quick-button" onclick="showWelcomeMessage()"><i class="fa-solid fa-house"></i>メニューへ戻る</button>
+                </div>`
+            );
+
+            // 履歴に保存
+            saveToHistory('今日の健康記録', '記録を完了しました');
+        }
+
+        // 健康ゲームメニュー
+        function showGameMenu() {
+            addUserMessage('健康ゲームを見せて。');
+
+            setTimeout(() => {
+                addAssistantMessage(
+                    '楽しく身体を動かしましょう。やりたいゲームを選んでください。',
+                    `<div class="card">
+                        <h3>健康ゲームメニュー</h3>
+                        <div class="tag"><i class="fa-solid fa-heart-pulse"></i>&nbsp;安全第一</div>
+                        <p>それぞれのゲームは、開始前に周りの安全を確認してください。</p>
+                        <div class="action-row">
+                            <button class="card-button" onclick="startBalanceGame()"><i class="fa-solid fa-person-walking"></i>&nbsp;片足立ちチャレンジ</button>
+                            <button class="card-button" onclick="startReactionGame()"><i class="fa-solid fa-bolt"></i>&nbsp;反応速度テスト</button>
+                            <button class="card-button" onclick="startFingerRingTest()"><i class="fa-solid fa-ring"></i>&nbsp;指輪っかテスト</button>
+                        </div>
+                    </div>`
+                );
+            }, 500);
+        }
+
+        // 片足立ちゲーム
+        function startBalanceGame() {
+            addUserMessage('片足立ちチャレンジを始めます。');
+
+            setTimeout(() => {
+                addAssistantMessage(
+                    '片足立ちチャレンジの準備ができました。',
+                    `<div class="card">
+                        <h3><i class="fa-solid fa-person-walking"></i> 片足立ちチャレンジ</h3>
+                        <p>1. 周りに危ないものがないか確認しましょう。</p>
+                        <p>2. 下のボタンを長押しして片足立ち、倒れそうになったら離してください。</p>
+                        <div class="action-row">
+                            <button class="card-button" onclick="alert('長押しで計測を開始します！')"><i class="fa-solid fa-play"></i>&nbsp;スタート</button>
+                            <button class="card-button secondary" onclick="showGameMenu()"><i class="fa-solid fa-rotate-left"></i>&nbsp;戻る</button>
+                        </div>
+                    </div>`
+                );
+            }, 500);
+        }
+
+        // 反応速度ゲーム
+        function startReactionGame() {
+            addUserMessage('反応速度テストを始めます。');
+
+            setTimeout(() => {
+                addAssistantMessage(
+                    '反応速度テストの準備ができました。',
+                    `<div class="card">
+                        <h3><i class="fa-solid fa-bolt"></i> 反応速度テスト</h3>
+                        <p>画面が緑色に変わったら、できるだけ早くタップしてください。</p>
+                        <div class="action-row">
+                            <button class="card-button" onclick="alert('反応速度テストを開始します！')"><i class="fa-solid fa-play"></i>&nbsp;スタート</button>
+                            <button class="card-button secondary" onclick="showGameMenu()"><i class="fa-solid fa-rotate-left"></i>&nbsp;戻る</button>
+                        </div>
+                    </div>`
+                );
+            }, 500);
+        }
+
+        // 指輪っかテスト
+        function startFingerRingTest() {
+            addUserMessage('指輪っかテストを始めます。');
+
+            setTimeout(() => {
+                addAssistantMessage(
+                    '指輪っかテストの説明です。',
+                    `<div class="card">
+                        <h3><i class="fa-solid fa-ring"></i> 指輪っかテスト</h3>
+                        <p>両手の親指と人差し指で輪を作り、ふくらはぎの一番太いところを囲みます。</p>
+                        <p>結果を選んでください:</p>
+                        <div class="action-row">
+                            <button class="card-button secondary" onclick="fingerRingResult('届かない')">指が届かず輪が閉じない</button>
+                            <button class="card-button secondary" onclick="fingerRingResult('ちょうど')">ちょうどふくらはぎに触れる</button>
+                            <button class="card-button secondary" onclick="fingerRingResult('余る')">輪が余ってすき間ができる</button>
+                        </div>
+                    </div>`
+                );
+            }, 500);
+        }
+
+        // 指輪っかテスト結果
+        function fingerRingResult(result) {
+            addUserMessage(result);
+
+            setTimeout(() => {
+                let message = '';
+                if (result === '届かない') {
+                    message = '筋力は十分です。ふくらはぎがしっかりしている状態です。今の運動習慣を続けましょう。';
+                } else if (result === 'ちょうど') {
+                    message = 'やや注意が必要です。筋肉量が少し低下している可能性があります。軽い筋トレや散歩を取り入れましょう。';
+                } else {
+                    message = 'サルコペニアのリスクがあります。筋肉量がかなり低下している可能性があります。専門家に相談することをおすすめします。';
+                }
+
+                addAssistantMessage(
+                    message,
+                    `<div class="quick-actions">
+                        <button class="quick-button" onclick="showGameMenu()"><i class="fa-solid fa-rotate-left"></i>ゲームメニューへ</button>
+                        <button class="quick-button" onclick="showWelcomeMessage()"><i class="fa-solid fa-house"></i>メインメニューへ</button>
+                    </div>`
+                );
+
+                saveToHistory('指輪っかテスト', `結果: ${result}`);
+            }, 500);
+        }
+
+        // 月1健康診断
+        function showHealthCheck() {
+            addUserMessage('月1健康診断を見せて。');
+
+            setTimeout(() => {
+                addAssistantMessage(
+                    '月1健康診断（フレイルチェック）もいつでもできます。準備はよろしいですか?',
+                    `<div class="card">
+                        <h3>フレイルチェック</h3>
+                        <p>全5問です。所要時間は3分ほど。ゆっくり進めましょう。</p>
+                        <div class="action-row">
+                            <button class="card-button" onclick="startHealthCheck()"><i class="fa-solid fa-play"></i>&nbsp;診断を開始</button>
+                            <button class="card-button secondary" onclick="showWelcomeMessage()"><i class="fa-solid fa-rotate-left"></i>&nbsp;戻る</button>
+                        </div>
+                    </div>`
+                );
+            }, 500);
+        }
+
+        // 健康診断開始
+        function startHealthCheck() {
+            addUserMessage('診断を始めます。');
+            healthAnswers = {};
+
+            setTimeout(() => {
+                addAssistantMessage(
+                    '最近、体重が減りましたか? (1 / 5問目)',
+                    `<div class="quick-actions">
+                        <button class="quick-button" onclick="answerHealth(1, 'はい')">はい</button>
+                        <button class="quick-button" onclick="answerHealth(1, 'いいえ')">いいえ</button>
+                        <button class="quick-button" onclick="answerHealth(1, 'わからない')">わからない</button>
+                    </div>`
+                );
+            }, 500);
+        }
+
+        // 健康診断の質問
+        const healthQuestions = [
+            '最近、体重が減りましたか?',
+            '食事を食べる時むせることがありますか?',
+            '週に何回運動していますか?',
+            '薬の飲み忘れはありますか?',
+            '最近、気分が落ち込みますか?'
+        ];
+
+        // 健康診断への回答
+        function answerHealth(questionNum, answer) {
+            healthAnswers[`q${questionNum}`] = answer;
+            addUserMessage(answer);
+
+            setTimeout(() => {
+                if (questionNum < 5) {
+                    const nextQ = healthQuestions[questionNum];
+                    addAssistantMessage(
+                        `${nextQ} (${questionNum + 1} / 5問目)`,
+                        `<div class="quick-actions">
+                            <button class="quick-button" onclick="answerHealth(${questionNum + 1}, 'はい')">はい</button>
+                            <button class="quick-button" onclick="answerHealth(${questionNum + 1}, 'いいえ')">いいえ</button>
+                            <button class="quick-button" onclick="answerHealth(${questionNum + 1}, 'わからない')">わからない</button>
+                        </div>`
+                    );
+                } else {
+                    showHealthResult();
+                }
+            }, 500);
+        }
+
+        // 健康診断結果
+        function showHealthResult() {
+            addAssistantMessage(
+                'フレイルチェックの結果です。',
+                `<div class="card">
+                    <h3>健康状態:良好</h3>
+                    <p>引き続き今の習慣を大切にしましょう。水分補給と睡眠がポイントです。</p>
+                    <div class="action-row">
+                        <button class="card-button" onclick="alert('結果を共有します')"><i class="fa-solid fa-share"></i>&nbsp;結果を共有</button>
+                        <button class="card-button secondary" onclick="showWelcomeMessage()"><i class="fa-solid fa-house"></i>&nbsp;ホームに戻る</button>
+                    </div>
+                </div>`
+            );
+
+            saveToHistory('フレイルチェック', '健康状態: 良好');
+        }
+
+        // 部活動を表示
+        function showActivities() {
+            addUserMessage('部活動の情報を教えて。');
+
+            setTimeout(() => {
+                addAssistantMessage(
+                    '興味のある部活動を選んでください。',
+                    `<div class="card">
+                        <h3>おすすめ部活動</h3>
+                        <p><strong>ウォーキング部</strong>:毎週火曜・午前10時 / 市民公園</p>
+                        <p><strong>いきいきヨガ</strong>:毎週木曜・午後2時 / コミュニティセンター</p>
+                        <p><strong>カラオケ交流会</strong>:月2回・午後1時 / FUN・A・ROOM</p>
+                        <div class="action-row">
+                            <button class="card-button secondary" onclick="showActivityDetail('ウォーキング部')">ウォーキング部</button>
+                            <button class="card-button secondary" onclick="showActivityDetail('ヨガサークル')">ヨガサークル</button>
+                            <button class="card-button secondary" onclick="showWelcomeMessage()">戻る</button>
+                        </div>
+                    </div>`
+                );
+            }, 500);
+        }
+
+        // 部活動詳細
+        function showActivityDetail(activity) {
+            addUserMessage(`${activity}について教えて。`);
+
+            setTimeout(() => {
+                addAssistantMessage(
+                    `${activity}の詳細です。`,
+                    `<div class="card">
+                        <h3>${activity}</h3>
+                        <p>朝の爽やかな空気の中、公園を約1時間ゆっくり歩きます。無理のないペースで、おしゃべりしながら楽しく歩きましょう。</p>
+                        <p><strong>日時:</strong> 毎週火・木 朝7:00〜8:00</p>
+                        <p><strong>場所:</strong> 日向市中央公園</p>
+                        <p><strong>参加費:</strong> 無料</p>
+                        <div class="action-row">
+                            <button class="card-button" onclick="alert('参加申し込みを受け付けました！')"><i class="fa-solid fa-user-plus"></i>&nbsp;参加を申し込む</button>
+                            <button class="card-button secondary" onclick="showActivities()"><i class="fa-solid fa-rotate-left"></i>&nbsp;一覧に戻る</button>
+                        </div>
+                    </div>`
+                );
+            }, 500);
+        }
+
+        // 履歴を表示
+        function showHistory() {
+            if (conversationHistory.length === 0) {
+                addAssistantMessage(
+                    'まだ履歴がありません。',
+                    `<div class="quick-actions">
+                        <button class="quick-button" onclick="showWelcomeMessage()"><i class="fa-solid fa-house"></i>メインメニューへ</button>
+                    </div>`
+                );
+                return;
+            }
+
+            let historyHtml = '<div class="history-section"><div class="history-title"><i class="fa-solid fa-clock-rotate-left"></i> 最近の記録</div>';
+
+            conversationHistory.slice(-5).reverse().forEach((item, index) => {
+                const date = new Date(item.timestamp);
+                const dateStr = `${date.getMonth() + 1}/${date.getDate()} ${date.getHours()}:${String(date.getMinutes()).padStart(2, '0')}`;
+                historyHtml += `
+                    <div class="history-item" onclick="alert('${item.title}の詳細を表示')">
+                        <div class="history-date">${dateStr}</div>
+                        <div class="history-content">${item.title}: ${item.summary}</div>
+                    </div>
+                `;
+            });
+
+            historyHtml += '</div>';
+
+            addAssistantMessage(
+                '直近の記録です。気になる日付を選べます。',
+                historyHtml + `<div class="quick-actions">
+                    <button class="quick-button" onclick="showWelcomeMessage()"><i class="fa-solid fa-house"></i>メインメニューへ</button>
+                </div>`
+            );
+        }
+
+        // 履歴に保存
+        function saveToHistory(title, summary) {
+            conversationHistory.push({
+                title: title,
+                summary: summary,
+                conversation: [...currentConversation],
+                timestamp: new Date()
+            });
+        }
+
+        // 初期化
+        window.onload = init;
+    </script>
 </body>
 </html>
