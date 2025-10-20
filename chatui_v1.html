@@ -81,6 +81,11 @@
             padding: 20px 18px 120px;
             overflow-y: auto;
             position: relative;
+            transition: padding-bottom 0.3s ease;
+        }
+
+        .chat-footer.collapsed ~ .chat-body {
+            padding-bottom: 80px;
         }
 
         .chat-body::-webkit-scrollbar {
@@ -250,6 +255,57 @@
             padding: 20px 24px 28px;
             border-top: 1px solid rgba(148, 163, 184, 0.3);
             box-shadow: 0 -10px 30px rgba(15, 23, 42, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .chat-footer.collapsed {
+            padding: 0;
+        }
+
+        .footer-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 24px;
+            background: #f8fafc;
+            border-top: 1px solid rgba(148, 163, 184, 0.3);
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .footer-toggle:active {
+            background: #f1f5f9;
+        }
+
+        .footer-toggle-title {
+            font-size: 17px;
+            font-weight: 700;
+            color: #1f2933;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .footer-toggle-icon {
+            font-size: 14px;
+            color: #64748b;
+            transition: transform 0.3s ease;
+        }
+
+        .footer-toggle-icon.expanded {
+            transform: rotate(180deg);
+        }
+
+        .footer-content {
+            padding: 20px 24px 28px;
+            max-height: 400px;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+
+        .footer-content.collapsed {
+            max-height: 0;
+            padding: 0 24px;
         }
 
         .footer-title {
@@ -398,14 +454,22 @@
             <div class="chat-body" id="chatBody">
                 <!-- 会話はJavaScriptで動的に追加されます -->
             </div>
-            <div class="chat-footer">
-                <div class="footer-title">かんたん操作ボタン</div>
-                <div class="reply-grid">
-                    <button class="reply-button" onclick="startDailyCheck()"><i class="fa-solid fa-pen-to-square"></i> 記録する</button>
-                    <button class="reply-button" onclick="showGameMenu()"><i class="fa-solid fa-gamepad"></i> ゲーム</button>
-                    <button class="reply-button" onclick="showHealthCheck()"><i class="fa-solid fa-stethoscope"></i> 健康診断</button>
-                    <button class="reply-button" onclick="showActivities()"><i class="fa-solid fa-people-group"></i> 部活動</button>
-                    <button class="reply-button full" onclick="showHistory()"><i class="fa-solid fa-clock-rotate-left"></i> 履歴を見る</button>
+            <div class="chat-footer" id="chatFooter">
+                <div class="footer-toggle" onclick="toggleFooter()">
+                    <div class="footer-toggle-title">
+                        <i class="fa-solid fa-bars"></i>
+                        かんたん操作ボタン
+                    </div>
+                    <i class="fa-solid fa-chevron-up footer-toggle-icon expanded" id="toggleIcon"></i>
+                </div>
+                <div class="footer-content" id="footerContent">
+                    <div class="reply-grid">
+                        <button class="reply-button" onclick="startDailyCheck()"><i class="fa-solid fa-pen-to-square"></i> 記録する</button>
+                        <button class="reply-button" onclick="showGameMenu()"><i class="fa-solid fa-gamepad"></i> ゲーム</button>
+                        <button class="reply-button" onclick="showHealthCheck()"><i class="fa-solid fa-stethoscope"></i> 健康診断</button>
+                        <button class="reply-button" onclick="showActivities()"><i class="fa-solid fa-people-group"></i> 部活動</button>
+                        <button class="reply-button full" onclick="showHistory()"><i class="fa-solid fa-clock-rotate-left"></i> 履歴を見る</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -422,6 +486,46 @@
         // 初期メッセージを表示
         function init() {
             showWelcomeMessage();
+            loadFooterState();
+        }
+
+        // フッターの開閉状態をトグル
+        function toggleFooter() {
+            const footer = document.getElementById('chatFooter');
+            const content = document.getElementById('footerContent');
+            const icon = document.getElementById('toggleIcon');
+
+            const isCollapsed = content.classList.contains('collapsed');
+
+            if (isCollapsed) {
+                // 開く
+                content.classList.remove('collapsed');
+                footer.classList.remove('collapsed');
+                icon.classList.add('expanded');
+                localStorage.setItem('footerExpanded', 'true');
+            } else {
+                // 閉じる
+                content.classList.add('collapsed');
+                footer.classList.add('collapsed');
+                icon.classList.remove('expanded');
+                localStorage.setItem('footerExpanded', 'false');
+            }
+        }
+
+        // フッターの状態を読み込み
+        function loadFooterState() {
+            const isExpanded = localStorage.getItem('footerExpanded');
+
+            // デフォルトは閉じた状態
+            if (isExpanded === null || isExpanded === 'false') {
+                const content = document.getElementById('footerContent');
+                const footer = document.getElementById('chatFooter');
+                const icon = document.getElementById('toggleIcon');
+
+                content.classList.add('collapsed');
+                footer.classList.add('collapsed');
+                icon.classList.remove('expanded');
+            }
         }
 
         // ウェルカムメッセージ
