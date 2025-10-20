@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>コミュニティ管理システム</title>
+    <title>シニアコミュニティ管理システム</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -424,7 +424,7 @@
             color: #888;
         }
 
-        /* メンバーカード */
+        /* 参加者カード */
         .member-card {
             background: white;
             border-radius: 16px;
@@ -553,7 +553,7 @@
             color: #888;
         }
 
-        /* 活動報告カード */
+        /* コミュニティレポートカード */
         .report-card {
             background: white;
             border-radius: 16px;
@@ -642,7 +642,7 @@
             line-height: 1.6;
         }
 
-        /* 出席管理 */
+        /* 参加状況管理 */
         .attendance-list {
             background: white;
             border-radius: 16px;
@@ -1011,8 +1011,8 @@
                 <div class="login-logo">
                     <i class="fas fa-users"></i>
                 </div>
-                <h1 class="login-title">コミュニティ管理</h1>
-                <p class="login-subtitle">リーダー専用システム</p>
+                <h1 class="login-title">シニアコミュニティ管理</h1>
+                <p class="login-subtitle">地域サポーター専用ポータル</p>
                 
                 <div class="login-form">
                     <input type="email" class="login-input" placeholder="メールアドレス" id="email">
@@ -1025,7 +1025,7 @@
         <!-- ホーム画面 -->
         <div id="home" class="page">
             <div class="header">
-                <h1 class="header-title">バスケットボール部</h1>
+                <h1 class="header-title">さくらシニアコミュニティ</h1>
                 <div class="header-info">
                     <i class="fas fa-user"></i>
                     <span>山田太郎さん</span>
@@ -1042,28 +1042,28 @@
                             <i class="fas fa-users"></i>
                         </div>
                         <div class="stat-value">24</div>
-                        <div class="stat-label">メンバー数</div>
+                        <div class="stat-label">参加者数</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon">
                             <i class="fas fa-calendar-check"></i>
                         </div>
                         <div class="stat-value">87%</div>
-                        <div class="stat-label">今月の出席率</div>
+                        <div class="stat-label">今月の参加率</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon">
                             <i class="fas fa-calendar"></i>
                         </div>
                         <div class="stat-value">12</div>
-                        <div class="stat-label">今月のイベント</div>
+                        <div class="stat-label">今月のプログラム</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon">
                             <i class="fas fa-newspaper"></i>
                         </div>
                         <div class="stat-value">8</div>
-                        <div class="stat-label">活動報告</div>
+                        <div class="stat-label">活動レポート</div>
                     </div>
                 </div>
 
@@ -1071,11 +1071,11 @@
                     <div class="card-icon">
                         <i class="fas fa-user-friends"></i>
                     </div>
-                    <h3 class="card-title">メンバー管理</h3>
+                    <h3 class="card-title">参加者管理</h3>
                     <p class="card-description">
-                        参加者の登録・編集・緊急連絡先管理
+                        参加者の登録・プロフィール・緊急連絡先管理
                     </p>
-                    <span class="card-badge">24名登録</span>
+                    <span class="card-badge">24名参加登録</span>
                 </div>
 
                 <div class="menu-card" onclick="showPage('events')">
@@ -1084,20 +1084,20 @@
                     </div>
                     <h3 class="card-title">イベント管理</h3>
                     <p class="card-description">
-                        定期練習・試合・イベントの作成と管理
+                        健康体操や交流イベントの作成と管理
                     </p>
-                    <span class="card-badge">次回: 10/20 18:00</span>
+                    <span class="card-badge">次回: 10/20 10:00</span>
                 </div>
 
                 <div class="menu-card" onclick="showPage('reports')">
                     <div class="card-icon">
                         <i class="fas fa-file-alt"></i>
                     </div>
-                    <h3 class="card-title">活動報告</h3>
+                    <h3 class="card-title">コミュニティレポート</h3>
                     <p class="card-description">
-                        練習や試合の報告を写真付きで投稿
+                        健康プログラムや交流会の様子を写真付きで共有
                     </p>
-                    <span class="card-badge">8件の報告</span>
+                    <span class="card-badge">8件のレポート</span>
                 </div>
 
                 <div class="menu-card" onclick="showPage('notifications')">
@@ -1106,7 +1106,7 @@
                     </div>
                     <h3 class="card-title">連絡・通知</h3>
                     <p class="card-description">
-                        メンバーへの一斉連絡・お知らせ
+                        参加者への一斉連絡や生活サポート情報を配信
                     </p>
                 </div>
 
@@ -1116,7 +1116,7 @@
                     </div>
                     <h3 class="card-title">統計・分析</h3>
                     <p class="card-description">
-                        出席状況・参加率の詳細分析
+                        参加状況や見守り記録をわかりやすく確認
                     </p>
                 </div>
             </div>
@@ -1132,7 +1132,7 @@
                 </button>
                 <button class="nav-button" onclick="showPage('reports')">
                     <i class="fas fa-newspaper"></i>
-                    <span>報告</span>
+                    <span>レポート</span>
                 </button>
                 <button class="nav-button" onclick="showPage('settings')">
                     <i class="fas fa-cog"></i>
@@ -1141,10 +1141,10 @@
             </div>
         </div>
 
-        <!-- メンバー管理 -->
+        <!-- 参加者管理 -->
         <div id="members" class="page">
             <div class="header header-small">
-                <h1 class="header-title" style="font-size: 24px;">メンバー管理</h1>
+                <h1 class="header-title" style="font-size: 24px;">参加者管理</h1>
                 <p class="header-subtitle">24名が登録されています</p>
             </div>
             
@@ -1153,10 +1153,10 @@
                     <div class="member-avatar">山</div>
                     <div class="member-info">
                         <div class="member-name">山田太郎</div>
-                        <div class="member-detail">090-1234-5678 | 部長</div>
+                        <div class="member-detail">090-1234-5678 | コミュニティ代表</div>
                     </div>
                     <div class="member-actions">
-                        <button class="icon-button" onclick="showMemberDetail('山田太郎', '部長', '090-1234-5678', '父: 090-1111-2222', 'yamada@example.com')">
+                        <button class="icon-button" onclick="showMemberDetail('山田太郎', 'コミュニティ代表', '090-1234-5678', '家族: 090-1111-2222', 'yamada@example.com')">
                             <i class="fas fa-info-circle"></i>
                         </button>
                         <button class="icon-button" onclick="editMember()">
@@ -1169,10 +1169,10 @@
                     <div class="member-avatar">佐</div>
                     <div class="member-info">
                         <div class="member-name">佐藤花子</div>
-                        <div class="member-detail">090-2345-6789 | 副部長</div>
+                        <div class="member-detail">090-2345-6789 | 副代表</div>
                     </div>
                     <div class="member-actions">
-                        <button class="icon-button" onclick="showMemberDetail('佐藤花子', '副部長', '090-2345-6789', '母: 090-3333-4444', 'sato@example.com')">
+                        <button class="icon-button" onclick="showMemberDetail('佐藤花子', '副代表', '090-2345-6789', '家族: 090-3333-4444', 'sato@example.com')">
                             <i class="fas fa-info-circle"></i>
                         </button>
                         <button class="icon-button" onclick="editMember()">
@@ -1185,10 +1185,10 @@
                     <div class="member-avatar">鈴</div>
                     <div class="member-info">
                         <div class="member-name">鈴木一郎</div>
-                        <div class="member-detail">090-3456-7890 | 部員</div>
+                        <div class="member-detail">090-3456-7890 | 参加者</div>
                     </div>
                     <div class="member-actions">
-                        <button class="icon-button" onclick="showMemberDetail('鈴木一郎', '部員', '090-3456-7890', '父: 090-5555-6666', 'suzuki@example.com')">
+                        <button class="icon-button" onclick="showMemberDetail('鈴木一郎', '参加者', '090-3456-7890', '家族: 090-5555-6666', 'suzuki@example.com')">
                             <i class="fas fa-info-circle"></i>
                         </button>
                         <button class="icon-button" onclick="editMember()">
@@ -1199,7 +1199,7 @@
 
                 <button class="main-button" onclick="showPage('add-member')">
                     <i class="fas fa-user-plus"></i>
-                    メンバーを追加
+                    参加者を追加
                 </button>
 
                 <button class="back-button" onclick="showPage('home')">
@@ -1219,7 +1219,7 @@
                 </button>
                 <button class="nav-button" onclick="showPage('reports')">
                     <i class="fas fa-newspaper"></i>
-                    <span>報告</span>
+                    <span>レポート</span>
                 </button>
                 <button class="nav-button" onclick="showPage('settings')">
                     <i class="fas fa-cog"></i>
@@ -1228,10 +1228,10 @@
             </div>
         </div>
 
-        <!-- メンバー追加 -->
+        <!-- 参加者追加 -->
         <div id="add-member" class="page">
             <div class="header header-small">
-                <h1 class="header-title" style="font-size: 24px;">メンバー追加</h1>
+                <h1 class="header-title" style="font-size: 24px;">参加者追加</h1>
             </div>
             
             <div class="content">
@@ -1242,11 +1242,11 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">役職</label>
+                        <label class="form-label">役割</label>
                         <select class="form-select">
-                            <option>部員</option>
-                            <option>副部長</option>
-                            <option>部長</option>
+                            <option>参加者</option>
+                            <option>副代表</option>
+                            <option>コミュニティ代表</option>
                         </select>
                     </div>
 
@@ -1262,9 +1262,9 @@
 
                     <div class="form-group">
                         <label class="form-label">緊急連絡先<span class="required">*</span></label>
-                        <input type="text" class="form-input" placeholder="保護者名">
+                        <input type="text" class="form-input" placeholder="ご家族の氏名">
                         <input type="tel" class="form-input" placeholder="090-1111-2222" style="margin-top: 8px;">
-                        <p class="form-hint">保護者または緊急時の連絡先を入力してください</p>
+                        <p class="form-hint">ご家族または緊急時の連絡先を入力してください</p>
                     </div>
 
                     <div class="form-group">
@@ -1275,7 +1275,7 @@
 
                 <button class="main-button" onclick="addMember()">
                     <i class="fas fa-check"></i>
-                    メンバーを追加
+                    参加者を追加
                 </button>
 
                 <button class="back-button" onclick="showPage('members')">
@@ -1295,7 +1295,7 @@
                 </button>
                 <button class="nav-button" onclick="showPage('reports')">
                     <i class="fas fa-newspaper"></i>
-                    <span>報告</span>
+                    <span>レポート</span>
                 </button>
                 <button class="nav-button" onclick="showPage('settings')">
                     <i class="fas fa-cog"></i>
@@ -1313,65 +1313,65 @@
             <div class="content">
                 <div class="filter-tabs">
                     <button class="filter-tab active">すべて</button>
-                    <button class="filter-tab">定期練習</button>
-                    <button class="filter-tab">試合</button>
-                    <button class="filter-tab">特別イベント</button>
+                    <button class="filter-tab">健康プログラム</button>
+                    <button class="filter-tab">交流イベント</button>
+                    <button class="filter-tab">講座・セミナー</button>
                 </div>
 
                 <div class="event-card" onclick="showPage('event-detail')">
                     <div class="event-header">
-                        <h3 class="event-title">通常練習</h3>
-                        <span class="event-type">定期</span>
+                        <h3 class="event-title">健康体操教室</h3>
+                        <span class="event-type">定期開催</span>
                     </div>
                     <div class="event-info">
-                        <div><i class="far fa-calendar"></i> 毎週火・木・土</div>
-                        <div><i class="far fa-clock"></i> 18:00 - 20:00</div>
-                        <div><i class="fas fa-map-marker-alt"></i> 市民体育館</div>
+                        <div><i class="far fa-calendar"></i> 毎週火・木</div>
+                        <div><i class="far fa-clock"></i> 10:00 - 11:30</div>
+                        <div><i class="fas fa-map-marker-alt"></i> コミュニティセンター ホールA</div>
                     </div>
                     <div class="event-stats">
                         <div class="event-stat">
                             <i class="fas fa-users"></i>
-                            <span>平均参加: 18人</span>
+                            <span>平均参加: 22名</span>
                         </div>
                         <div class="event-stat">
                             <i class="fas fa-percentage"></i>
-                            <span>出席率: 85%</span>
+                            <span>参加率: 85%</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="event-card">
                     <div class="event-header">
-                        <h3 class="event-title">練習試合 vs 南高校</h3>
-                        <span class="event-type" style="background: linear-gradient(135deg, #EF4444 0%, #B91C1C 100%);">試合</span>
+                        <h3 class="event-title">地域交流ウォーキング</h3>
+                        <span class="event-type" style="background: linear-gradient(135deg, #EF4444 0%, #B91C1C 100%);">交流</span>
                     </div>
                     <div class="event-info">
                         <div><i class="far fa-calendar"></i> 10月25日(金)</div>
-                        <div><i class="far fa-clock"></i> 16:00 - 18:00</div>
-                        <div><i class="fas fa-map-marker-alt"></i> 南高校体育館</div>
+                        <div><i class="far fa-clock"></i> 09:30 - 11:00</div>
+                        <div><i class="fas fa-map-marker-alt"></i> 桜並木公園</div>
                     </div>
                     <div class="event-stats">
                         <div class="event-stat">
                             <i class="fas fa-check-circle"></i>
-                            <span>参加予定: 15人</span>
+                            <span>参加予定: 18名</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="event-card">
                     <div class="event-header">
-                        <h3 class="event-title">保護者参観日</h3>
+                        <h3 class="event-title">家族との交流デー</h3>
                         <span class="event-type" style="background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);">特別</span>
                     </div>
                     <div class="event-info">
                         <div><i class="far fa-calendar"></i> 11月3日(日)</div>
-                        <div><i class="far fa-clock"></i> 10:00 - 12:00</div>
-                        <div><i class="fas fa-map-marker-alt"></i> 市民体育館</div>
+                        <div><i class="far fa-clock"></i> 13:00 - 15:00</div>
+                        <div><i class="fas fa-map-marker-alt"></i> コミュニティセンター 多目的室</div>
                     </div>
                     <div class="event-stats">
                         <div class="event-stat">
                             <i class="fas fa-users"></i>
-                            <span>参加予定: 20人</span>
+                            <span>参加予定: 32名</span>
                         </div>
                     </div>
                 </div>
@@ -1398,7 +1398,7 @@
                 </button>
                 <button class="nav-button" onclick="showPage('reports')">
                     <i class="fas fa-newspaper"></i>
-                    <span>報告</span>
+                    <span>レポート</span>
                 </button>
                 <button class="nav-button" onclick="showPage('settings')">
                     <i class="fas fa-cog"></i>
@@ -1417,15 +1417,15 @@
                 <div class="form-container">
                     <div class="form-group">
                         <label class="form-label">イベント名<span class="required">*</span></label>
-                        <input type="text" class="form-input" placeholder="例: 通常練習">
+                        <input type="text" class="form-input" placeholder="例: 健康体操教室">
                     </div>
 
                     <div class="form-group">
                         <label class="form-label">種類<span class="required">*</span></label>
                         <select class="form-select">
-                            <option>定期練習</option>
-                            <option>試合</option>
-                            <option>特別イベント</option>
+                            <option>健康プログラム</option>
+                            <option>交流イベント</option>
+                            <option>講座・セミナー</option>
                         </select>
                     </div>
 
@@ -1438,7 +1438,7 @@
 
                     <div class="form-group">
                         <label class="form-label">場所<span class="required">*</span></label>
-                        <input type="text" class="form-input" placeholder="例: 市民体育館">
+                        <input type="text" class="form-input" placeholder="例: コミュニティセンター ホールA">
                     </div>
 
                     <div class="form-group">
@@ -1447,7 +1447,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">定期イベント</label>
+                        <label class="form-label">開催頻度</label>
                         <select class="form-select">
                             <option>単発イベント</option>
                             <option>毎週</option>
@@ -1479,7 +1479,7 @@
                 </button>
                 <button class="nav-button" onclick="showPage('reports')">
                     <i class="fas fa-newspaper"></i>
-                    <span>報告</span>
+                    <span>レポート</span>
                 </button>
                 <button class="nav-button" onclick="showPage('settings')">
                     <i class="fas fa-cog"></i>
@@ -1491,8 +1491,8 @@
         <!-- イベント詳細 -->
         <div id="event-detail" class="page">
             <div class="header header-small">
-                <h1 class="header-title" style="font-size: 24px;">通常練習</h1>
-                <p class="header-subtitle">定期イベント</p>
+                <h1 class="header-title" style="font-size: 24px;">健康体操教室</h1>
+                <p class="header-subtitle">定期開催プログラム</p>
             </div>
             
             <div class="content">
@@ -1500,30 +1500,30 @@
                     <div class="form-group">
                         <label class="form-label">開催情報</label>
                         <div style="padding: 14px; background: #f5f7fa; border-radius: 12px; font-size: 15px; line-height: 1.8;">
-                            <div><i class="far fa-calendar"></i> 毎週火・木・土</div>
-                            <div><i class="far fa-clock"></i> 18:00 - 20:00</div>
-                            <div><i class="fas fa-map-marker-alt"></i> 市民体育館</div>
+                            <div><i class="far fa-calendar"></i> 毎週火・木</div>
+                            <div><i class="far fa-clock"></i> 10:00 - 11:30</div>
+                            <div><i class="fas fa-map-marker-alt"></i> コミュニティセンター ホールA</div>
                         </div>
                     </div>
                 </div>
 
                 <div class="section-header">
-                    <h3 class="section-title">最近の出席</h3>
+                    <h3 class="section-title">最近の参加状況</h3>
                 </div>
 
                 <div class="list-item">
                     <div class="list-item-header">
                         <h3 class="list-item-title">10月17日(木)</h3>
-                        <span class="list-item-badge">完了</span>
+                        <span class="list-item-badge">開催済み</span>
                     </div>
                     <div class="list-item-meta">
                         <div class="list-item-meta-item">
                             <i class="fas fa-check-circle" style="color: #10B981;"></i>
-                            <span>出席: 18人</span>
+                            <span>参加: 24名</span>
                         </div>
                         <div class="list-item-meta-item">
                             <i class="fas fa-times-circle" style="color: #EF4444;"></i>
-                            <span>欠席: 3人</span>
+                            <span>お休み: 5名</span>
                         </div>
                     </div>
                 </div>
@@ -1531,16 +1531,16 @@
                 <div class="list-item" onclick="showPage('take-attendance')">
                     <div class="list-item-header">
                         <h3 class="list-item-title">10月19日(土)</h3>
-                        <span class="list-item-badge" style="background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);">今日</span>
+                        <span class="list-item-badge" style="background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);">本日</span>
                     </div>
                     <div class="list-item-info">
-                        タップして出席を記録
+                        タップして参加状況を記録
                     </div>
                 </div>
 
                 <button class="main-button" onclick="showPage('take-attendance')">
                     <i class="fas fa-clipboard-check"></i>
-                    今日の出席を記録
+                    今日の参加を記録
                 </button>
 
                 <button class="back-button" onclick="showPage('events')">
@@ -1560,7 +1560,7 @@
                 </button>
                 <button class="nav-button" onclick="showPage('reports')">
                     <i class="fas fa-newspaper"></i>
-                    <span>報告</span>
+                    <span>レポート</span>
                 </button>
                 <button class="nav-button" onclick="showPage('settings')">
                     <i class="fas fa-cog"></i>
@@ -1569,11 +1569,11 @@
             </div>
         </div>
 
-        <!-- 出席記録 -->
+        <!-- 参加記録 -->
         <div id="take-attendance" class="page">
             <div class="header header-small">
-                <h1 class="header-title" style="font-size: 24px;">出席記録</h1>
-                <p class="header-subtitle">10月19日(土) 通常練習</p>
+                <h1 class="header-title" style="font-size: 24px;">参加記録</h1>
+                <p class="header-subtitle">10月19日(土) 健康体操教室</p>
             </div>
             
             <div class="content">
@@ -1581,36 +1581,36 @@
                     <div class="attendance-item">
                         <div class="attendance-name">山田太郎</div>
                         <div class="attendance-buttons">
-                            <button class="attendance-button present" onclick="toggleAttendance(this, 'present')">出席</button>
-                            <button class="attendance-button" onclick="toggleAttendance(this, 'absent')">欠席</button>
+                            <button class="attendance-button present" onclick="toggleAttendance(this, 'present')">参加</button>
+                            <button class="attendance-button" onclick="toggleAttendance(this, 'absent')">お休み</button>
                         </div>
                     </div>
                     <div class="attendance-item">
                         <div class="attendance-name">佐藤花子</div>
                         <div class="attendance-buttons">
-                            <button class="attendance-button present" onclick="toggleAttendance(this, 'present')">出席</button>
-                            <button class="attendance-button" onclick="toggleAttendance(this, 'absent')">欠席</button>
+                            <button class="attendance-button present" onclick="toggleAttendance(this, 'present')">参加</button>
+                            <button class="attendance-button" onclick="toggleAttendance(this, 'absent')">お休み</button>
                         </div>
                     </div>
                     <div class="attendance-item">
                         <div class="attendance-name">鈴木一郎</div>
                         <div class="attendance-buttons">
-                            <button class="attendance-button" onclick="toggleAttendance(this, 'present')">出席</button>
-                            <button class="attendance-button absent" onclick="toggleAttendance(this, 'absent')">欠席</button>
+                            <button class="attendance-button" onclick="toggleAttendance(this, 'present')">参加</button>
+                            <button class="attendance-button absent" onclick="toggleAttendance(this, 'absent')">お休み</button>
                         </div>
                     </div>
                     <div class="attendance-item">
                         <div class="attendance-name">田中美咲</div>
                         <div class="attendance-buttons">
-                            <button class="attendance-button present" onclick="toggleAttendance(this, 'present')">出席</button>
-                            <button class="attendance-button" onclick="toggleAttendance(this, 'absent')">欠席</button>
+                            <button class="attendance-button present" onclick="toggleAttendance(this, 'present')">参加</button>
+                            <button class="attendance-button" onclick="toggleAttendance(this, 'absent')">お休み</button>
                         </div>
                     </div>
                     <div class="attendance-item">
                         <div class="attendance-name">伊藤健太</div>
                         <div class="attendance-buttons">
-                            <button class="attendance-button present" onclick="toggleAttendance(this, 'present')">出席</button>
-                            <button class="attendance-button" onclick="toggleAttendance(this, 'absent')">欠席</button>
+                            <button class="attendance-button present" onclick="toggleAttendance(this, 'present')">参加</button>
+                            <button class="attendance-button" onclick="toggleAttendance(this, 'absent')">お休み</button>
                         </div>
                     </div>
                 </div>
@@ -1619,22 +1619,22 @@
                     <div style="display: flex; justify-content: space-around; padding: 12px 0;">
                         <div style="text-align: center;">
                             <div style="font-size: 24px; font-weight: 700; color: #10B981;">4</div>
-                            <div style="font-size: 13px; color: #888;">出席</div>
+                            <div style="font-size: 13px; color: #888;">参加</div>
                         </div>
                         <div style="text-align: center;">
                             <div style="font-size: 24px; font-weight: 700; color: #EF4444;">1</div>
-                            <div style="font-size: 13px; color: #888;">欠席</div>
+                            <div style="font-size: 13px; color: #888;">お休み</div>
                         </div>
                         <div style="text-align: center;">
                             <div style="font-size: 24px; font-weight: 700; color: #888;">19</div>
-                            <div style="font-size: 13px; color: #888;">未記録</div>
+                            <div style="font-size: 13px; color: #888;">未回答</div>
                         </div>
                     </div>
                 </div>
 
                 <button class="main-button" onclick="saveAttendance()">
                     <i class="fas fa-check"></i>
-                    出席記録を保存
+                    参加記録を保存
                 </button>
 
                 <button class="back-button" onclick="showPage('event-detail')">
@@ -1654,7 +1654,7 @@
                 </button>
                 <button class="nav-button" onclick="showPage('reports')">
                     <i class="fas fa-newspaper"></i>
-                    <span>報告</span>
+                    <span>レポート</span>
                 </button>
                 <button class="nav-button" onclick="showPage('settings')">
                     <i class="fas fa-cog"></i>
@@ -1663,46 +1663,46 @@
             </div>
         </div>
 
-        <!-- 活動報告 -->
+        <!-- コミュニティレポート -->
         <div id="reports" class="page">
             <div class="header header-small">
-                <h1 class="header-title" style="font-size: 24px;">活動報告</h1>
+                <h1 class="header-title" style="font-size: 24px;">コミュニティレポート</h1>
             </div>
             
             <div class="content">
                 <div class="report-card">
                     <div class="report-image">
-                        <i class="fas fa-basketball-ball"></i>
+                        <i class="fas fa-person-walking"></i>
                     </div>
                     <div class="report-header">
                         <div class="report-date">2024年10月17日</div>
                     </div>
                     <div class="report-content">
-                        今日の練習は3対3のゲーム形式で行いました。新入部員も積極的にプレーに参加してくれて、とても良い雰囲気でした！来週の練習試合に向けて、さらにチームワークを高めていきましょう。
+                        本日の健康体操教室では、ストレッチと軽いウォーキングを中心に体を動かしました。初参加の方も笑顔で取り組まれ、終了後はお茶を飲みながら近況報告で盛り上がりました。
                     </div>
                     <div class="report-stats">
-                        <span><i class="fas fa-users"></i> 参加: 18人</span>
+                        <span><i class="fas fa-users"></i> 参加: 24名</span>
                     </div>
                 </div>
 
                 <div class="report-card">
                     <div class="report-image">
-                        <i class="fas fa-trophy"></i>
+                        <i class="fas fa-chalkboard-teacher"></i>
                     </div>
                     <div class="report-header">
                         <div class="report-date">2024年10月15日</div>
                     </div>
                     <div class="report-content">
-                        市内大会の予選が終了しました。結果は準優勝！全員が最後まで全力でプレーし、素晴らしいチームワークを見せてくれました。次は県大会に向けて頑張りましょう！
+                        スマホ活用講座では、写真の送り方とオンライン診療の予約方法を学びました。操作に不安があった方も、スタッフと一緒に確認しながら自信を持てるようになりました。
                     </div>
                     <div class="report-stats">
-                        <span><i class="fas fa-users"></i> 参加: 15人</span>
+                        <span><i class="fas fa-users"></i> 参加: 16名</span>
                     </div>
                 </div>
 
                 <button class="main-button" onclick="showPage('add-report')">
                     <i class="fas fa-plus"></i>
-                    活動報告を投稿
+                    レポートを投稿
                 </button>
 
                 <button class="back-button" onclick="showPage('home')">
@@ -1722,7 +1722,7 @@
                 </button>
                 <button class="nav-button active" onclick="showPage('reports')">
                     <i class="fas fa-newspaper"></i>
-                    <span>報告</span>
+                    <span>レポート</span>
                 </button>
                 <button class="nav-button" onclick="showPage('settings')">
                     <i class="fas fa-cog"></i>
@@ -1731,10 +1731,10 @@
             </div>
         </div>
 
-        <!-- 活動報告投稿 -->
+        <!-- レポート投稿 -->
         <div id="add-report" class="page">
             <div class="header header-small">
-                <h1 class="header-title" style="font-size: 24px;">活動報告投稿</h1>
+                <h1 class="header-title" style="font-size: 24px;">レポート投稿</h1>
             </div>
             
             <div class="content">
@@ -1748,16 +1748,16 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">報告内容<span class="required">*</span></label>
-                        <textarea class="form-textarea" placeholder="今日の活動内容を記入してください" style="min-height: 150px;"></textarea>
+                        <label class="form-label">レポート内容<span class="required">*</span></label>
+                        <textarea class="form-textarea" placeholder="今日のコミュニティ活動の様子を記入してください" style="min-height: 150px;"></textarea>
                     </div>
 
                     <div class="form-group">
                         <label class="form-label">関連イベント</label>
                         <select class="form-select">
                             <option>選択してください</option>
-                            <option>通常練習 (10/19)</option>
-                            <option>練習試合 vs 南高校 (10/25)</option>
+                            <option>健康体操教室 (10/19)</option>
+                            <option>地域交流ウォーキング (10/25)</option>
                         </select>
                     </div>
 
@@ -1789,7 +1789,7 @@
                 </button>
                 <button class="nav-button active" onclick="showPage('reports')">
                     <i class="fas fa-newspaper"></i>
-                    <span>報告</span>
+                    <span>レポート</span>
                 </button>
                 <button class="nav-button" onclick="showPage('settings')">
                     <i class="fas fa-cog"></i>
@@ -1807,21 +1807,21 @@
             <div class="content">
                 <div class="notification-card">
                     <div class="notification-header">
-                        <div class="notification-title">練習試合のお知らせ</div>
+                        <div class="notification-title">交流ウォーキングのお知らせ</div>
                         <div class="notification-time">10/18 送信</div>
                     </div>
                     <div class="notification-content">
-                        10月25日(金)16:00より、南高校との練習試合を行います。参加可能な方は10月22日までに連絡をお願いします。
+                        10月25日(金)9:30より、桜並木公園で交流ウォーキングを行います。ゆっくり歩くコースですので、参加希望の方は10月22日までにご連絡ください。
                     </div>
                 </div>
 
                 <div class="notification-card">
                     <div class="notification-header">
-                        <div class="notification-title">体育館利用について</div>
+                        <div class="notification-title">センターホール利用について</div>
                         <div class="notification-time">10/15 送信</div>
                     </div>
                     <div class="notification-content">
-                        来週10月24日(木)は体育館の改修工事のため、練習は中止となります。ご了承ください。
+                        来週10月24日(木)はホールの設備点検のため、健康体操教室はお休みとなります。お間違えのないようお願いいたします。
                     </div>
                 </div>
 
@@ -1847,7 +1847,7 @@
                 </button>
                 <button class="nav-button" onclick="showPage('reports')">
                     <i class="fas fa-newspaper"></i>
-                    <span>報告</span>
+                    <span>レポート</span>
                 </button>
                 <button class="nav-button" onclick="showPage('settings')">
                     <i class="fas fa-cog"></i>
@@ -1866,19 +1866,19 @@
                 <div class="form-container">
                     <div class="form-group">
                         <label class="form-label">件名<span class="required">*</span></label>
-                        <input type="text" class="form-input" placeholder="例: 練習試合のお知らせ">
+                        <input type="text" class="form-input" placeholder="例: ウォーキングイベントのお知らせ">
                     </div>
 
                     <div class="form-group">
                         <label class="form-label">本文<span class="required">*</span></label>
-                        <textarea class="form-textarea" placeholder="メンバーへの連絡内容を記入してください" style="min-height: 200px;"></textarea>
+                        <textarea class="form-textarea" placeholder="参加者への連絡内容を記入してください" style="min-height: 200px;"></textarea>
                     </div>
 
                     <div class="form-group">
                         <label class="form-label">送信先</label>
                         <select class="form-select">
-                            <option>全メンバー (24名)</option>
-                            <option>部長・副部長のみ</option>
+                            <option>全参加者 (24名)</option>
+                            <option>代表・副代表のみ</option>
                             <option>個別選択...</option>
                         </select>
                     </div>
@@ -1920,7 +1920,7 @@
                 </button>
                 <button class="nav-button" onclick="showPage('reports')">
                     <i class="fas fa-newspaper"></i>
-                    <span>報告</span>
+                    <span>レポート</span>
                 </button>
                 <button class="nav-button" onclick="showPage('settings')">
                     <i class="fas fa-cog"></i>
@@ -1943,7 +1943,7 @@
                             <i class="fas fa-calendar-check"></i>
                         </div>
                         <div class="stat-value">87%</div>
-                        <div class="stat-label">平均出席率</div>
+                        <div class="stat-label">平均参加率</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon">
@@ -1969,14 +1969,14 @@
                 </div>
 
                 <div class="section-header">
-                    <h3 class="section-title">出席率トップ5</h3>
+                    <h3 class="section-title">参加状況トップ5</h3>
                 </div>
 
                 <div class="member-card">
                     <div class="member-avatar">山</div>
                     <div class="member-info">
                         <div class="member-name">山田太郎</div>
-                        <div class="member-detail">出席: 12/12回</div>
+                        <div class="member-detail">参加: 12/12回</div>
                     </div>
                     <div style="font-size: 24px; font-weight: 700; color: #10B981;">100%</div>
                 </div>
@@ -1985,7 +1985,7 @@
                     <div class="member-avatar">佐</div>
                     <div class="member-info">
                         <div class="member-name">佐藤花子</div>
-                        <div class="member-detail">出席: 11/12回</div>
+                        <div class="member-detail">参加: 11/12回</div>
                     </div>
                     <div style="font-size: 24px; font-weight: 700; color: #10B981;">92%</div>
                 </div>
@@ -1994,23 +1994,23 @@
                     <div class="member-avatar">田</div>
                     <div class="member-info">
                         <div class="member-name">田中美咲</div>
-                        <div class="member-detail">出席: 11/12回</div>
+                        <div class="member-detail">参加: 11/12回</div>
                     </div>
                     <div style="font-size: 24px; font-weight: 700; color: #10B981;">92%</div>
                 </div>
 
                 <div class="section-header" style="margin-top: 24px;">
-                    <h3 class="section-title">イベント別出席率</h3>
+                    <h3 class="section-title">プログラム別参加率</h3>
                 </div>
 
                 <div class="list-item">
                     <div class="list-item-header">
-                        <h3 class="list-item-title">通常練習</h3>
+                        <h3 class="list-item-title">健康体操教室</h3>
                     </div>
                     <div class="list-item-meta">
                         <div class="list-item-meta-item">
                             <i class="fas fa-percentage"></i>
-                            <span>出席率: 85%</span>
+                            <span>参加率: 85%</span>
                         </div>
                         <div class="list-item-meta-item">
                             <i class="fas fa-calendar"></i>
@@ -2021,12 +2021,12 @@
 
                 <div class="list-item">
                     <div class="list-item-header">
-                        <h3 class="list-item-title">練習試合</h3>
+                        <h3 class="list-item-title">地域交流ウォーキング</h3>
                     </div>
                     <div class="list-item-meta">
                         <div class="list-item-meta-item">
                             <i class="fas fa-percentage"></i>
-                            <span>出席率: 92%</span>
+                            <span>参加率: 92%</span>
                         </div>
                         <div class="list-item-meta-item">
                             <i class="fas fa-calendar"></i>
@@ -2052,7 +2052,7 @@
                 </button>
                 <button class="nav-button" onclick="showPage('reports')">
                     <i class="fas fa-newspaper"></i>
-                    <span>報告</span>
+                    <span>レポート</span>
                 </button>
                 <button class="nav-button" onclick="showPage('settings')">
                     <i class="fas fa-cog"></i>
@@ -2074,7 +2074,7 @@
                     </div>
                     <h3 class="card-title">コミュニティ情報</h3>
                     <p class="card-description">
-                        部活動名・活動内容の編集
+                        コミュニティ名・活動内容の編集
                     </p>
                 </div>
 
@@ -2135,7 +2135,7 @@
                 </button>
                 <button class="nav-button" onclick="showPage('reports')">
                     <i class="fas fa-newspaper"></i>
-                    <span>報告</span>
+                    <span>レポート</span>
                 </button>
                 <button class="nav-button active" onclick="showPage('settings')">
                     <i class="fas fa-cog"></i>
@@ -2191,7 +2191,7 @@
                 </button>
                 <button class="nav-button" onclick="showPage('reports')">
                     <i class="fas fa-newspaper"></i>
-                    <span>報告</span>
+                    <span>レポート</span>
                 </button>
                 <button class="nav-button active" onclick="showPage('settings')">
                     <i class="fas fa-cog"></i>
@@ -2200,15 +2200,15 @@
             </div>
         </div>
 
-        <!-- メンバー詳細モーダル -->
+        <!-- 参加者詳細モーダル -->
         <div id="member-modal" class="modal">
             <div class="modal-content">
                 <h2 class="modal-title" id="modal-member-name">山田太郎</h2>
                 
                 <div class="form-group">
-                    <label class="form-label">役職</label>
+                    <label class="form-label">役割</label>
                     <div style="padding: 14px; background: #f5f7fa; border-radius: 12px; font-size: 16px;" id="modal-member-role">
-                        部長
+                        コミュニティ代表
                     </div>
                 </div>
 
@@ -2232,7 +2232,7 @@
                         緊急連絡先
                     </div>
                     <div class="emergency-info" id="modal-emergency-contact">
-                        父: 090-1111-2222
+                        家族: 090-1111-2222
                     </div>
                 </div>
 
@@ -2303,7 +2303,7 @@
             }
         }
 
-        // メンバー詳細表示
+        // 参加者詳細表示
         function showMemberDetail(name, role, phone, emergency, email) {
             document.getElementById('modal-member-name').textContent = name;
             document.getElementById('modal-member-role').textContent = role;
@@ -2337,24 +2337,24 @@
             }, 2000);
         }
 
-        // メンバー追加
+        // 参加者追加
         function addMember() {
             // 実際のアプリではここでデータ送信
-            showCompleteModal('メンバーを追加しました', '新しいメンバーが登録されました', 'members');
+            showCompleteModal('参加者を追加しました', '新しい参加者が登録されました', 'members');
         }
 
-        // メンバー編集
+        // 参加者編集
         function editMember() {
-            alert('メンバー編集画面に移動します\n（実装予定）');
+            alert('参加者編集画面に移動します\n（実装予定）');
         }
 
         // イベント追加
         function addEvent() {
             // 実際のアプリではここでデータ送信
-            showCompleteModal('イベントを追加しました', '新しいイベントが作成されました', 'events');
+            showCompleteModal('イベントを追加しました', '新しいプログラムが作成されました', 'events');
         }
 
-        // 出席記録切り替え
+        // 参加状況切り替え
         function toggleAttendance(button, type) {
             const buttons = button.parentElement.querySelectorAll('.attendance-button');
             buttons.forEach(btn => {
@@ -2371,19 +2371,19 @@
             updateAttendanceStats();
         }
 
-        // 出席統計更新
+        // 参加統計更新
         function updateAttendanceStats() {
             // 実際のアプリではここで統計を計算
         }
 
-        // 出席記録保存
+        // 参加記録保存
         function saveAttendance() {
-            showCompleteModal('出席記録を保存しました', '出席状況が記録されました', 'event-detail');
+            showCompleteModal('参加記録を保存しました', '参加状況が記録されました', 'event-detail');
         }
 
-        // 活動報告投稿
+        // レポート投稿
         function addReport() {
-            showCompleteModal('活動報告を投稿しました', 'メンバーに通知されました', 'reports');
+            showCompleteModal('レポートを投稿しました', '参加者に通知されました', 'reports');
         }
 
         // 画像アップロード
@@ -2393,7 +2393,7 @@
 
         // 連絡送信
         function sendNotification() {
-            showCompleteModal('連絡を送信しました', 'メンバーに通知されました', 'notifications');
+            showCompleteModal('連絡を送信しました', '参加者に通知されました', 'notifications');
         }
 
         // パスワード変更
