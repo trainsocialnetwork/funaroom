@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>FUN・A・ROOM チャットUI プロトタイプ</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
+            background: #f1f4f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 24px;
+            color: #1f2933;
+        }
+
+        .phone-frame {
+            width: 100%;
+            max-width: 430px;
+            height: 900px;
+            background: #101316;
+            border-radius: 46px;
+            padding: 12px;
+            box-shadow: 0 25px 60px rgba(15, 23, 42, 0.35);
+            position: relative;
+        }
+
+        .screen {
+            width: 100%;
+            height: 100%;
+            background: #ffffff;
+            border-radius: 34px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .status-bar {
+            height: 54px;
+            padding: 0 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #ffffff;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.3);
+            font-weight: 600;
+            letter-spacing: 0.02em;
+        }
+
+        .chat-header {
+            padding: 24px 28px 20px;
+            background: linear-gradient(145deg, #4A90E2 0%, #5CA0F2 100%);
+            color: #fff;
+        }
+
+        .assistant-name {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .assistant-subtitle {
+            font-size: 17px;
+            opacity: 0.95;
+            line-height: 1.6;
+        }
+
+        .chat-body {
+            flex: 1;
+            background: #f7fafc;
+            padding: 20px 18px 120px;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .chat-body::-webkit-scrollbar {
+            width: 0;
+        }
+
+        .message {
+            display: flex;
+            margin-bottom: 18px;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .message.assistant {
+            flex-direction: row;
+        }
+
+        .message.user {
+            flex-direction: row-reverse;
+        }
+
+        .avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4A90E2 0%, #5CA0F2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .bubble {
+            max-width: 78%;
+            padding: 16px 18px;
+            border-radius: 22px;
+            font-size: 17px;
+            line-height: 1.7;
+            box-shadow: 0 10px 20px rgba(15, 23, 42, 0.08);
+        }
+
+        .assistant .bubble {
+            background: #fff;
+            border-bottom-left-radius: 8px;
+        }
+
+        .user .bubble {
+            background: #4A90E2;
+            color: #fff;
+            border-bottom-right-radius: 8px;
+        }
+
+        .quick-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .quick-button {
+            padding: 16px 20px;
+            border-radius: 18px;
+            border: none;
+            font-size: 18px;
+            background: #e2efff;
+            color: #2563eb;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            box-shadow: inset 0 -2px 0 rgba(37, 99, 235, 0.08);
+        }
+
+        .quick-button i {
+            margin-right: 8px;
+        }
+
+        .quick-button:active {
+            transform: scale(0.97);
+            box-shadow: inset 0 -2px 0 rgba(37, 99, 235, 0.15);
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 22px;
+            padding: 20px 22px;
+            box-shadow: 0 12px 28px rgba(15, 23, 42, 0.12);
+            margin-top: 14px;
+            font-size: 17px;
+            line-height: 1.75;
+        }
+
+        .card h3 {
+            font-size: 20px;
+            margin-bottom: 12px;
+        }
+
+        .card p {
+            margin-bottom: 10px;
+        }
+
+        .card .secondary {
+            font-size: 15px;
+            color: #64748b;
+        }
+
+        .card .action-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .card-button {
+            background: #4A90E2;
+            color: #fff;
+            font-weight: 600;
+            border: none;
+            border-radius: 14px;
+            padding: 12px 18px;
+            font-size: 16px;
+            box-shadow: 0 8px 18px rgba(37, 99, 235, 0.25);
+        }
+
+        .card-button.secondary {
+            background: #e2e8f0;
+            color: #1f2933;
+            box-shadow: none;
+        }
+
+        .progress {
+            margin-top: 10px;
+            font-size: 16px;
+            color: #1f2933;
+        }
+
+        .progress span {
+            font-weight: 700;
+        }
+
+        .chat-footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #ffffff;
+            padding: 20px 24px 28px;
+            border-top: 1px solid rgba(148, 163, 184, 0.3);
+            box-shadow: 0 -10px 30px rgba(15, 23, 42, 0.1);
+        }
+
+        .footer-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 14px;
+        }
+
+        .reply-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .reply-button {
+            padding: 16px 12px;
+            background: #f1f5f9;
+            border-radius: 16px;
+            border: 2px solid transparent;
+            font-size: 17px;
+            font-weight: 600;
+            color: #1e3a8a;
+            text-align: center;
+            letter-spacing: 0.03em;
+        }
+
+        .reply-button:active {
+            border-color: #4A90E2;
+            background: #e2efff;
+        }
+
+        .reply-button.full {
+            grid-column: span 2;
+        }
+
+        .divider {
+            height: 1px;
+            background: rgba(148, 163, 184, 0.25);
+            margin: 12px 0 16px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #475569;
+            margin-bottom: 8px;
+        }
+
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 10px;
+            background: #fef9c3;
+            border-radius: 999px;
+            font-size: 14px;
+            color: #854d0e;
+            font-weight: 600;
+            margin-right: 8px;
+        }
+
+        .support-card {
+            background: #fff7ed;
+            border-left: 6px solid #f97316;
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-frame">
+        <div class="screen">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span><i class="fa-solid fa-signal"></i> <i class="fa-solid fa-wifi"></i> 100%</span>
+            </div>
+            <div class="chat-header">
+                <div class="assistant-name">FUN・A・ROOM ケアナビ</div>
+                <div class="assistant-subtitle">田中さん、今日も元気に過ごしましょう。困ったらいつでも声をかけてくださいね。</div>
+            </div>
+            <div class="chat-body">
+                <div class="message assistant">
+                    <div class="avatar">F</div>
+                    <div class="bubble">
+                        おはようございます。今日はどのメニューから始めますか？大きなボタンから選べば大丈夫です。
+                        <div class="quick-actions">
+                            <button class="quick-button"><i class="fa-solid fa-pen-to-square"></i>今日の記録</button>
+                            <button class="quick-button"><i class="fa-solid fa-gamepad"></i>健康ゲーム</button>
+                            <button class="quick-button"><i class="fa-solid fa-stethoscope"></i>月1健康診断</button>
+                            <button class="quick-button"><i class="fa-solid fa-people-group"></i>部活動を見る</button>
+                            <button class="quick-button"><i class="fa-solid fa-phone"></i>電話サポート</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="message user">
+                    <div class="avatar"><i class="fa-solid fa-user"></i></div>
+                    <div class="bubble">今日の記録をお願いします。</div>
+                </div>
+
+                <div class="message assistant">
+                    <div class="avatar">F</div>
+                    <div class="bubble">
+                        体調はいかがですか？
+                        <div class="quick-actions">
+                            <button class="quick-button"><i class="fa-regular fa-face-smile"></i>元気</button>
+                            <button class="quick-button"><i class="fa-regular fa-face-meh"></i>いつも通り</button>
+                            <button class="quick-button"><i class="fa-regular fa-face-frown"></i>疲れ気味</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="message assistant">
+                    <div class="avatar">F</div>
+                    <div class="bubble">
+                        食事はしっかりとれましたか？（2問目 / 全3問）
+                        <div class="quick-actions">
+                            <button class="quick-button">はい</button>
+                            <button class="quick-button">いいえ</button>
+                            <button class="quick-button">覚えていない</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="message assistant">
+                    <div class="avatar">F</div>
+                    <div class="bubble">
+                        最後に今日の歩数を教えてください。
+                        <div class="card">
+                            <div class="section-title">歩数入力</div>
+                            <p>今日の歩数に近い数値を選んでください。</p>
+                            <div class="action-row">
+                                <button class="card-button secondary">1,000歩未満</button>
+                                <button class="card-button secondary">1,000〜4,999歩</button>
+                                <button class="card-button secondary">5,000〜7,999歩</button>
+                                <button class="card-button secondary">8,000歩以上</button>
+                            </div>
+                            <div class="progress"><span>3 / 3</span> 問目です。いつでも「やめる」と言えば中止できます。</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="message assistant">
+                    <div class="avatar">F</div>
+                    <div class="bubble">
+                        今日の記録が完了しました。毎日続けると体調の変化が分かりやすくなりますよ。
+                        <div class="quick-actions">
+                            <button class="quick-button"><i class="fa-solid fa-arrow-rotate-left"></i>もう一度記録</button>
+                            <button class="quick-button"><i class="fa-solid fa-house"></i>他のメニューへ</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="message user">
+                    <div class="avatar"><i class="fa-solid fa-user"></i></div>
+                    <div class="bubble">健康ゲームも見せて。</div>
+                </div>
+
+                <div class="message assistant">
+                    <div class="avatar">F</div>
+                    <div class="bubble">
+                        楽しく身体を動かしましょう。やりたいゲームを選んでください。
+                        <div class="card">
+                            <h3>健康ゲームメニュー</h3>
+                            <div class="tag"><i class="fa-solid fa-heart-pulse"></i>&nbsp;安全第一</div>
+                            <p>それぞれのゲームは、開始前に周りの安全を確認してください。</p>
+                            <div class="action-row">
+                                <button class="card-button"><i class="fa-solid fa-person-walking"></i>&nbsp;片足立ちチャレンジ</button>
+                                <button class="card-button"><i class="fa-solid fa-bolt"></i>&nbsp;反応速度テスト</button>
+                                <button class="card-button"><i class="fa-solid fa-ring"></i>&nbsp;指輪っかテスト</button>
+                                <button class="card-button"><i class="fa-solid fa-mouth"></i>&nbsp;口腔フレイルチェック</button>
+                            </div>
+                            <div class="action-row">
+                                <button class="card-button secondary">ゲームの遊び方</button>
+                                <button class="card-button secondary">結果を見る</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="message assistant">
+                    <div class="avatar">F</div>
+                    <div class="bubble">
+                        例：片足立ちチャレンジの流れです。
+                        <div class="card">
+                            <h3><i class="fa-solid fa-person-walking"></i> 片足立ちチャレンジ</h3>
+                            <p>1. 周りに危ないものがないか確認しましょう。</p>
+                            <p>2. 「スタート」を押して片足立ち、倒れそうになったら「ストップ」。</p>
+                            <p class="secondary">結果は記録され、グラフで確認できます。</p>
+                            <div class="action-row">
+                                <button class="card-button"><i class="fa-solid fa-play"></i>&nbsp;スタート</button>
+                                <button class="card-button secondary"><i class="fa-solid fa-circle-info"></i>&nbsp;注意事項</button>
+                                <button class="card-button secondary"><i class="fa-solid fa-rotate-left"></i>&nbsp;メニューに戻る</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="message assistant">
+                    <div class="avatar">F</div>
+                    <div class="bubble">
+                        月1健康診断（フレイルチェック）もいつでもできます。準備はよろしいですか？
+                        <div class="card">
+                            <h3>フレイルチェック</h3>
+                            <p>全5問です。所要時間は3分ほど。ゆっくり進めましょう。</p>
+                            <div class="progress"><span>1 / 5</span>問目です。</div>
+                            <p>最近、体重が減りましたか？</p>
+                            <div class="action-row">
+                                <button class="card-button secondary">はい</button>
+                                <button class="card-button secondary">いいえ</button>
+                                <button class="card-button secondary">わからない</button>
+                            </div>
+                            <div class="divider"></div>
+                            <p class="secondary">いつでも「中止」ボタンで終了できます。結果はアドバイス付きで表示されます。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="message assistant">
+                    <div class="avatar">F</div>
+                    <div class="bubble">
+                        フレイルチェックの結果です。
+                        <div class="card">
+                            <h3>健康状態：良好</h3>
+                            <p>引き続き今の習慣を大切にしましょう。水分補給と睡眠がポイントです。</p>
+                            <div class="action-row">
+                                <button class="card-button"><i class="fa-solid fa-share"></i>&nbsp;結果を共有</button>
+                                <button class="card-button secondary"><i class="fa-solid fa-house"></i>&nbsp;ホームに戻る</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="message user">
+                    <div class="avatar"><i class="fa-solid fa-user"></i></div>
+                    <div class="bubble">最近の記録を見たい。</div>
+                </div>
+
+                <div class="message assistant">
+                    <div class="avatar">F</div>
+                    <div class="bubble">
+                        直近3日分の記録です。気になる日付を選べます。
+                        <div class="card">
+                            <h3>最近の記録</h3>
+                            <p><strong>12/12</strong> 元気・歩数8,200歩</p>
+                            <p><strong>12/11</strong> 少し疲れ・歩数5,100歩</p>
+                            <p><strong>12/10</strong> 元気・歩数7,300歩</p>
+                            <div class="action-row">
+                                <button class="card-button secondary">12/12を見る</button>
+                                <button class="card-button secondary">もっと前を見る</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="message user">
+                    <div class="avatar"><i class="fa-solid fa-user"></i></div>
+                    <div class="bubble">部活動の情報を教えて。</div>
+                </div>
+
+                <div class="message assistant">
+                    <div class="avatar">F</div>
+                    <div class="bubble">
+                        興味のある部活動を選んでください。
+                        <div class="card">
+                            <h3>おすすめ部活動</h3>
+                            <p><strong>ウォーキング部</strong>：毎週火曜・午前10時 / 市民公園</p>
+                            <p><strong>いきいきヨガ</strong>：毎週木曜・午後2時 / コミュニティセンター</p>
+                            <p><strong>カラオケ交流会</strong>：月2回・午後1時 / FUN・A・ROOM</p>
+                            <div class="action-row">
+                                <button class="card-button secondary">ウォーキング部</button>
+                                <button class="card-button secondary">ヨガサークル</button>
+                                <button class="card-button secondary">他の部を探す</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="message assistant">
+                    <div class="avatar">F</div>
+                    <div class="bubble support-card">
+                        <strong><i class="fa-solid fa-phone"></i> サポートが必要ですか？</strong><br>
+                        ボタンを押すと、専任スタッフに電話がつながります。緊急の際はすぐに押してください。
+                        <div class="quick-actions">
+                            <button class="quick-button"><i class="fa-solid fa-phone-volume"></i>今すぐ電話する</button>
+                            <button class="quick-button"><i class="fa-solid fa-comments"></i>折り返し希望</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="message assistant">
+                    <div class="avatar">F</div>
+                    <div class="bubble">
+                        ほかにお手伝いできることはありますか？
+                        <div class="quick-actions">
+                            <button class="quick-button">今日の記録をもう一度</button>
+                            <button class="quick-button">健康ゲーム</button>
+                            <button class="quick-button">部活動</button>
+                            <button class="quick-button">困りごと相談</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="chat-footer">
+                <div class="footer-title">かんたん操作ボタン</div>
+                <div class="reply-grid">
+                    <button class="reply-button"><i class="fa-solid fa-pen-to-square"></i> 記録する</button>
+                    <button class="reply-button"><i class="fa-solid fa-gamepad"></i> ゲーム</button>
+                    <button class="reply-button"><i class="fa-solid fa-stethoscope"></i> 健康診断</button>
+                    <button class="reply-button"><i class="fa-solid fa-people-group"></i> 部活動</button>
+                    <button class="reply-button full"><i class="fa-solid fa-phone"></i> 電話で相談する</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
