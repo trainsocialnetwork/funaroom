@@ -250,6 +250,12 @@
             padding: 20px 24px 28px;
             border-top: 1px solid rgba(148, 163, 184, 0.3);
             box-shadow: 0 -10px 30px rgba(15, 23, 42, 0.1);
+            transition: transform 0.3s ease-out;
+            transform: translateY(0);
+        }
+
+        .chat-footer.hidden {
+            transform: translateY(100%);
         }
 
         .footer-title {
@@ -364,8 +370,54 @@
             color: #64748b;
         }
 
-        .hidden {
+        .floating-menu-btn {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4A90E2 0%, #5CA0F2 100%);
+            color: #fff;
+            border: none;
+            font-size: 24px;
+            box-shadow: 0 8px 24px rgba(74, 144, 226, 0.4);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 100;
             display: none;
+        }
+
+        .floating-menu-btn.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .floating-menu-btn:active {
+            transform: scale(0.95);
+        }
+
+        .footer-close-btn {
+            position: absolute;
+            top: 16px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: #64748b;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 8px;
+            transition: all 0.2s;
+        }
+
+        .footer-close-btn:active {
+            transform: scale(0.9);
+            color: #4A90E2;
+        }
+
+        .chat-body.footer-hidden {
+            padding-bottom: 40px;
         }
 
         @media (max-width: 450px) {
@@ -398,7 +450,13 @@
             <div class="chat-body" id="chatBody">
                 <!-- 会話はJavaScriptで動的に追加されます -->
             </div>
-            <div class="chat-footer">
+            <button class="floating-menu-btn" id="floatingMenuBtn" onclick="toggleFooter()">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            <div class="chat-footer" id="chatFooter">
+                <button class="footer-close-btn" onclick="toggleFooter()">
+                    <i class="fa-solid fa-chevron-down"></i>
+                </button>
                 <div class="footer-title">かんたん操作ボタン</div>
                 <div class="reply-grid">
                     <button class="reply-button" onclick="startDailyCheck()"><i class="fa-solid fa-pen-to-square"></i> 記録する</button>
@@ -418,6 +476,35 @@
         let dailyAnswers = {};
         let healthAnswers = {};
         let currentQuestion = 0;
+        let isFooterVisible = true;
+
+        // フッターの開閉
+        function toggleFooter() {
+            const footer = document.getElementById('chatFooter');
+            const floatingBtn = document.getElementById('floatingMenuBtn');
+            const chatBody = document.getElementById('chatBody');
+
+            isFooterVisible = !isFooterVisible;
+
+            if (isFooterVisible) {
+                footer.classList.remove('hidden');
+                floatingBtn.classList.remove('show');
+                chatBody.classList.remove('footer-hidden');
+            } else {
+                footer.classList.add('hidden');
+                floatingBtn.classList.add('show');
+                chatBody.classList.add('footer-hidden');
+            }
+        }
+
+        // フッターを自動的に閉じる（会話開始時）
+        function autoHideFooter() {
+            if (isFooterVisible) {
+                setTimeout(() => {
+                    toggleFooter();
+                }, 300);
+            }
+        }
 
         // 初期メッセージを表示
         function init() {
@@ -427,6 +514,10 @@
         // ウェルカムメッセージ
         function showWelcomeMessage() {
             clearChat();
+            // フッターを表示する
+            if (!isFooterVisible) {
+                toggleFooter();
+            }
             addAssistantMessage(
                 'おはようございます。今日はどのメニューから始めますか？大きなボタンから選べば大丈夫です。',
                 `<div class="quick-actions">
@@ -490,6 +581,7 @@
 
         // 今日の記録を開始
         function startDailyCheck() {
+            autoHideFooter();
             addUserMessage('今日の記録をお願いします。');
 
             setTimeout(() => {
@@ -588,6 +680,7 @@
 
         // 健康ゲームメニュー
         function showGameMenu() {
+            autoHideFooter();
             addUserMessage('健康ゲームを見せて。');
 
             setTimeout(() => {
@@ -695,6 +788,7 @@
 
         // 月1健康診断
         function showHealthCheck() {
+            autoHideFooter();
             addUserMessage('月1健康診断を見せて。');
 
             setTimeout(() => {
@@ -779,6 +873,7 @@
 
         // 部活動を表示
         function showActivities() {
+            autoHideFooter();
             addUserMessage('部活動の情報を教えて。');
 
             setTimeout(() => {
@@ -823,6 +918,7 @@
 
         // 履歴を表示
         function showHistory() {
+            autoHideFooter();
             if (conversationHistory.length === 0) {
                 addAssistantMessage(
                     'まだ履歴がありません。',
