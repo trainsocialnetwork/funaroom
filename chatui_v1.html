@@ -57,6 +57,49 @@
             letter-spacing: 0.02em;
         }
 
+        /* 上タブナビゲーション */
+        .top-nav {
+            display: flex;
+            background: #ffffff;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.3);
+            padding: 0;
+        }
+
+        .top-nav-button {
+            flex: 1;
+            background: none;
+            border: none;
+            padding: 16px;
+            cursor: pointer;
+            font-size: 17px;
+            color: #64748b;
+            font-weight: 500;
+            transition: all 0.2s;
+            border-bottom: 3px solid transparent;
+        }
+
+        .top-nav-button.active {
+            color: #4A90E2;
+            font-weight: 600;
+            border-bottom-color: #4A90E2;
+        }
+
+        .top-nav-button:active {
+            background: #f8fafc;
+        }
+
+        /* メインタブコンテンツ */
+        .main-tab-content {
+            display: none;
+            flex: 1;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .main-tab-content.active {
+            display: flex;
+        }
+
         .chat-header {
             padding: 24px 28px 20px;
             background: linear-gradient(145deg, #4A90E2 0%, #5CA0F2 100%);
@@ -424,6 +467,372 @@
             display: none;
         }
 
+        /* 部活動関連のスタイル */
+        .activities-container {
+            flex: 1;
+            background: #f7fafc;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .activities-header {
+            padding: 24px 28px 20px;
+            background: linear-gradient(145deg, #4A90E2 0%, #5CA0F2 100%);
+            color: #fff;
+        }
+
+        .activities-header-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .activities-header-subtitle {
+            font-size: 17px;
+            opacity: 0.95;
+        }
+
+        .activities-content {
+            flex: 1;
+            padding: 20px 18px;
+        }
+
+        /* カテゴリータブ */
+        .category-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+        }
+
+        .category-tabs::-webkit-scrollbar {
+            height: 0;
+        }
+
+        .category-tab {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 10px 18px;
+            font-size: 16px;
+            color: #666;
+            cursor: pointer;
+            white-space: nowrap;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .category-tab.active {
+            background: linear-gradient(135deg, #4A90E2 0%, #5CA0F2 100%);
+            border-color: #4A90E2;
+            color: white;
+            font-weight: 600;
+        }
+
+        /* 部活動カード */
+        .activity-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .activity-card:active {
+            transform: scale(0.98);
+        }
+
+        .activity-image {
+            width: 100%;
+            height: 160px;
+            background: linear-gradient(135deg, #4A90E2 0%, #5CA0F2 100%);
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .activity-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%);
+            padding: 16px;
+            color: white;
+        }
+
+        .activity-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .activity-content {
+            padding: 20px;
+        }
+
+        .activity-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 12px;
+        }
+
+        .activity-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .activity-info i {
+            color: #4A90E2;
+            width: 20px;
+        }
+
+        /* 部活動詳細画面 */
+        .detail-container {
+            flex: 1;
+            background: #f7fafc;
+            overflow-y: auto;
+            display: none;
+            flex-direction: column;
+        }
+
+        .detail-container.active {
+            display: flex;
+        }
+
+        .detail-image {
+            width: 100%;
+            height: 240px;
+            background: linear-gradient(135deg, #4A90E2 0%, #5CA0F2 100%);
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .detail-back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
+            border: none;
+            color: white;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .detail-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 100%);
+            padding: 24px;
+            color: white;
+        }
+
+        .detail-title {
+            font-size: 26px;
+            font-weight: 700;
+            margin-top: 8px;
+        }
+
+        /* 詳細タブ */
+        .detail-tabs {
+            display: flex;
+            background: white;
+            border-bottom: 1px solid #f0f0f0;
+            padding: 0;
+        }
+
+        .detail-tab {
+            flex: 1;
+            background: none;
+            border: none;
+            padding: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 16px;
+            color: #999;
+            font-weight: 500;
+            transition: all 0.2s;
+            border-bottom: 3px solid transparent;
+        }
+
+        .detail-tab.active {
+            color: #4A90E2;
+            font-weight: 600;
+            border-bottom-color: #4A90E2;
+        }
+
+        .detail-tab i {
+            font-size: 18px;
+        }
+
+        .tab-content {
+            display: none;
+            background: white;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .tab-inner {
+            padding: 24px;
+        }
+
+        /* 詳細情報 */
+        .detail-info-card {
+            background: #f8f9fa;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .detail-info-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            padding: 12px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .detail-info-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-info-row i {
+            color: #4A90E2;
+            font-size: 20px;
+            width: 24px;
+            margin-top: 2px;
+        }
+
+        .detail-info-row .info-label {
+            display: block;
+            font-size: 14px;
+            color: #999;
+            margin-bottom: 4px;
+        }
+
+        .detail-info-row .info-value {
+            display: block;
+            font-size: 16px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .detail-description {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .detail-description h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .detail-description p {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #666;
+        }
+
+        /* 活動報告カード */
+        .report-card {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        .report-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            display: block;
+        }
+
+        .report-header {
+            margin-bottom: 16px;
+        }
+
+        .report-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .report-author {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .report-date {
+            font-size: 14px;
+            color: #999;
+        }
+
+        .report-content {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #666;
+            margin-bottom: 16px;
+        }
+
+        .report-stats {
+            display: flex;
+            gap: 20px;
+            font-size: 14px;
+            color: #999;
+        }
+
+        .report-stats span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .report-stats i {
+            color: #FF6B6B;
+        }
+
+        .success-button {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            box-shadow: 0 8px 18px rgba(16, 185, 129, 0.25);
+        }
+
         @media (max-width: 450px) {
             body {
                 padding: 0;
@@ -447,14 +856,23 @@
                 <span>9:41</span>
                 <span><i class="fa-solid fa-signal"></i> <i class="fa-solid fa-wifi"></i> 100%</span>
             </div>
-            <div class="chat-header">
-                <div class="assistant-name">FUN・A・ROOM ケアナビ</div>
-                <div class="assistant-subtitle">田中さん、今日も元気に過ごしましょう。困ったらいつでも声をかけてくださいね。</div>
+
+            <!-- 上タブナビゲーション -->
+            <div class="top-nav">
+                <button class="top-nav-button active" onclick="switchMainTab('home')">ホーム</button>
+                <button class="top-nav-button" onclick="switchMainTab('activities')">部活動一覧</button>
             </div>
-            <div class="chat-body" id="chatBody">
-                <!-- 会話はJavaScriptで動的に追加されます -->
-            </div>
-            <div class="chat-footer" id="chatFooter">
+
+            <!-- ホームタブコンテンツ（チャット画面）-->
+            <div id="home-tab" class="main-tab-content active">
+                <div class="chat-header">
+                    <div class="assistant-name">FUN・A・ROOM ケアナビ</div>
+                    <div class="assistant-subtitle">田中さん、今日も元気に過ごしましょう。困ったらいつでも声をかけてくださいね。</div>
+                </div>
+                <div class="chat-body" id="chatBody">
+                    <!-- 会話はJavaScriptで動的に追加されます -->
+                </div>
+                <div class="chat-footer" id="chatFooter">
                 <div class="footer-toggle" onclick="toggleFooter()">
                     <div class="footer-toggle-title">
                         <i class="fa-solid fa-bars"></i>
@@ -472,6 +890,253 @@
                     </div>
                 </div>
             </div>
+            <!-- ホームタブコンテンツ終了 -->
+            </div>
+
+            <!-- 部活動タブコンテンツ -->
+            <div id="activities-tab" class="main-tab-content">
+                <!-- 部活動一覧画面 -->
+                <div id="activities-list" class="activities-container active">
+                    <div class="activities-header">
+                        <div class="activities-header-title">部活動</div>
+                        <div class="activities-header-subtitle">仲間と楽しく健康づくり</div>
+                    </div>
+
+                    <div class="activities-content">
+                        <!-- カテゴリータブ -->
+                        <div class="category-tabs">
+                            <button class="category-tab active" onclick="filterCategory(this, 'all')">すべて</button>
+                            <button class="category-tab" onclick="filterCategory(this, 'exercise')">運動系</button>
+                            <button class="category-tab" onclick="filterCategory(this, 'culture')">文化系</button>
+                            <button class="category-tab" onclick="filterCategory(this, 'social')">交流系</button>
+                        </div>
+
+                        <!-- 部活動カード -->
+                        <div class="activity-card" onclick="showActivityDetail('walking')" data-category="exercise">
+                            <div class="activity-image" style="background-image: url('https://static.wixstatic.com/media/07cdbc_ffa8f4d3caa343ad96d08d1e33a3d943~mv2.jpg/v1/fill/w_828,h_624,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/IMG_2782_JPG.jpg');">
+                                <div class="activity-overlay">
+                                    <span class="activity-badge">運動系</span>
+                                </div>
+                            </div>
+                            <div class="activity-content">
+                                <h3 class="activity-title">朝の健康ウォーキング部</h3>
+                                <div class="activity-info">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>日向市中央公園</span>
+                                </div>
+                                <div class="activity-info">
+                                    <i class="fas fa-clock"></i>
+                                    <span>毎週火・木 朝7:00</span>
+                                </div>
+                                <div class="activity-info">
+                                    <i class="fas fa-users"></i>
+                                    <span>12名が参加中</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="activity-card" onclick="showActivityDetail('yoga')" data-category="exercise">
+                            <div class="activity-image" style="background-image: url('https://static.wixstatic.com/media/07cdbc_82a0984731614afdb20bb2b581c55d5d~mv2_d_3000_2000_s_2.jpg/v1/fill/w_562,h_374,al_c,q_80,usm_0.66_1.00_0.01/07cdbc_82a0984731614afdb20bb2b581c55d5d~mv2_d_3000_2000_s_2.jpg');">
+                                <div class="activity-overlay">
+                                    <span class="activity-badge">運動系</span>
+                                </div>
+                            </div>
+                            <div class="activity-content">
+                                <h3 class="activity-title">ゆったりヨガ教室</h3>
+                                <div class="activity-info">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>FUN・A・ROOMスタジオ</span>
+                                </div>
+                                <div class="activity-info">
+                                    <i class="fas fa-clock"></i>
+                                    <span>毎週月・金 10:00</span>
+                                </div>
+                                <div class="activity-info">
+                                    <i class="fas fa-users"></i>
+                                    <span>15名が参加中</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="activity-card" onclick="showActivityDetail('art')" data-category="culture">
+                            <div class="activity-image" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                                <div class="activity-overlay">
+                                    <span class="activity-badge">文化系</span>
+                                </div>
+                            </div>
+                            <div class="activity-content">
+                                <h3 class="activity-title">絵手紙サークル</h3>
+                                <div class="activity-info">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>コミュニティセンター</span>
+                                </div>
+                                <div class="activity-info">
+                                    <i class="fas fa-clock"></i>
+                                    <span>毎週水 13:00</span>
+                                </div>
+                                <div class="activity-info">
+                                    <i class="fas fa-users"></i>
+                                    <span>8名が参加中</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 部活動詳細画面 -->
+                <div id="activity-detail" class="detail-container">
+                    <!-- 画像ヘッダー -->
+                    <div class="detail-image" id="detailImage">
+                        <button class="detail-back-btn" onclick="backToActivitiesList()">
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                        <div class="detail-overlay">
+                            <span class="activity-badge" id="detailBadge">運動系</span>
+                            <h2 class="detail-title" id="detailTitle">朝の健康ウォーキング部</h2>
+                        </div>
+                    </div>
+
+                    <!-- タブ切り替え -->
+                    <div class="detail-tabs">
+                        <button class="detail-tab active" onclick="switchDetailTab(this, 'info')">
+                            <i class="fas fa-info-circle"></i>
+                            <span>詳細情報</span>
+                        </button>
+                        <button class="detail-tab" onclick="switchDetailTab(this, 'report')">
+                            <i class="fas fa-newspaper"></i>
+                            <span>活動報告</span>
+                        </button>
+                    </div>
+
+                    <!-- 詳細情報タブ -->
+                    <div id="tab-info" class="tab-content active">
+                        <div class="tab-inner">
+                            <div class="detail-info-card" id="detailInfoCard">
+                                <div class="detail-info-row">
+                                    <i class="fas fa-tag"></i>
+                                    <div>
+                                        <span class="info-label">体力レベル</span>
+                                        <span class="info-value" id="infoLevel">やさしい</span>
+                                    </div>
+                                </div>
+                                <div class="detail-info-row">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <div>
+                                        <span class="info-label">活動場所</span>
+                                        <span class="info-value" id="infoPlace">日向市中央公園</span>
+                                    </div>
+                                </div>
+                                <div class="detail-info-row">
+                                    <i class="fas fa-clock"></i>
+                                    <div>
+                                        <span class="info-label">活動日時</span>
+                                        <span class="info-value" id="infoTime">毎週火・木 朝7:00〜8:00</span>
+                                    </div>
+                                </div>
+                                <div class="detail-info-row">
+                                    <i class="fas fa-users"></i>
+                                    <div>
+                                        <span class="info-label">参加人数</span>
+                                        <span class="info-value" id="infoMembers">12名が参加中</span>
+                                    </div>
+                                </div>
+                                <div class="detail-info-row">
+                                    <i class="fas fa-yen-sign"></i>
+                                    <div>
+                                        <span class="info-label">参加費</span>
+                                        <span class="info-value" id="infoFee">無料</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="detail-description">
+                                <h3>活動内容</h3>
+                                <p id="detailDescription">
+                                    朝の爽やかな空気の中、公園を約1時間ゆっくり歩きます。
+                                    無理のないペースで、おしゃべりしながら楽しく歩きましょう。<br><br>
+                                    初心者の方も大歓迎です。運動不足の解消や、朝の習慣づくりに最適です。
+                                </p>
+                            </div>
+
+                            <button class="card-button success-button" onclick="joinActivity()" style="width: 100%;">
+                                <i class="fas fa-user-plus"></i>
+                                <span>参加を申し込む</span>
+                            </button>
+
+                            <div class="support-card">
+                                <div style="text-align: center; margin-bottom: 12px;">
+                                    <i class="fas fa-phone" style="font-size: 32px; color: #F59E0B;"></i>
+                                </div>
+                                <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 8px; text-align: center;">お問い合わせ</h3>
+                                <p style="font-size: 16px; text-align: center; margin-bottom: 16px;">
+                                    わからないことがあれば<br>
+                                    お気軽にお電話ください
+                                </p>
+                                <button class="card-button" onclick="alert('電話：0982-XX-XXXX')" style="width: 100%;">
+                                    <i class="fas fa-phone"></i>
+                                    <span>電話する</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 活動報告タブ -->
+                    <div id="tab-report" class="tab-content">
+                        <div class="tab-inner">
+                            <div class="report-card">
+                                <img src="https://stat.ameba.jp/user_images/20140720/09/funaroom/8e/09/j/o0800045013008387592.jpg" class="report-image" alt="活動写真">
+                                <div class="report-header">
+                                    <div class="report-meta">
+                                        <span class="report-author">スタッフ 山田</span>
+                                        <span class="report-date">2日前</span>
+                                    </div>
+                                </div>
+                                <div class="report-content">
+                                    <p>今朝も気持ちよく歩きました！新しく参加された佐藤さんも、皆さんとすぐに打ち解けて楽しそうでした。桜が咲き始めていて、春を感じながらのウォーキングでした🌸</p>
+                                </div>
+                                <div class="report-stats">
+                                    <span><i class="fas fa-heart"></i> 15</span>
+                                    <span><i class="fas fa-comment"></i> 3</span>
+                                </div>
+                            </div>
+
+                            <div class="report-card">
+                                <div class="report-header">
+                                    <div class="report-meta">
+                                        <span class="report-author">スタッフ 田中</span>
+                                        <span class="report-date">1週間前</span>
+                                    </div>
+                                </div>
+                                <div class="report-content">
+                                    <p>雨の予報でしたが、みんなの日頃の行いが良いのか、晴れました！今日は15名の参加で賑やかでした。来週は花見ウォーキングを計画中です。</p>
+                                </div>
+                                <div class="report-stats">
+                                    <span><i class="fas fa-heart"></i> 23</span>
+                                    <span><i class="fas fa-comment"></i> 5</span>
+                                </div>
+                            </div>
+
+                            <div class="report-card">
+                                <div class="report-header">
+                                    <div class="report-meta">
+                                        <span class="report-author">スタッフ 鈴木</span>
+                                        <span class="report-date">2週間前</span>
+                                    </div>
+                                </div>
+                                <div class="report-content">
+                                    <p>今月の目標達成！全員で合計1000km歩きました！来月も楽しく健康づくりを続けていきましょう。新規メンバーも募集中です。</p>
+                                </div>
+                                <div class="report-stats">
+                                    <span><i class="fas fa-heart"></i> 32</span>
+                                    <span><i class="fas fa-comment"></i> 8</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 部活動タブコンテンツ終了 -->
+
         </div>
     </div>
 
@@ -482,6 +1147,137 @@
         let dailyAnswers = {};
         let healthAnswers = {};
         let currentQuestion = 0;
+
+        // 部活動データ
+        const activityData = {
+            walking: {
+                category: '運動系',
+                title: '朝の健康ウォーキング部',
+                level: 'やさしい',
+                place: '日向市中央公園',
+                time: '毎週火・木 朝7:00〜8:00',
+                members: '12名が参加中',
+                fee: '無料',
+                description: '朝の爽やかな空気の中、公園を約1時間ゆっくり歩きます。無理のないペースで、おしゃべりしながら楽しく歩きましょう。<br><br>初心者の方も大歓迎です。運動不足の解消や、朝の習慣づくりに最適です。',
+                imageUrl: 'https://static.wixstatic.com/media/07cdbc_ffa8f4d3caa343ad96d08d1e33a3d943~mv2.jpg/v1/fill/w_828,h_624,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/IMG_2782_JPG.jpg'
+            },
+            yoga: {
+                category: '運動系',
+                title: 'ゆったりヨガ教室',
+                level: 'やさしい',
+                place: 'FUN・A・ROOMスタジオ',
+                time: '毎週月・金 10:00〜11:00',
+                members: '15名が参加中',
+                fee: '月額 1,000円',
+                description: 'ゆったりとした動きで、体をほぐしていきます。呼吸法も学べて、心身ともにリラックスできます。<br><br>椅子を使ったヨガも行うので、体が硬い方でも安心してご参加いただけます。',
+                imageUrl: 'https://static.wixstatic.com/media/07cdbc_82a0984731614afdb20bb2b581c55d5d~mv2_d_3000_2000_s_2.jpg/v1/fill/w_562,h_374,al_c,q_80,usm_0.66_1.00_0.01/07cdbc_82a0984731614afdb20bb2b581c55d5d~mv2_d_3000_2000_s_2.jpg'
+            },
+            art: {
+                category: '文化系',
+                title: '絵手紙サークル',
+                level: 'どなたでも',
+                place: 'コミュニティセンター',
+                time: '毎週水 13:00〜15:00',
+                members: '8名が参加中',
+                fee: '材料費 500円/回',
+                description: '季節の花や風景を、絵手紙にして楽しみます。上手い下手は関係なく、思いを込めて描くことが大切です。<br><br>描いた作品は、お友達やご家族に送ることもできます。',
+                imageUrl: ''
+            }
+        };
+
+        // メインタブの切り替え
+        function switchMainTab(tabName) {
+            // タブボタンの状態を更新
+            document.querySelectorAll('.top-nav-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // タブコンテンツの表示/非表示
+            document.querySelectorAll('.main-tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(tabName + '-tab').classList.add('active');
+
+            // 部活動タブに切り替えた時は一覧画面を表示
+            if (tabName === 'activities') {
+                document.getElementById('activities-list').classList.add('active');
+                document.getElementById('activity-detail').classList.remove('active');
+            }
+        }
+
+        // カテゴリーフィルター
+        function filterCategory(button, category) {
+            // タブの状態を更新
+            document.querySelectorAll('.category-tab').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            button.classList.add('active');
+
+            // カードの表示/非表示
+            const cards = document.querySelectorAll('.activity-card');
+            cards.forEach(card => {
+                if (category === 'all' || card.dataset.category === category) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // 部活動詳細表示
+        function showActivityDetail(activityId) {
+            const activity = activityData[activityId];
+            if (!activity) return;
+
+            // 詳細情報を更新
+            document.getElementById('detailTitle').textContent = activity.title;
+            document.getElementById('detailBadge').textContent = activity.category;
+            document.getElementById('infoLevel').textContent = activity.level;
+            document.getElementById('infoPlace').textContent = activity.place;
+            document.getElementById('infoTime').textContent = activity.time;
+            document.getElementById('infoMembers').textContent = activity.members;
+            document.getElementById('infoFee').textContent = activity.fee;
+            document.getElementById('detailDescription').innerHTML = activity.description;
+
+            // 画像の設定
+            const detailImage = document.getElementById('detailImage');
+            if (activity.imageUrl) {
+                detailImage.style.backgroundImage = `url('${activity.imageUrl}')`;
+            } else {
+                detailImage.style.backgroundImage = '';
+            }
+
+            // 一覧を非表示にして詳細を表示
+            document.getElementById('activities-list').classList.remove('active');
+            document.getElementById('activity-detail').classList.add('active');
+        }
+
+        // 部活動一覧に戻る
+        function backToActivitiesList() {
+            document.getElementById('activity-detail').classList.remove('active');
+            document.getElementById('activities-list').classList.add('active');
+        }
+
+        // 詳細タブ切り替え
+        function switchDetailTab(button, tabName) {
+            // タブボタンの状態を更新
+            document.querySelectorAll('.detail-tab').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            button.classList.add('active');
+
+            // タブコンテンツの表示/非表示
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(`tab-${tabName}`).classList.add('active');
+        }
+
+        // 参加申し込み
+        function joinActivity() {
+            alert('参加申し込みを受け付けました！\n\n担当者から連絡がありますので、しばらくお待ちください。');
+        }
 
         // 初期メッセージを表示
         function init() {
@@ -682,6 +1478,7 @@
                 '今日の記録が完了しました。毎日続けると体調の変化が分かりやすくなりますよ。',
                 `<div class="quick-actions">
                     <button class="quick-button" onclick="startDailyCheck()"><i class="fa-solid fa-arrow-rotate-left"></i>もう一度記録</button>
+                    <button class="quick-button" onclick="showActivities()"><i class="fa-solid fa-people-group"></i>部活動を見る</button>
                     <button class="quick-button" onclick="showWelcomeMessage()"><i class="fa-solid fa-house"></i>メニューへ戻る</button>
                 </div>`
             );
@@ -789,6 +1586,7 @@
                     message,
                     `<div class="quick-actions">
                         <button class="quick-button" onclick="showGameMenu()"><i class="fa-solid fa-rotate-left"></i>ゲームメニューへ</button>
+                        <button class="quick-button" onclick="showActivities()"><i class="fa-solid fa-people-group"></i>部活動を見る</button>
                         <button class="quick-button" onclick="showWelcomeMessage()"><i class="fa-solid fa-house"></i>メインメニューへ</button>
                     </div>`
                 );
@@ -873,6 +1671,7 @@
                     <p>引き続き今の習慣を大切にしましょう。水分補給と睡眠がポイントです。</p>
                     <div class="action-row">
                         <button class="card-button" onclick="alert('結果を共有します')"><i class="fa-solid fa-share"></i>&nbsp;結果を共有</button>
+                        <button class="card-button secondary" onclick="showActivities()"><i class="fa-solid fa-people-group"></i>&nbsp;部活動を見る</button>
                         <button class="card-button secondary" onclick="showWelcomeMessage()"><i class="fa-solid fa-house"></i>&nbsp;ホームに戻る</button>
                     </div>
                 </div>`
@@ -881,48 +1680,22 @@
             saveToHistory('フレイルチェック', '健康状態: 良好');
         }
 
-        // 部活動を表示
+        // 部活動を表示（タブ切り替え）
         function showActivities() {
-            addUserMessage('部活動の情報を教えて。');
+            // 部活動タブに切り替え
+            document.querySelectorAll('.top-nav-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelectorAll('.top-nav-button')[1].classList.add('active'); // 部活動一覧ボタン
 
-            setTimeout(() => {
-                addAssistantMessage(
-                    '興味のある部活動を選んでください。',
-                    `<div class="card">
-                        <h3>おすすめ部活動</h3>
-                        <p><strong>ウォーキング部</strong>:毎週火曜・午前10時 / 市民公園</p>
-                        <p><strong>いきいきヨガ</strong>:毎週木曜・午後2時 / コミュニティセンター</p>
-                        <p><strong>カラオケ交流会</strong>:月2回・午後1時 / FUN・A・ROOM</p>
-                        <div class="action-row">
-                            <button class="card-button secondary" onclick="showActivityDetail('ウォーキング部')">ウォーキング部</button>
-                            <button class="card-button secondary" onclick="showActivityDetail('ヨガサークル')">ヨガサークル</button>
-                            <button class="card-button secondary" onclick="showWelcomeMessage()">戻る</button>
-                        </div>
-                    </div>`
-                );
-            }, 500);
-        }
+            document.querySelectorAll('.main-tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById('activities-tab').classList.add('active');
 
-        // 部活動詳細
-        function showActivityDetail(activity) {
-            addUserMessage(`${activity}について教えて。`);
-
-            setTimeout(() => {
-                addAssistantMessage(
-                    `${activity}の詳細です。`,
-                    `<div class="card">
-                        <h3>${activity}</h3>
-                        <p>朝の爽やかな空気の中、公園を約1時間ゆっくり歩きます。無理のないペースで、おしゃべりしながら楽しく歩きましょう。</p>
-                        <p><strong>日時:</strong> 毎週火・木 朝7:00〜8:00</p>
-                        <p><strong>場所:</strong> 日向市中央公園</p>
-                        <p><strong>参加費:</strong> 無料</p>
-                        <div class="action-row">
-                            <button class="card-button" onclick="alert('参加申し込みを受け付けました！')"><i class="fa-solid fa-user-plus"></i>&nbsp;参加を申し込む</button>
-                            <button class="card-button secondary" onclick="showActivities()"><i class="fa-solid fa-rotate-left"></i>&nbsp;一覧に戻る</button>
-                        </div>
-                    </div>`
-                );
-            }, 500);
+            // 一覧画面を表示
+            document.getElementById('activities-list').classList.add('active');
+            document.getElementById('activity-detail').classList.remove('active');
         }
 
         // 履歴を表示
