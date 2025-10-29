@@ -934,34 +934,16 @@
                     </div>
 
                     <div class="menu-grid">
-                        <div class="menu-card primary" onclick="showPage('daily-check-1')">
-                            <i class="fas fa-clipboard-check"></i>
-                            <div class="menu-card-title">今日の健康記録</div>
-                            <div class="menu-card-text">簡単3つの質問</div>
+                        <div class="menu-card primary" onclick="showPage('daily-health-tasks')">
+                            <i class="fas fa-heart-pulse"></i>
+                            <div class="menu-card-title">今日の健康習慣</div>
+                            <div class="menu-card-text">毎日のタスク</div>
                         </div>
 
-                        <div class="menu-card success" onclick="showPage('game-menu')">
-                            <i class="fas fa-gamepad"></i>
-                            <div class="menu-card-title">健康ゲーム</div>
-                            <div class="menu-card-text">楽しく体力測定</div>
-                        </div>
-
-                        <div class="menu-card warning" onclick="showPage('health-check-intro')">
+                        <div class="menu-card warning" onclick="checkBiweeklyHealth()">
                             <i class="fas fa-stethoscope"></i>
-                            <div class="menu-card-title">月1健康診断</div>
-                            <div class="menu-card-text">詳しくチェック</div>
-                        </div>
-
-                        <div class="menu-card" style="background: linear-gradient(135deg, #10B981 0%, #059669 100%); color: white;" onclick="openFingerRingTest('home')">
-                            <i class="fas fa-hand-paper"></i>
-                            <div class="menu-card-title">指輪っかテスト</div>
-                            <div class="menu-card-text">ふくらはぎをセルフチェック</div>
-                        </div>
-
-                        <div class="menu-card" style="background: linear-gradient(135deg, #F472B6 0%, #EC4899 100%); color: white;" onclick="startOralCheck('home')">
-                            <i class="fas fa-smile"></i>
-                            <div class="menu-card-title">口腔フレイル</div>
-                            <div class="menu-card-text">お口の状態を確認</div>
+                            <div class="menu-card-title">2週間健康診断</div>
+                            <div class="menu-card-text" id="biweekly-status">詳しくチェック</div>
                         </div>
                     </div>
 
@@ -998,6 +980,66 @@
                     <button class="nav-button" onclick="setActiveTab('activities')">
                         <i class="fas fa-users"></i>
                         <span>部活</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 毎日の健康タスク画面 -->
+            <div id="daily-health-tasks" class="page">
+                <div class="header">
+                    <h1 class="header-title">今日の健康習慣</h1>
+                    <p class="header-subtitle">毎日続けて健康に</p>
+                </div>
+
+                <div class="content">
+                    <h2 style="font-size: 20px; font-weight: 600; margin-bottom: 16px; color: #1f2937;">これをやろう</h2>
+
+                    <!-- 問診カード（18時以降のみ表示） -->
+                    <div id="daily-interview-card" class="game-card" style="display: none;">
+                        <div class="game-icon" style="background: linear-gradient(135deg, #4A90E2 0%, #5CA0F2 100%);">
+                            <i class="fas fa-clipboard-check"></i>
+                        </div>
+                        <h3 class="game-title">今日の問診</h3>
+                        <p class="game-description">
+                            簡単3つの質問<br>
+                            体調を記録しましょう
+                        </p>
+                        <div id="daily-interview-status" style="margin-top: 12px; padding: 8px; background: #f3f4f6; border-radius: 8px; font-size: 14px; color: #6b7280;">
+                            本日の問診は完了しています
+                        </div>
+                        <button class="main-button" onclick="startDailyInterview()">
+                            問診を始める
+                        </button>
+                    </div>
+
+                    <!-- かんたん運動カード -->
+                    <div class="game-card">
+                        <div class="game-icon" style="background: linear-gradient(135deg, #10B981 0%, #059669 100%);">
+                            <i class="fas fa-running"></i>
+                        </div>
+                        <h3 class="game-title">かんたん運動</h3>
+                        <p class="game-description">
+                            簡単にできる運動で<br>
+                            体を動かしましょう
+                        </p>
+                        <button class="main-button" onclick="showPage('simple-exercise-menu')">
+                            運動を選ぶ
+                        </button>
+                    </div>
+
+                    <div class="support-card">
+                        <div class="support-icon">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                        <h3 class="support-title">毎日続けることが大切</h3>
+                        <p class="support-text">
+                            無理せず、楽しく<br>
+                            健康習慣を続けましょう
+                        </p>
+                    </div>
+
+                    <button class="back-button" onclick="showPage('home')">
+                        <i class="fas fa-arrow-left"></i> ホームに戻る
                     </button>
                 </div>
             </div>
@@ -1130,6 +1172,80 @@
                     
                     <button class="main-button" onclick="showPage('home')">
                         ホームに戻る
+                    </button>
+                </div>
+            </div>
+
+            <!-- かんたん運動メニュー -->
+            <div id="simple-exercise-menu" class="page">
+                <div class="header">
+                    <h1 class="header-title">かんたん運動</h1>
+                    <p class="header-subtitle">好きな運動を選んでください</p>
+                </div>
+
+                <div class="content">
+                    <div class="game-card">
+                        <div class="game-icon" style="background: linear-gradient(135deg, #10B981 0%, #059669 100%);">
+                            <i class="fas fa-walking"></i>
+                        </div>
+                        <h3 class="game-title">その場足踏み</h3>
+                        <p class="game-description">
+                            立った状態で<br>
+                            その場で足踏み運動<br>
+                            所要時間：3分
+                        </p>
+                        <button class="main-button" onclick="startExercise('marching')">
+                            始める
+                        </button>
+                    </div>
+
+                    <div class="game-card">
+                        <div class="game-icon" style="background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);">
+                            <i class="fas fa-dumbbell"></i>
+                        </div>
+                        <h3 class="game-title">ラジオ体操</h3>
+                        <p class="game-description">
+                            なじみのあるラジオ体操で<br>
+                            全身を動かしましょう<br>
+                            所要時間：5分
+                        </p>
+                        <button class="main-button" onclick="startExercise('radio-taiso')">
+                            始める
+                        </button>
+                    </div>
+
+                    <div class="game-card">
+                        <div class="game-icon" style="background: linear-gradient(135deg, #EC4899 0%, #DB2777 100%);">
+                            <i class="fas fa-hands"></i>
+                        </div>
+                        <h3 class="game-title">かんたんストレッチ</h3>
+                        <p class="game-description">
+                            座ったままできる<br>
+                            簡単なストレッチ<br>
+                            所要時間：3分
+                        </p>
+                        <button class="main-button" onclick="startExercise('stretch')">
+                            始める
+                        </button>
+                    </div>
+
+                    <div class="game-card">
+                        <div class="game-icon" style="background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);">
+                            <i class="fas fa-heartbeat"></i>
+                        </div>
+                        <h3 class="game-title">深呼吸</h3>
+                        <p class="game-description">
+                            ゆっくりとした深呼吸で<br>
+                            リラックス<br>
+                            所要時間：2分
+                        </p>
+                        <button class="main-button" onclick="startExercise('breathing')">
+                            始める
+                        </button>
+                    </div>
+
+                    <button class="back-button" onclick="showPage('daily-health-tasks')">
+                        <i class="fas fa-arrow-left"></i> 戻る
                     </button>
                 </div>
             </div>
@@ -1269,71 +1385,141 @@
                 </div>
             </div>
 
-            <!-- 月1健康チェック導入 -->
-            <div id="health-check-intro" class="page">
-                <div class="header">
-                    <h1 class="header-title">月1健康診断</h1>
-                    <p class="header-subtitle">詳しく健康状態をチェック</p>
+            <!-- 運動実行画面 -->
+            <div id="exercise-screen" class="page">
+                <div class="header header-small">
+                    <h1 class="header-title" style="font-size: 24px;" id="exercise-title">運動中</h1>
                 </div>
-                
+
                 <div class="content">
                     <div class="game-card">
-                        <div class="game-icon" style="background: linear-gradient(135deg, #4A90E2 0%, #5CA0F2 100%);">
-                            <i class="fas fa-clipboard-list"></i>
+                        <div id="exercise-instructions" style="font-size: 18px; line-height: 1.8; color: #374151; margin-bottom: 24px;">
+                            <!-- 運動の説明がここに入ります -->
                         </div>
-                        <h3 class="game-title">フレイルチェック</h3>
-                        <p class="game-description">
-                            5つの質問で<br>
-                            健康リスクを確認します<br><br>
-                            所要時間：約3分
-                        </p>
-                        <button class="main-button" onclick="showPage('health-check-1')">
-                            診断を開始
-                        </button>
+
+                        <div id="exercise-timer" style="text-align: center; margin: 32px 0;">
+                            <div style="font-size: 64px; font-weight: 700; color: #4A90E2;" id="timer-display">3:00</div>
+                            <div style="font-size: 18px; color: #6b7280; margin-top: 8px;">残り時間</div>
+                        </div>
+
+                        <div id="exercise-controls">
+                            <button class="main-button success-button" id="exercise-start-btn" onclick="startExerciseTimer()">
+                                <i class="fas fa-play"></i>
+                                <span>スタート</span>
+                            </button>
+                            <button class="main-button" id="exercise-pause-btn" onclick="pauseExerciseTimer()" style="display: none; background: #F59E0B;">
+                                <i class="fas fa-pause"></i>
+                                <span>一時停止</span>
+                            </button>
+                            <button class="main-button success-button" id="exercise-resume-btn" onclick="resumeExerciseTimer()" style="display: none;">
+                                <i class="fas fa-play"></i>
+                                <span>再開</span>
+                            </button>
+                        </div>
                     </div>
 
-                    <div class="game-card">
-                        <div class="game-icon" style="background: linear-gradient(135deg, #10B981 0%, #059669 100%);">
-                            <i class="fas fa-hand-paper"></i>
-                        </div>
-                        <h3 class="game-title">指輪っかテスト</h3>
-                        <p class="game-description">
-                            親指と人差し指で<br>
-                            ふくらはぎをチェック
-                        </p>
-                        <button class="main-button" onclick="openFingerRingTest('health-check-intro')">
-                            チェックする
-                        </button>
-                    </div>
-
-                    <div class="game-card">
-                        <div class="game-icon" style="background: linear-gradient(135deg, #F472B6 0%, #EC4899 100%);">
-                            <i class="fas fa-smile"></i>
-                        </div>
-                        <h3 class="game-title">口腔フレイルチェック</h3>
-                        <p class="game-description">
-                            お口の機能の変化を<br>
-                            簡単に確認しましょう
-                        </p>
-                        <button class="main-button" onclick="startOralCheck('health-check-intro')">
-                            診断を始める
-                        </button>
-                    </div>
-
-                    <div class="support-card">
-                        <div class="support-icon">
-                            <i class="fas fa-lightbulb"></i>
-                        </div>
-                        <h3 class="support-title">月に1回がおすすめ</h3>
-                        <p class="support-text">
-                            定期的にチェックすることで<br>
-                            健康状態の変化がわかります
-                        </p>
-                    </div>
-
-                    <button class="back-button" onclick="showPage('home')">
-                        <i class="fas fa-arrow-left"></i> ホームに戻る
+                    <button class="back-button" onclick="showPage('simple-exercise-menu')">
+                        <i class="fas fa-arrow-left"></i> メニューに戻る
                     </button>
+                </div>
+            </div>
+
+            <!-- 運動完了画面 -->
+            <div id="exercise-complete" class="page">
+                <div class="complete-container">
+                    <div class="complete-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <h2 class="complete-title">お疲れさまでした！</h2>
+                    <p class="complete-text" id="exercise-complete-message">
+                        運動を完了しました<br>
+                        素晴らしいです！
+                    </p>
+
+                    <button class="main-button" onclick="showPage('simple-exercise-menu')">
+                        他の運動を見る
+                    </button>
+                    <button class="back-button" onclick="showPage('daily-health-tasks')">
+                        <i class="fas fa-arrow-left"></i> 健康習慣に戻る
+                    </button>
+                </div>
+            </div>
+
+            <!-- 2週間健康診断 -->
+            <div id="biweekly-checkup-intro" class="page">
+                <div class="header">
+                    <h1 class="header-title">2週間健康診断</h1>
+                    <p class="header-subtitle">詳しく健康状態をチェック</p>
+                </div>
+
+                <div class="content">
+                    <!-- 次回診断日の表示（診断不可の場合） -->
+                    <div id="biweekly-not-available" style="display: none;">
+                        <div class="support-card" style="background: linear-gradient(135deg, #F3F4F6 0%, #E5E7EB 100%);">
+                            <div class="support-icon" style="background: linear-gradient(135deg, #6B7280 0%, #4B5563 100%);">
+                                <i class="fas fa-calendar-check"></i>
+                            </div>
+                            <h3 class="support-title" style="font-size: 24px; color: #1f2937;">次回診断日</h3>
+                            <p class="support-text" style="font-size: 32px; font-weight: 700; color: #4A90E2; margin: 16px 0;" id="next-checkup-date">
+                                ○月○日
+                            </p>
+                            <p class="support-text" style="color: #6b7280;">
+                                前回から2週間後に<br>
+                                次の診断ができます
+                            </p>
+                        </div>
+
+                        <button class="back-button" onclick="showPage('home')">
+                            <i class="fas fa-arrow-left"></i> ホームに戻る
+                        </button>
+                    </div>
+
+                    <!-- 診断可能な場合 -->
+                    <div id="biweekly-available">
+                        <div class="game-card">
+                            <div class="game-icon" style="background: linear-gradient(135deg, #4A90E2 0%, #5CA0F2 100%);">
+                                <i class="fas fa-clipboard-list"></i>
+                            </div>
+                            <h3 class="game-title">問診</h3>
+                            <p class="game-description">
+                                5つの質問で<br>
+                                健康リスクを確認します<br><br>
+                                所要時間：約3分
+                            </p>
+                            <button class="main-button" onclick="showPage('health-check-1')">
+                                診断を開始
+                            </button>
+                        </div>
+
+                        <div class="game-card">
+                            <div class="game-icon" style="background: linear-gradient(135deg, #10B981 0%, #059669 100%);">
+                                <i class="fas fa-gamepad"></i>
+                            </div>
+                            <h3 class="game-title">健康チェック（ゲーム）</h3>
+                            <p class="game-description">
+                                楽しく体力測定<br>
+                                バランス感覚や反応速度をチェック
+                            </p>
+                            <button class="main-button" onclick="showPage('game-menu')">
+                                ゲームを見る
+                            </button>
+                        </div>
+
+                        <div class="support-card">
+                            <div class="support-icon">
+                                <i class="fas fa-lightbulb"></i>
+                            </div>
+                            <h3 class="support-title">2週間に1回がおすすめ</h3>
+                            <p class="support-text">
+                                定期的にチェックすることで<br>
+                                健康状態の変化がわかります
+                            </p>
+                        </div>
+
+                        <button class="back-button" onclick="showPage('home')">
+                            <i class="fas fa-arrow-left"></i> ホームに戻る
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -1880,11 +2066,16 @@
             document.querySelectorAll('.page').forEach(page => {
                 page.classList.remove('active');
             });
-            
+
             const page = document.getElementById(pageId);
             if (page) {
                 page.classList.add('active');
                 page.scrollTop = 0;
+            }
+
+            // 特定のページで追加の処理を実行
+            if (pageId === 'daily-health-tasks' && typeof checkDailyInterviewTime === 'function') {
+                checkDailyInterviewTime();
             }
         }
 
@@ -2494,6 +2685,244 @@
             }
             lastTouchEnd = now;
         }, false);
+
+        // ===== 新しい健康タスク機能 =====
+
+        // 2週間健康診断のチェック
+        function checkBiweeklyHealth() {
+            const lastCheckup = localStorage.getItem('lastBiweeklyCheckup');
+            const now = new Date();
+
+            if (lastCheckup) {
+                const lastDate = new Date(lastCheckup);
+                const daysDiff = Math.floor((now - lastDate) / (1000 * 60 * 60 * 24));
+
+                if (daysDiff < 14) {
+                    // まだ14日経っていない - 次回診断日を表示
+                    showPage('biweekly-checkup-intro');
+                    document.getElementById('biweekly-available').style.display = 'none';
+                    document.getElementById('biweekly-not-available').style.display = 'block';
+
+                    // 次回診断日を計算
+                    const nextDate = new Date(lastDate);
+                    nextDate.setDate(nextDate.getDate() + 14);
+                    const month = nextDate.getMonth() + 1;
+                    const day = nextDate.getDate();
+                    document.getElementById('next-checkup-date').textContent = `${month}月${day}日`;
+
+                    // ホーム画面のステータスも更新
+                    document.getElementById('biweekly-status').textContent = `次回：${month}月${day}日`;
+                    return;
+                }
+            }
+
+            // 診断可能
+            showPage('biweekly-checkup-intro');
+            document.getElementById('biweekly-available').style.display = 'block';
+            document.getElementById('biweekly-not-available').style.display = 'none';
+            document.getElementById('biweekly-status').textContent = '診断可能です';
+        }
+
+        // 健康診断を完了した際に呼び出す
+        function completeBiweeklyCheckup() {
+            const now = new Date();
+            localStorage.setItem('lastBiweeklyCheckup', now.toISOString());
+            checkBiweeklyHealth(); // ステータスを更新
+        }
+
+        // 毎日の問診を開始
+        function startDailyInterview() {
+            const today = new Date().toDateString();
+            const lastInterview = localStorage.getItem('lastDailyInterview');
+
+            if (lastInterview === today) {
+                alert('本日の問診は既に完了しています');
+                return;
+            }
+
+            showPage('daily-check-1');
+        }
+
+        // 18時以降チェック
+        function checkDailyInterviewTime() {
+            const now = new Date();
+            const hour = now.getHours();
+            const today = new Date().toDateString();
+            const lastInterview = localStorage.getItem('lastDailyInterview');
+
+            const card = document.getElementById('daily-interview-card');
+            const status = document.getElementById('daily-interview-status');
+            const button = card.querySelector('.main-button');
+
+            if (hour >= 18) {
+                card.style.display = 'block';
+                if (lastInterview === today) {
+                    status.textContent = '本日の問診は完了しています';
+                    status.style.display = 'block';
+                    button.style.display = 'none';
+                } else {
+                    status.style.display = 'none';
+                    button.style.display = 'block';
+                }
+            } else {
+                card.style.display = 'none';
+            }
+        }
+
+        // 毎日の問診を完了
+        const originalCompleteDailyCheck = completeDailyCheck;
+        function completeDailyCheck() {
+            if (!dailyAnswers['daily-3']) {
+                alert('選択してください');
+                return;
+            }
+
+            const today = new Date().toDateString();
+            localStorage.setItem('lastDailyInterview', today);
+            showPage('daily-complete');
+        }
+
+        // 運動データ
+        const exerciseData = {
+            'marching': {
+                title: 'その場足踏み',
+                duration: 180, // 3分
+                instructions: [
+                    '1. 背筋を伸ばして立ちます',
+                    '2. 腕を大きく振りながら、その場で足踏みをします',
+                    '3. 膝を腰の高さまで上げるように意識しましょう',
+                    '4. リズムよく、無理のないペースで続けます'
+                ]
+            },
+            'radio-taiso': {
+                title: 'ラジオ体操',
+                duration: 300, // 5分
+                instructions: [
+                    '1. ゆったりとした場所で立ちます',
+                    '2. 深呼吸から始めて、全身をほぐします',
+                    '3. 腕を回したり、体を曲げたりします',
+                    '4. 無理せず、できる範囲で体を動かしましょう'
+                ]
+            },
+            'stretch': {
+                title: 'かんたんストレッチ',
+                duration: 180, // 3分
+                instructions: [
+                    '1. 椅子に座った状態で行います',
+                    '2. 首をゆっくり回します',
+                    '3. 肩を上下に動かします',
+                    '4. 腕を伸ばして、背中を伸ばします',
+                    '5. 呼吸を止めずに、ゆっくり行いましょう'
+                ]
+            },
+            'breathing': {
+                title: '深呼吸',
+                duration: 120, // 2分
+                instructions: [
+                    '1. 楽な姿勢で座ります',
+                    '2. 鼻からゆっくり息を吸います（4秒）',
+                    '3. 少し息を止めます（2秒）',
+                    '4. 口からゆっくり息を吐きます（6秒）',
+                    '5. これを繰り返します'
+                ]
+            }
+        };
+
+        let currentExercise = null;
+        let exerciseTimer = null;
+        let exerciseTimeLeft = 0;
+        let exerciseRunning = false;
+
+        // 運動を開始
+        function startExercise(exerciseType) {
+            currentExercise = exerciseData[exerciseType];
+            if (!currentExercise) return;
+
+            exerciseTimeLeft = currentExercise.duration;
+            exerciseRunning = false;
+
+            // 画面を更新
+            document.getElementById('exercise-title').textContent = currentExercise.title;
+
+            const instructions = currentExercise.instructions.map((inst, i) =>
+                `<div style="margin-bottom: 12px;">${inst}</div>`
+            ).join('');
+            document.getElementById('exercise-instructions').innerHTML = instructions;
+
+            updateTimerDisplay();
+
+            // ボタンの状態をリセット
+            document.getElementById('exercise-start-btn').style.display = 'block';
+            document.getElementById('exercise-pause-btn').style.display = 'none';
+            document.getElementById('exercise-resume-btn').style.display = 'none';
+
+            showPage('exercise-screen');
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(exerciseTimeLeft / 60);
+            const seconds = exerciseTimeLeft % 60;
+            document.getElementById('timer-display').textContent =
+                `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function startExerciseTimer() {
+            exerciseRunning = true;
+            document.getElementById('exercise-start-btn').style.display = 'none';
+            document.getElementById('exercise-pause-btn').style.display = 'block';
+
+            exerciseTimer = setInterval(() => {
+                if (exerciseTimeLeft > 0) {
+                    exerciseTimeLeft--;
+                    updateTimerDisplay();
+                } else {
+                    completeExercise();
+                }
+            }, 1000);
+        }
+
+        function pauseExerciseTimer() {
+            exerciseRunning = false;
+            clearInterval(exerciseTimer);
+            document.getElementById('exercise-pause-btn').style.display = 'none';
+            document.getElementById('exercise-resume-btn').style.display = 'block';
+        }
+
+        function resumeExerciseTimer() {
+            startExerciseTimer();
+        }
+
+        function completeExercise() {
+            clearInterval(exerciseTimer);
+            exerciseRunning = false;
+
+            document.getElementById('exercise-complete-message').innerHTML =
+                `${currentExercise.title}を完了しました！<br>素晴らしいです！`;
+
+            showPage('exercise-complete');
+        }
+
+        // ページ読み込み時の初期化
+        window.addEventListener('DOMContentLoaded', function() {
+            // 18時以降チェック
+            checkDailyInterviewTime();
+
+            // 2週間健康診断のステータスを更新
+            const lastCheckup = localStorage.getItem('lastBiweeklyCheckup');
+            if (lastCheckup) {
+                const lastDate = new Date(lastCheckup);
+                const now = new Date();
+                const daysDiff = Math.floor((now - lastDate) / (1000 * 60 * 60 * 24));
+
+                if (daysDiff < 14) {
+                    const nextDate = new Date(lastDate);
+                    nextDate.setDate(nextDate.getDate() + 14);
+                    const month = nextDate.getMonth() + 1;
+                    const day = nextDate.getDate();
+                    document.getElementById('biweekly-status').textContent = `次回：${month}月${day}日`;
+                }
+            }
+        });
     </script>
 </body>
 </html>
