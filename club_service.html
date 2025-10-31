@@ -1119,6 +1119,16 @@
                         参加状況や見守り記録をわかりやすく確認
                     </p>
                 </div>
+
+                <div class="menu-card" onclick="showPage('create-community')" style="border: 2px dashed #667eea;">
+                    <div class="card-icon" style="background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);">
+                        <i class="fas fa-plus"></i>
+                    </div>
+                    <h3 class="card-title" style="color: #667eea;">新しいコミュニティ</h3>
+                    <p class="card-description">
+                        新しいコミュニティ（部活動）を作成
+                    </p>
+                </div>
             </div>
 
             <div class="bottom-nav">
@@ -2149,7 +2159,7 @@
             <div class="header header-small">
                 <h1 class="header-title" style="font-size: 24px;">パスワード変更</h1>
             </div>
-            
+
             <div class="content">
                 <div class="form-container">
                     <div class="form-group">
@@ -2194,6 +2204,117 @@
                     <span>レポート</span>
                 </button>
                 <button class="nav-button active" onclick="showPage('settings')">
+                    <i class="fas fa-cog"></i>
+                    <span>設定</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- コミュニティ作成 -->
+        <div id="create-community" class="page">
+            <div class="header header-small">
+                <h1 class="header-title" style="font-size: 24px;">コミュニティ作成</h1>
+                <p class="header-subtitle">新しいコミュニティを始めましょう</p>
+            </div>
+
+            <div class="content">
+                <div class="form-container">
+                    <div class="form-group">
+                        <label class="form-label">コミュニティ名<span class="required">*</span></label>
+                        <input type="text" class="form-input" id="community-name" placeholder="例: さくらシニアコミュニティ">
+                        <p class="form-hint">わかりやすく親しみやすい名前をつけましょう</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">カテゴリー<span class="required">*</span></label>
+                        <select class="form-select" id="community-category">
+                            <option value="">選択してください</option>
+                            <option value="exercise">運動系</option>
+                            <option value="culture">文化系</option>
+                            <option value="social">交流系</option>
+                            <option value="health">健康プログラム</option>
+                            <option value="hobby">趣味・娯楽</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">活動場所<span class="required">*</span></label>
+                        <input type="text" class="form-input" id="community-location" placeholder="例: コミュニティセンター ホールA">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">活動日時</label>
+                        <input type="text" class="form-input" id="community-schedule" placeholder="例: 毎週火・木 10:00-11:30">
+                        <p class="form-hint">定期開催の場合は頻度と時間を記入してください</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">コミュニティ説明<span class="required">*</span></label>
+                        <textarea class="form-textarea" id="community-description" placeholder="コミュニティの目的や活動内容を説明してください&#10;&#10;例: 地域のシニアが集まり、健康づくりと交流を楽しむコミュニティです。健康体操やウォーキング、季節のイベントなど、楽しい活動を通じて健康で充実した日々を過ごしましょう。" style="min-height: 120px;"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">想定参加人数</label>
+                        <select class="form-select" id="community-capacity">
+                            <option value="small">10名以下</option>
+                            <option value="medium" selected>10-30名</option>
+                            <option value="large">30-50名</option>
+                            <option value="xlarge">50名以上</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">参加費</label>
+                        <select class="form-select" id="community-fee">
+                            <option value="free" selected>無料</option>
+                            <option value="low">500円以下</option>
+                            <option value="medium">500-1000円</option>
+                            <option value="high">1000円以上</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">体力レベル</label>
+                        <select class="form-select" id="community-level">
+                            <option value="easy" selected>やさしい（誰でも参加可能）</option>
+                            <option value="normal">ふつう（軽い運動ができる方）</option>
+                            <option value="active">アクティブ（活発な運動を楽しめる方）</option>
+                        </select>
+                        <p class="form-hint">運動系の場合に参考になる情報です</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">連絡先（任意）</label>
+                        <input type="tel" class="form-input" id="community-contact" placeholder="090-1234-5678">
+                        <p class="form-hint">問い合わせ用の電話番号</p>
+                    </div>
+                </div>
+
+                <button class="main-button" onclick="createCommunity()">
+                    <i class="fas fa-check"></i>
+                    コミュニティを作成
+                </button>
+
+                <button class="back-button" onclick="showPage('home')">
+                    <i class="fas fa-arrow-left"></i>
+                    キャンセル
+                </button>
+            </div>
+
+            <div class="bottom-nav">
+                <button class="nav-button" onclick="showPage('home')">
+                    <i class="fas fa-home"></i>
+                    <span>ホーム</span>
+                </button>
+                <button class="nav-button" onclick="showPage('events')">
+                    <i class="fas fa-calendar"></i>
+                    <span>イベント</span>
+                </button>
+                <button class="nav-button" onclick="showPage('reports')">
+                    <i class="fas fa-newspaper"></i>
+                    <span>レポート</span>
+                </button>
+                <button class="nav-button" onclick="showPage('settings')">
                     <i class="fas fa-cog"></i>
                     <span>設定</span>
                 </button>
@@ -2404,6 +2525,68 @@
         // 緊急連絡
         function makeCall() {
             alert('緊急連絡先に電話をかけます\n（実際のアプリでは電話アプリが起動します）');
+        }
+
+        // コミュニティ作成
+        function createCommunity() {
+            const name = document.getElementById('community-name').value;
+            const category = document.getElementById('community-category').value;
+            const location = document.getElementById('community-location').value;
+            const schedule = document.getElementById('community-schedule').value;
+            const description = document.getElementById('community-description').value;
+            const capacity = document.getElementById('community-capacity').value;
+            const fee = document.getElementById('community-fee').value;
+            const level = document.getElementById('community-level').value;
+            const contact = document.getElementById('community-contact').value;
+
+            // バリデーション
+            if (!name || !category || !location || !description) {
+                alert('必須項目を入力してください\n\n必須項目:\n・コミュニティ名\n・カテゴリー\n・活動場所\n・コミュニティ説明');
+                return;
+            }
+
+            // 実際のアプリではここでサーバーにデータを送信
+            const communityData = {
+                name,
+                category,
+                location,
+                schedule,
+                description,
+                capacity,
+                fee,
+                level,
+                contact,
+                createdAt: new Date().toISOString()
+            };
+
+            console.log('コミュニティ作成データ:', communityData);
+
+            // カテゴリー名を日本語で取得
+            const categoryNames = {
+                'exercise': '運動系',
+                'culture': '文化系',
+                'social': '交流系',
+                'health': '健康プログラム',
+                'hobby': '趣味・娯楽'
+            };
+
+            // 完了メッセージを表示
+            showCompleteModal(
+                'コミュニティを作成しました',
+                `「${name}」（${categoryNames[category]}）が作成されました。\n参加者を募集して活動を始めましょう！`,
+                'home'
+            );
+
+            // フォームをリセット
+            document.getElementById('community-name').value = '';
+            document.getElementById('community-category').value = '';
+            document.getElementById('community-location').value = '';
+            document.getElementById('community-schedule').value = '';
+            document.getElementById('community-description').value = '';
+            document.getElementById('community-capacity').value = 'medium';
+            document.getElementById('community-fee').value = 'free';
+            document.getElementById('community-level').value = 'easy';
+            document.getElementById('community-contact').value = '';
         }
 
         // タッチイベント最適化
