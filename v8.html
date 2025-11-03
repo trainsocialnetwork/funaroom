@@ -1,0 +1,1344 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FUNAROOM - あなたの居場所が見つかる</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #FF8C42;
+      --primary-light: #FFB366;
+      --secondary: #4A90E2;
+      --bg: #FFF8F0;
+      --card-bg: #FFFFFF;
+      --text: #2C2C2C;
+      --text-light: #666666;
+      --border: #E8E8E8;
+      --success: #10B981;
+      --warning: #F59E0B;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 18px;
+      line-height: 1.8;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .app {
+      max-width: 480px;
+      margin: 0 auto;
+      background: #fff;
+      min-height: 100vh;
+      position: relative;
+      padding-bottom: 80px;
+    }
+
+    /* ヘッダー */
+    .header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+      color: white;
+      padding: 24px 20px;
+      text-align: center;
+    }
+
+    .header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .header p {
+      font-size: 16px;
+      opacity: 0.95;
+    }
+
+    /* ページコンテナ */
+    .page {
+      display: none;
+      padding: 20px;
+      padding-bottom: 100px;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    /* カード */
+    .card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .card h2 {
+      font-size: 22px;
+      margin-bottom: 16px;
+      color: var(--text);
+    }
+
+    .card h3 {
+      font-size: 20px;
+      margin-bottom: 12px;
+      color: var(--text);
+    }
+
+    /* ボタン */
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 18px 24px;
+      font-size: 18px;
+      font-weight: 600;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:active {
+      background: #E67A2E;
+    }
+
+    .btn-secondary {
+      background: white;
+      color: var(--primary);
+      border: 2px solid var(--primary);
+    }
+
+    .btn-secondary:active {
+      background: var(--bg);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-light);
+      border: 1px solid var(--border);
+    }
+
+    /* バッジ */
+    .badge {
+      display: inline-block;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+      margin-right: 8px;
+      margin-bottom: 8px;
+    }
+
+    .badge-watch {
+      background: #E5E7EB;
+      color: #6B7280;
+    }
+
+    .badge-trial {
+      background: #DBEAFE;
+      color: #1E40AF;
+    }
+
+    .badge-member {
+      background: #D1FAE5;
+      color: #065F46;
+    }
+
+    /* コミュニティカード */
+    .community-card {
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      border: 2px solid var(--border);
+    }
+
+    .community-card.watching {
+      border-color: #9CA3AF;
+    }
+
+    .community-card.trial {
+      border-color: #3B82F6;
+    }
+
+    .community-card.member {
+      border-color: var(--success);
+    }
+
+    .community-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .community-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      margin-right: 16px;
+      flex-shrink: 0;
+    }
+
+    .community-info {
+      flex: 1;
+    }
+
+    .community-name {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .community-meta {
+      font-size: 15px;
+      color: var(--text-light);
+    }
+
+    .community-meta i {
+      margin-right: 4px;
+    }
+
+    /* 質問フォーム */
+    .question {
+      margin-bottom: 32px;
+    }
+
+    .question-number {
+      font-size: 16px;
+      color: var(--text-light);
+      margin-bottom: 8px;
+    }
+
+    .question-text {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      line-height: 1.6;
+    }
+
+    .option {
+      background: white;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 17px;
+    }
+
+    .option:active {
+      background: var(--bg);
+    }
+
+    .option.selected {
+      border-color: var(--primary);
+      background: #FFF5EB;
+    }
+
+    /* プログレスバー */
+    .progress-container {
+      background: #E5E7EB;
+      height: 8px;
+      border-radius: 4px;
+      margin-bottom: 24px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      background: var(--primary);
+      height: 100%;
+      transition: width 0.3s;
+    }
+
+    /* 統計カード */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .stat-card {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+      color: white;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .stat-label {
+      font-size: 14px;
+      opacity: 0.9;
+    }
+
+    /* スケジュール */
+    .schedule-item {
+      background: white;
+      border-left: 4px solid var(--primary);
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+
+    .schedule-time {
+      font-size: 15px;
+      color: var(--text-light);
+      margin-bottom: 4px;
+    }
+
+    .schedule-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    /* ボトムナビゲーション */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      max-width: 480px;
+      margin: 0 auto;
+      background: white;
+      border-top: 1px solid var(--border);
+      display: flex;
+      padding: 8px 0;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+    }
+
+    .nav-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 8px;
+      color: var(--text-light);
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      background: none;
+      font-size: 13px;
+    }
+
+    .nav-item i {
+      font-size: 24px;
+      margin-bottom: 4px;
+    }
+
+    .nav-item.active {
+      color: var(--primary);
+    }
+
+    /* ウェルカム画面 */
+    .welcome {
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    .welcome-icon {
+      width: 120px;
+      height: 120px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 64px;
+      margin: 0 auto 32px;
+      color: white;
+    }
+
+    .welcome h1 {
+      font-size: 28px;
+      margin-bottom: 16px;
+      color: var(--text);
+    }
+
+    .welcome p {
+      font-size: 17px;
+      color: var(--text-light);
+      margin-bottom: 32px;
+      line-height: 1.8;
+    }
+
+    /* 入力フィールド */
+    .input-group {
+      margin-bottom: 20px;
+    }
+
+    .input-label {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 16px;
+      font-size: 18px;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      font-family: inherit;
+    }
+
+    .input-field:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    /* タブ */
+    .tabs {
+      display: flex;
+      border-bottom: 2px solid var(--border);
+      margin-bottom: 20px;
+    }
+
+    .tab {
+      flex: 1;
+      padding: 12px;
+      text-align: center;
+      background: none;
+      border: none;
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--text-light);
+      cursor: pointer;
+      position: relative;
+    }
+
+    .tab.active {
+      color: var(--primary);
+    }
+
+    .tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--primary);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* 診断結果 */
+    .result-type {
+      text-align: center;
+      padding: 32px 20px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+      border-radius: 16px;
+      color: white;
+      margin-bottom: 24px;
+    }
+
+    .result-type-icon {
+      font-size: 64px;
+      margin-bottom: 16px;
+    }
+
+    .result-type-name {
+      font-size: 26px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .result-type-desc {
+      font-size: 16px;
+      opacity: 0.95;
+      line-height: 1.7;
+    }
+
+    /* マッチ度 */
+    .match-score {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      background: var(--bg);
+      border-radius: 8px;
+      margin-bottom: 16px;
+    }
+
+    .match-label {
+      font-size: 17px;
+      font-weight: 600;
+    }
+
+    .match-percent {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    /* ステップ表示 */
+    .steps {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      position: relative;
+    }
+
+    .steps::before {
+      content: '';
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      right: 20px;
+      height: 2px;
+      background: var(--border);
+      z-index: 0;
+    }
+
+    .step {
+      flex: 1;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .step-circle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: white;
+      border: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 8px;
+      font-weight: 700;
+      color: var(--text-light);
+    }
+
+    .step.active .step-circle {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: white;
+    }
+
+    .step.completed .step-circle {
+      background: var(--success);
+      border-color: var(--success);
+      color: white;
+    }
+
+    .step-label {
+      font-size: 13px;
+      color: var(--text-light);
+    }
+
+    .step.active .step-label {
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    /* アクセシビリティ */
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+
+    /* レスポンシブ */
+    @media (max-width: 380px) {
+      body {
+        font-size: 16px;
+      }
+      
+      .btn {
+        font-size: 16px;
+        padding: 16px 20px;
+      }
+      
+      .community-name {
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <!-- ウェルカム画面 -->
+    <div id="page-welcome" class="page active">
+      <div class="welcome">
+        <div class="welcome-icon">
+          <i class="fas fa-users"></i>
+        </div>
+        <h1>複数の居場所、<br>見つけませんか?</h1>
+        <p>
+          あなたに合った活動を見つけて、<br>
+          自分のペースで参加できます。<br>
+          新しい仲間との出会いが待っています。
+        </p>
+        <button class="btn btn-primary" onclick="showPage('login')">
+          はじめる
+        </button>
+      </div>
+    </div>
+
+    <!-- ログイン画面 -->
+    <div id="page-login" class="page">
+      <div class="header">
+        <h1>ログイン</h1>
+        <p>メールアドレスでログイン</p>
+      </div>
+      <div style="padding: 20px;">
+        <div class="card">
+          <div class="input-group">
+            <label class="input-label">メールアドレス</label>
+            <input type="email" class="input-field" placeholder="example@email.com">
+          </div>
+          <div class="input-group">
+            <label class="input-label">パスワード</label>
+            <input type="password" class="input-field" placeholder="••••••••">
+          </div>
+          <button class="btn btn-primary" onclick="showPage('home')">
+            ログイン
+          </button>
+          <button class="btn btn-secondary" onclick="showPage('quiz-intro')">
+            新規登録(診断から始める)
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 診断イントロ -->
+    <div id="page-quiz-intro" class="page">
+      <div class="header">
+        <h1>あなたにぴったりの<br>活動を探します</h1>
+        <p>6つの質問に答えてください</p>
+      </div>
+      <div style="padding: 20px;">
+        <div class="card">
+          <h3>📋 こんなことがわかります</h3>
+          <ul style="padding-left: 20px; margin-top: 12px;">
+            <li style="margin-bottom: 12px;">あなたに合った活動のタイプ</li>
+            <li style="margin-bottom: 12px;">おすすめの参加ペース</li>
+            <li style="margin-bottom: 12px;">相性の良いコミュニティ</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>⏱️ 所要時間</h3>
+          <p style="margin-top: 8px;">約3分</p>
+        </div>
+        <button class="btn btn-primary" onclick="startQuiz()">
+          診断を始める
+        </button>
+        <button class="btn btn-ghost" onclick="showPage('login')">
+          スキップして一覧を見る
+        </button>
+      </div>
+    </div>
+
+    <!-- 診断画面 -->
+    <div id="page-quiz" class="page">
+      <div class="header">
+        <h1>活動診断</h1>
+        <p>質問 <span id="current-q">1</span> / 6</p>
+      </div>
+      <div style="padding: 20px;">
+        <div class="progress-container">
+          <div class="progress-bar" id="quiz-progress" style="width: 16.6%"></div>
+        </div>
+        
+        <div id="quiz-container"></div>
+
+        <button class="btn btn-ghost" onclick="prevQuestion()" id="prev-btn" style="display:none;">
+          戻る
+        </button>
+      </div>
+    </div>
+
+    <!-- 診断結果 -->
+    <div id="page-quiz-result" class="page">
+      <div class="header">
+        <h1>診断結果</h1>
+        <p>あなたにぴったりの活動が見つかりました</p>
+      </div>
+      <div style="padding: 20px;">
+        <div class="result-type">
+          <div class="result-type-icon">🌸</div>
+          <div class="result-type-name">バランス型</div>
+          <div class="result-type-desc">
+            運動も文化活動も楽しみたい<br>
+            マイペースで幅広く参加するタイプ
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>あなたにおすすめの活動</h3>
+          
+          <div class="match-score">
+            <span class="match-label">🌟 相性バツグン</span>
+            <span class="match-percent">95%</span>
+          </div>
+          
+          <div class="community-card watching">
+            <div class="community-header">
+              <div class="community-icon">🧘</div>
+              <div class="community-info">
+                <div class="community-name">朝ヨガ</div>
+                <div class="community-meta">
+                  <i class="fas fa-users"></i> 12名
+                </div>
+              </div>
+            </div>
+            <p style="font-size: 16px; color: var(--text-light); margin-bottom: 12px;">
+              ゆったりとした動きで体を整えます
+            </p>
+            <button class="btn btn-primary" onclick="viewCommunity('yoga')">
+              詳しく見る
+            </button>
+          </div>
+
+          <div class="match-score">
+            <span class="match-label">😊 相性良い</span>
+            <span class="match-percent">88%</span>
+          </div>
+
+          <div class="community-card watching">
+            <div class="community-header">
+              <div class="community-icon">🎨</div>
+              <div class="community-info">
+                <div class="community-name">絵手紙</div>
+                <div class="community-meta">
+                  <i class="fas fa-users"></i> 8名
+                </div>
+              </div>
+            </div>
+            <p style="font-size: 16px; color: var(--text-light); margin-bottom: 12px;">
+              季節の絵手紙を描いて楽しみます
+            </p>
+            <button class="btn btn-secondary" onclick="viewCommunity('art')">
+              詳しく見る
+            </button>
+          </div>
+        </div>
+
+        <button class="btn btn-primary" onclick="showPage('home')">
+          ホームへ
+        </button>
+      </div>
+    </div>
+
+    <!-- ホーム画面 -->
+    <div id="page-home" class="page">
+      <div class="header">
+        <h1>ホーム</h1>
+        <p>田中さん、こんにちは</p>
+      </div>
+      <div style="padding: 20px;">
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="stat-number">3</div>
+            <div class="stat-label">参加中の活動</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">週5回</div>
+            <div class="stat-label">外出ペース</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>今週の予定</h2>
+          <div class="schedule-item">
+            <div class="schedule-time">11/5(火) 7:00-8:00</div>
+            <div class="schedule-title">🧘 朝ヨガ</div>
+          </div>
+          <div class="schedule-item">
+            <div class="schedule-time">11/7(木) 7:00-8:00</div>
+            <div class="schedule-title">🧘 朝ヨガ</div>
+          </div>
+          <div class="schedule-item">
+            <div class="schedule-time">11/8(金) 13:00-15:00</div>
+            <div class="schedule-title">🎨 絵手紙</div>
+          </div>
+          <button class="btn btn-secondary" onclick="showPage('schedule')">
+            予定をすべて見る
+          </button>
+        </div>
+
+        <div class="card">
+          <h2>新しい活動を探す</h2>
+          <p style="color: var(--text-light); margin-bottom: 16px;">
+            あなたに合いそうな活動があります
+          </p>
+          <button class="btn btn-primary" onclick="showPage('communities')">
+            活動を探す
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 活動一覧 -->
+    <div id="page-communities" class="page">
+      <div class="header">
+        <h1>活動を探す</h1>
+        <p>興味のある活動を見つけましょう</p>
+      </div>
+      <div style="padding: 20px;">
+        <div class="tabs">
+          <button class="tab active" onclick="switchTab(0)">すべて</button>
+          <button class="tab" onclick="switchTab(1)">運動系</button>
+          <button class="tab" onclick="switchTab(2)">文化系</button>
+        </div>
+
+        <div class="tab-content active" id="tab-0">
+          <div class="community-card watching">
+            <div class="community-header">
+              <div class="community-icon">🧘</div>
+              <div class="community-info">
+                <div class="community-name">朝ヨガ</div>
+                <div class="community-meta">
+                  <i class="fas fa-clock"></i> 火・木 7:00<br>
+                  <i class="fas fa-users"></i> 12名
+                </div>
+              </div>
+            </div>
+            <span class="badge badge-watch">見学中</span>
+            <p style="font-size: 16px; color: var(--text-light); margin: 12px 0;">
+              ゆったりとした動きで体を整えます。初心者大歓迎。
+            </p>
+            <button class="btn btn-primary" onclick="viewCommunity('yoga')">
+              詳しく見る
+            </button>
+          </div>
+
+          <div class="community-card trial">
+            <div class="community-header">
+              <div class="community-icon">🎨</div>
+              <div class="community-info">
+                <div class="community-name">絵手紙</div>
+                <div class="community-meta">
+                  <i class="fas fa-clock"></i> 水 13:00<br>
+                  <i class="fas fa-users"></i> 8名
+                </div>
+              </div>
+            </div>
+            <span class="badge badge-trial">体験中</span>
+            <p style="font-size: 16px; color: var(--text-light); margin: 12px 0;">
+              季節の絵手紙を描いて楽しみます。道具は貸出あり。
+            </p>
+            <button class="btn btn-primary" onclick="viewCommunity('art')">
+              詳しく見る
+            </button>
+          </div>
+
+          <div class="community-card">
+            <div class="community-header">
+              <div class="community-icon">🚶</div>
+              <div class="community-info">
+                <div class="community-name">ウォーキング</div>
+                <div class="community-meta">
+                  <i class="fas fa-clock"></i> 火・金 8:00<br>
+                  <i class="fas fa-users"></i> 15名
+                </div>
+              </div>
+            </div>
+            <p style="font-size: 16px; color: var(--text-light); margin: 12px 0;">
+              市内の公園や海岸を歩きます。おしゃべりしながら楽しく。
+            </p>
+            <button class="btn btn-secondary" onclick="viewCommunity('walk')">
+              詳しく見る
+            </button>
+          </div>
+
+          <div class="community-card">
+            <div class="community-header">
+              <div class="community-icon">📚</div>
+              <div class="community-info">
+                <div class="community-name">読書会</div>
+                <div class="community-meta">
+                  <i class="fas fa-clock"></i> 月2回 土 14:00<br>
+                  <i class="fas fa-users"></i> 10名
+                </div>
+              </div>
+            </div>
+            <p style="font-size: 16px; color: var(--text-light); margin: 12px 0;">
+              好きな本を持ち寄って感想を語り合います。
+            </p>
+            <button class="btn btn-secondary" onclick="viewCommunity('book')">
+              詳しく見る
+            </button>
+          </div>
+        </div>
+
+        <div class="tab-content" id="tab-1">
+          <p style="text-align: center; color: var(--text-light); padding: 40px 0;">
+            運動系の活動
+          </p>
+        </div>
+
+        <div class="tab-content" id="tab-2">
+          <p style="text-align: center; color: var(--text-light); padding: 40px 0;">
+            文化系の活動
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 活動詳細 -->
+    <div id="page-community-detail" class="page">
+      <div class="header">
+        <h1>朝ヨガ</h1>
+        <p>あなたの参加状況: 見学中</p>
+      </div>
+      <div style="padding: 20px;">
+        <div class="steps">
+          <div class="step completed">
+            <div class="step-circle"><i class="fas fa-check"></i></div>
+            <div class="step-label">見学</div>
+          </div>
+          <div class="step active">
+            <div class="step-circle">2</div>
+            <div class="step-label">体験</div>
+          </div>
+          <div class="step">
+            <div class="step-circle">3</div>
+            <div class="step-label">参加</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>📸 最近の様子</h3>
+          <p style="color: var(--text-light); margin-top: 8px;">
+            先週の朝ヨガの様子です。和やかな雰囲気で、初心者の方も安心して参加されています。
+          </p>
+        </div>
+
+        <div class="card">
+          <h3>💬 メンバーの声</h3>
+          <div style="background: var(--bg); padding: 16px; border-radius: 8px; margin-top: 12px; margin-bottom: 12px;">
+            <p style="font-size: 16px; margin-bottom: 8px;">
+              「体が硬くても大丈夫。先生が優しく教えてくれます」
+            </p>
+            <p style="font-size: 14px; color: var(--text-light);">佐藤さん(参加3ヶ月)</p>
+          </div>
+          <div style="background: var(--bg); padding: 16px; border-radius: 8px;">
+            <p style="font-size: 16px; margin-bottom: 8px;">
+              「朝からすっきり。仲間とのおしゃべりも楽しい」
+            </p>
+            <p style="font-size: 14px; color: var(--text-light);">鈴木さん(参加1年)</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>📋 詳細情報</h3>
+          <div style="margin-top: 12px; line-height: 2;">
+            <p><strong>開催日時:</strong> 毎週火・木曜 7:00-8:00</p>
+            <p><strong>場所:</strong> 日向市中央公園</p>
+            <p><strong>参加費:</strong> 月2,000円</p>
+            <p><strong>持ち物:</strong> 動きやすい服装、タオル</p>
+          </div>
+        </div>
+
+        <div class="card" style="background: #FFF5EB; border: 2px solid var(--primary);">
+          <h3>🎯 次のステップ</h3>
+          <p style="margin-top: 8px; margin-bottom: 16px;">
+            まずは無料の体験会に参加してみませんか?
+          </p>
+          <div style="background: white; padding: 16px; border-radius: 8px; margin-bottom: 12px;">
+            <div style="font-size: 16px; font-weight: 600; margin-bottom: 4px;">
+              無料体験会
+            </div>
+            <div style="color: var(--text-light);">
+              11/10(金) 7:00-8:00
+            </div>
+          </div>
+          <button class="btn btn-primary">
+            体験を予約する
+          </button>
+        </div>
+
+        <button class="btn btn-ghost" onclick="showPage('communities')">
+          活動一覧に戻る
+        </button>
+      </div>
+    </div>
+
+    <!-- マイ活動 -->
+    <div id="page-my-activities" class="page">
+      <div class="header">
+        <h1>マイ活動</h1>
+        <p>あなたの参加状況</p>
+      </div>
+      <div style="padding: 20px;">
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="stat-number">3</div>
+            <div class="stat-label">参加中の活動</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">18人</div>
+            <div class="stat-label">つながり</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>🌟 定期参加中</h3>
+          <div class="community-card member">
+            <div class="community-header">
+              <div class="community-icon">🧘</div>
+              <div class="community-info">
+                <div class="community-name">朝ヨガ</div>
+                <div class="community-meta">
+                  参加回数: 36回
+                </div>
+              </div>
+            </div>
+            <span class="badge badge-member">参加中</span>
+            <p style="font-size: 15px; color: var(--text-light); margin: 12px 0;">
+              あなたの役割: 初心者サポーター
+            </p>
+            <button class="btn btn-secondary" onclick="viewCommunity('yoga')">
+              詳細を見る
+            </button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>💡 体験中</h3>
+          <div class="community-card trial">
+            <div class="community-header">
+              <div class="community-icon">🎨</div>
+              <div class="community-info">
+                <div class="community-name">絵手紙</div>
+                <div class="community-meta">
+                  参加回数: 2回
+                </div>
+              </div>
+            </div>
+            <span class="badge badge-trial">体験中</span>
+            <p style="font-size: 15px; color: var(--text-light); margin: 12px 0;">
+              あと1回参加で定期メンバーになれます
+            </p>
+            <button class="btn btn-secondary" onclick="viewCommunity('art')">
+              詳細を見る
+            </button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>👀 見学中</h3>
+          <div class="community-card watching">
+            <div class="community-header">
+              <div class="community-icon">🚶</div>
+              <div class="community-info">
+                <div class="community-name">ウォーキング</div>
+                <div class="community-meta">
+                  見学開始: 2週間前
+                </div>
+              </div>
+            </div>
+            <span class="badge badge-watch">見学中</span>
+            <p style="font-size: 15px; color: var(--text-light); margin: 12px 0;">
+              体験会に参加してみませんか?
+            </p>
+            <button class="btn btn-secondary" onclick="viewCommunity('walk')">
+              詳細を見る
+            </button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>📊 あなたの活動バランス</h3>
+          <div style="margin-top: 16px;">
+            <div style="margin-bottom: 12px;">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                <span>運動系</span>
+                <span style="font-weight: 600;">40%</span>
+              </div>
+              <div style="background: #E5E7EB; height: 8px; border-radius: 4px; overflow: hidden;">
+                <div style="background: var(--primary); width: 40%; height: 100%;"></div>
+              </div>
+            </div>
+            <div style="margin-bottom: 12px;">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                <span>文化系</span>
+                <span style="font-weight: 600;">30%</span>
+              </div>
+              <div style="background: #E5E7EB; height: 8px; border-radius: 4px; overflow: hidden;">
+                <div style="background: var(--secondary); width: 30%; height: 100%;"></div>
+              </div>
+            </div>
+            <div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                <span>交流系</span>
+                <span style="font-weight: 600;">30%</span>
+              </div>
+              <div style="background: #E5E7EB; height: 8px; border-radius: 4px; overflow: hidden;">
+                <div style="background: var(--success); width: 30%; height: 100%;"></div>
+              </div>
+            </div>
+          </div>
+          <div style="background: var(--bg); padding: 16px; border-radius: 8px; margin-top: 16px;">
+            <p style="font-size: 16px;">
+              ✅ バランスの良い活動をされています!
+            </p>
+          </div>
+        </div>
+
+        <button class="btn btn-primary" onclick="showPage('communities')">
+          新しい活動を探す
+        </button>
+      </div>
+    </div>
+
+    <!-- 予定 -->
+    <div id="page-schedule" class="page">
+      <div class="header">
+        <h1>予定</h1>
+        <p>今週・来週の予定</p>
+      </div>
+      <div style="padding: 20px;">
+        <div class="card">
+          <h3>今週の予定</h3>
+          <div class="schedule-item">
+            <div class="schedule-time">11/5(火) 7:00-8:00</div>
+            <div class="schedule-title">🧘 朝ヨガ</div>
+            <p style="font-size: 15px; color: var(--text-light); margin-top: 4px;">
+              日向市中央公園
+            </p>
+          </div>
+          <div class="schedule-item">
+            <div class="schedule-time">11/7(木) 7:00-8:00</div>
+            <div class="schedule-title">🧘 朝ヨガ</div>
+            <p style="font-size: 15px; color: var(--text-light); margin-top: 4px;">
+              日向市中央公園
+            </p>
+          </div>
+          <div class="schedule-item">
+            <div class="schedule-time">11/8(金) 13:00-15:00</div>
+            <div class="schedule-title">🎨 絵手紙</div>
+            <p style="font-size: 15px; color: var(--text-light); margin-top: 4px;">
+              コミュニティセンター
+            </p>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>来週の予定</h3>
+          <div class="schedule-item">
+            <div class="schedule-time">11/12(火) 7:00-8:00</div>
+            <div class="schedule-title">🧘 朝ヨガ</div>
+          </div>
+          <div class="schedule-item">
+            <div class="schedule-time">11/14(木) 7:00-8:00</div>
+            <div class="schedule-title">🧘 朝ヨガ</div>
+          </div>
+          <div class="schedule-item">
+            <div class="schedule-time">11/15(金) 13:00-15:00</div>
+            <div class="schedule-title">🎨 絵手紙</div>
+          </div>
+        </div>
+
+        <div class="card" style="background: #FFF5EB;">
+          <h3>💡 提案</h3>
+          <p style="margin-top: 8px; color: var(--text-light);">
+            週末の予定がまだありません。<br>
+            ウォーキング(日曜)への参加はいかがですか?
+          </p>
+          <button class="btn btn-secondary" style="margin-top: 12px;" onclick="viewCommunity('walk')">
+            ウォーキングを見る
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ボトムナビゲーション -->
+    <nav class="bottom-nav">
+      <button class="nav-item active" onclick="showPage('home')" id="nav-home">
+        <i class="fas fa-home"></i>
+        <span>ホーム</span>
+      </button>
+      <button class="nav-item" onclick="showPage('communities')" id="nav-communities">
+        <i class="fas fa-search"></i>
+        <span>探す</span>
+      </button>
+      <button class="nav-item" onclick="showPage('my-activities')" id="nav-my">
+        <i class="fas fa-heart"></i>
+        <span>マイ活動</span>
+      </button>
+      <button class="nav-item" onclick="showPage('schedule')" id="nav-schedule">
+        <i class="fas fa-calendar"></i>
+        <span>予定</span>
+      </button>
+    </nav>
+  </div>
+
+  <script>
+    // 診断データ
+    const quizQuestions = [
+      {
+        question: "活動したい時間帯は?",
+        options: ["朝(7:00-10:00)", "昼(10:00-15:00)", "夕方(15:00-18:00)", "いつでもOK"]
+      },
+      {
+        question: "1週間に何日くらい参加したい?",
+        options: ["週1日くらい", "週2-3日", "週4日以上", "まずは様子見"]
+      },
+      {
+        question: "どんな活動が好き?",
+        options: ["体を動かす", "もの作り・創作", "おしゃべり", "学ぶ・教わる"]
+      },
+      {
+        question: "グループの規模は?",
+        options: ["少人数(5-10人)", "ほどよい人数(10-15人)", "大人数(15人以上)", "こだわらない"]
+      },
+      {
+        question: "参加のきっかけは?",
+        options: ["友達を作りたい", "新しいことに挑戦", "健康のため", "楽しく過ごしたい"]
+      },
+      {
+        question: "どんな関わり方が理想?",
+        options: ["まずは見学から", "体験してから決めたい", "すぐに参加したい", "マイペースで"]
+      }
+    ];
+
+    let currentQuestion = 0;
+    let answers = [];
+
+    // ページ切り替え
+    function showPage(pageId) {
+      // すべてのページを非表示
+      document.querySelectorAll('.page').forEach(page => {
+        page.classList.remove('active');
+      });
+      
+      // 指定されたページを表示
+      document.getElementById(`page-${pageId}`).classList.add('active');
+      
+      // ナビゲーションのアクティブ状態を更新
+      document.querySelectorAll('.nav-item').forEach(item => {
+        item.classList.remove('active');
+      });
+      
+      const navItem = document.getElementById(`nav-${pageId}`);
+      if (navItem) {
+        navItem.classList.add('active');
+      }
+
+      // ページトップにスクロール
+      window.scrollTo(0, 0);
+    }
+
+    // タブ切り替え
+    function switchTab(index) {
+      document.querySelectorAll('.tab').forEach((tab, i) => {
+        tab.classList.toggle('active', i === index);
+      });
+      document.querySelectorAll('.tab-content').forEach((content, i) => {
+        content.classList.toggle('active', i === index);
+      });
+    }
+
+    // 診断開始
+    function startQuiz() {
+      currentQuestion = 0;
+      answers = [];
+      showPage('quiz');
+      renderQuestion();
+    }
+
+    // 質問表示
+    function renderQuestion() {
+      const q = quizQuestions[currentQuestion];
+      const container = document.getElementById('quiz-container');
+      
+      let html = `
+        <div class="question">
+          <div class="question-number">質問 ${currentQuestion + 1} / ${quizQuestions.length}</div>
+          <div class="question-text">${q.question}</div>
+      `;
+      
+      q.options.forEach((option, index) => {
+        const selected = answers[currentQuestion] === index ? 'selected' : '';
+        html += `
+          <div class="option ${selected}" onclick="selectOption(${index})">
+            ${option}
+          </div>
+        `;
+      });
+      
+      html += '</div>';
+      container.innerHTML = html;
+      
+      // プログレスバー更新
+      const progress = ((currentQuestion + 1) / quizQuestions.length) * 100;
+      document.getElementById('quiz-progress').style.width = progress + '%';
+      document.getElementById('current-q').textContent = currentQuestion + 1;
+      
+      // 戻るボタン
+      document.getElementById('prev-btn').style.display = currentQuestion > 0 ? 'block' : 'none';
+    }
+
+    // 選択肢選択
+    function selectOption(index) {
+      answers[currentQuestion] = index;
+      
+      // 次の質問へ
+      setTimeout(() => {
+        if (currentQuestion < quizQuestions.length - 1) {
+          currentQuestion++;
+          renderQuestion();
+        } else {
+          // 診断完了
+          showPage('quiz-result');
+        }
+      }, 200);
+    }
+
+    // 前の質問に戻る
+    function prevQuestion() {
+      if (currentQuestion > 0) {
+        currentQuestion--;
+        renderQuestion();
+      }
+    }
+
+    // コミュニティ詳細表示
+    function viewCommunity(id) {
+      showPage('community-detail');
+    }
+  </script>
+</body>
+</html>
