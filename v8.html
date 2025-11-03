@@ -760,7 +760,7 @@
       </div>
     </div>
 
-    <!-- ホーム画面 -->
+    <!-- ホーム画面(参加あり) -->
     <div id="page-home" class="page">
       <div class="header">
         <h1>ホーム</h1>
@@ -805,6 +805,73 @@
           <button class="btn btn-primary" onclick="showPage('communities')">
             活動を探す
           </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ホーム画面(参加なし) -->
+    <div id="page-home-empty" class="page">
+      <div class="header">
+        <h1>ホーム</h1>
+        <p>田中さん、こんにちは</p>
+      </div>
+      <div style="padding: 20px;">
+        <div class="card" style="text-align: center; padding: 40px 24px; background: linear-gradient(135deg, #FFF5EB 0%, #FFF8F0 100%);">
+          <div style="font-size: 80px; margin-bottom: 20px;">🌸</div>
+          <h2 style="font-size: 24px; margin-bottom: 12px;">
+            あなたの居場所を<br>見つけましょう
+          </h2>
+          <p style="font-size: 17px; color: var(--text-light); line-height: 1.8;">
+            まずは気になる活動を<br>
+            見学リストに追加してみませんか?
+          </p>
+        </div>
+
+        <div class="card">
+          <h2>最初の一歩</h2>
+          <div style="background: var(--bg); padding: 20px; border-radius: 12px; margin-bottom: 12px;">
+            <div style="display: flex; align-items: center; margin-bottom: 12px;">
+              <div style="width: 40px; height: 40px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; margin-right: 16px; flex-shrink: 0;">1</div>
+              <div style="flex: 1;">
+                <div style="font-weight: 600; font-size: 18px; margin-bottom: 4px;">活動を探す</div>
+                <div style="font-size: 15px; color: var(--text-light);">興味のある活動を見つける</div>
+              </div>
+            </div>
+          </div>
+
+          <div style="background: var(--bg); padding: 20px; border-radius: 12px; margin-bottom: 12px;">
+            <div style="display: flex; align-items: center; margin-bottom: 12px;">
+              <div style="width: 40px; height: 40px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; margin-right: 16px; flex-shrink: 0;">2</div>
+              <div style="flex: 1;">
+                <div style="font-weight: 600; font-size: 18px; margin-bottom: 4px;">まずは見学</div>
+                <div style="font-size: 15px; color: var(--text-light);">写真や参加者の声を見る</div>
+              </div>
+            </div>
+          </div>
+
+          <div style="background: var(--bg); padding: 20px; border-radius: 12px; margin-bottom: 16px;">
+            <div style="display: flex; align-items: center; margin-bottom: 12px;">
+              <div style="width: 40px; height: 40px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; margin-right: 16px; flex-shrink: 0;">3</div>
+              <div style="flex: 1;">
+                <div style="font-weight: 600; font-size: 18px; margin-bottom: 4px;">無料で体験</div>
+                <div style="font-size: 15px; color: var(--text-light);">気に入ったら予約してみる</div>
+              </div>
+            </div>
+          </div>
+
+          <button class="btn btn-primary" onclick="showPage('communities')">
+            活動を探す
+          </button>
+        </div>
+
+        <div class="card" style="background: #E8F5E9; border: 2px solid var(--success);">
+          <h3 style="margin-bottom: 12px;">💡 安心してください</h3>
+          <ul style="padding-left: 20px; line-height: 2; color: var(--text);">
+            <li>見学するだけでもOK</li>
+            <li>体験は1回だけでもOK</li>
+            <li>合わなければ辞めてもOK</li>
+            <li>自分のペースで大丈夫です</li>
+          </ul>
         </div>
       </div>
     </div>
@@ -995,7 +1062,7 @@
       </div>
     </div>
 
-    <!-- マイ活動 -->
+    <!-- マイ活動(参加あり) -->
     <div id="page-my-activities" class="page">
       <div class="header">
         <h1>マイ活動</h1>
@@ -1123,7 +1190,67 @@
       </div>
     </div>
 
-    <!-- 予定 -->
+    <!-- マイ活動(参加なし) -->
+    <div id="page-my-activities-empty" class="page">
+      <div class="header">
+        <h1>マイ活動</h1>
+        <p>あなたの参加状況</p>
+      </div>
+      <div style="padding: 20px;">
+        <div class="card" style="text-align: center; padding: 40px 24px;">
+          <div style="font-size: 80px; margin-bottom: 20px;">📝</div>
+          <h2 style="font-size: 24px; margin-bottom: 12px;">
+            まだ活動がありません
+          </h2>
+          <p style="font-size: 17px; color: var(--text-light); line-height: 1.8; margin-bottom: 24px;">
+            興味のある活動を見つけて<br>
+            見学リストに追加してみましょう
+          </p>
+          <button class="btn btn-primary" onclick="showPage('communities')">
+            活動を探す
+          </button>
+        </div>
+
+        <div class="card">
+          <h3>活動に参加すると...</h3>
+          <div style="padding: 16px; background: var(--bg); border-radius: 12px; margin-top: 16px; margin-bottom: 12px;">
+            <div style="display: flex; align-items: start; margin-bottom: 16px;">
+              <div style="font-size: 32px; margin-right: 16px;">👥</div>
+              <div>
+                <div style="font-weight: 600; font-size: 17px; margin-bottom: 4px;">新しい仲間に出会える</div>
+                <div style="font-size: 15px; color: var(--text-light);">共通の趣味を持つ人とつながれます</div>
+              </div>
+            </div>
+            <div style="display: flex; align-items: start; margin-bottom: 16px;">
+              <div style="font-size: 32px; margin-right: 16px;">🌟</div>
+              <div>
+                <div style="font-weight: 600; font-size: 17px; margin-bottom: 4px;">新しいことに挑戦できる</div>
+                <div style="font-size: 15px; color: var(--text-light);">やったことのない活動を始められます</div>
+              </div>
+            </div>
+            <div style="display: flex; align-items: start;">
+              <div style="font-size: 32px; margin-right: 16px;">😊</div>
+              <div>
+                <div style="font-weight: 600; font-size: 17px; margin-bottom: 4px;">楽しい毎日が待っている</div>
+                <div style="font-size: 15px; color: var(--text-light);">外出する楽しみが増えます</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="background: #FFF5EB; border: 2px solid var(--primary);">
+          <h3>👉 おすすめの始め方</h3>
+          <ol style="padding-left: 20px; margin-top: 12px; line-height: 2;">
+            <li style="margin-bottom: 8px;">まずは2-3個を見学リストに追加</li>
+            <li style="margin-bottom: 8px;">写真や参加者の声をじっくり見る</li>
+            <li style="margin-bottom: 8px;">気に入ったら無料体験を予約</li>
+            <li>楽しかったら続けてみる</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <!-- 予定(予定あり) -->
     <div id="page-schedule" class="page">
       <div class="header">
         <h1>予定</h1>
@@ -1184,6 +1311,71 @@
       </div>
     </div>
 
+    <!-- 予定(予定なし) -->
+    <div id="page-schedule-empty" class="page">
+      <div class="header">
+        <h1>予定</h1>
+        <p>今週・来週の予定</p>
+      </div>
+      <div style="padding: 20px;">
+        <div class="card" style="text-align: center; padding: 40px 24px;">
+          <div style="font-size: 80px; margin-bottom: 20px;">📅</div>
+          <h2 style="font-size: 24px; margin-bottom: 12px;">
+            まだ予定がありません
+          </h2>
+          <p style="font-size: 17px; color: var(--text-light); line-height: 1.8; margin-bottom: 24px;">
+            活動に参加すると<br>
+            ここに予定が表示されます
+          </p>
+          <button class="btn btn-primary" onclick="showPage('communities')">
+            活動を探す
+          </button>
+        </div>
+
+        <div class="card">
+          <h3>予定が入ると...</h3>
+          <div style="background: var(--bg); padding: 20px; border-radius: 12px; margin-top: 16px;">
+            <div style="margin-bottom: 16px;">
+              <div style="font-weight: 600; font-size: 17px; margin-bottom: 8px; display: flex; align-items: center;">
+                <span style="font-size: 24px; margin-right: 12px;">📌</span>
+                予定の確認が簡単
+              </div>
+              <p style="font-size: 15px; color: var(--text-light); padding-left: 36px;">
+                いつ、どこで活動があるか<br>一目でわかります
+              </p>
+            </div>
+            <div style="margin-bottom: 16px;">
+              <div style="font-weight: 600; font-size: 17px; margin-bottom: 8px; display: flex; align-items: center;">
+                <span style="font-size: 24px; margin-right: 12px;">🔔</span>
+                リマインダー通知
+              </div>
+              <p style="font-size: 15px; color: var(--text-light); padding-left: 36px;">
+                活動の前日にお知らせが<br>届きます
+              </p>
+            </div>
+            <div>
+              <div style="font-weight: 600; font-size: 17px; margin-bottom: 8px; display: flex; align-items: center;">
+                <span style="font-size: 24px; margin-right: 12px;">🗓️</span>
+                週間スケジュール
+              </div>
+              <p style="font-size: 15px; color: var(--text-light); padding-left: 36px;">
+                複数の活動もまとめて<br>管理できます
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="background: #E8F5E9; border: 2px solid var(--success);">
+          <h3 style="margin-bottom: 12px;">😊 ペースは自由です</h3>
+          <p style="font-size: 16px; line-height: 1.8;">
+            週1回でも、週5回でも、<br>
+            あなたの生活に合わせて<br>
+            無理のないペースで参加できます。
+          </p>
+        </div>
+      </div>
+    </div>
+
     <!-- ボトムナビゲーション -->
     <nav class="bottom-nav">
       <button class="nav-item active" onclick="showPage('home')" id="nav-home">
@@ -1206,6 +1398,14 @@
   </div>
 
   <script>
+    // アプリの状態管理
+    let appState = {
+      hasActivities: false, // デモ用: trueにすると参加中の状態
+      watchList: [],
+      trialList: [],
+      memberList: []
+    };
+
     // 診断データ
     const quizQuestions = [
       {
@@ -1239,19 +1439,34 @@
 
     // ページ切り替え
     function showPage(pageId) {
+      // 状態に応じて適切なページを表示
+      let targetPageId = pageId;
+      
+      if (pageId === 'home') {
+        targetPageId = appState.hasActivities ? 'home' : 'home-empty';
+      } else if (pageId === 'my-activities') {
+        targetPageId = appState.hasActivities ? 'my-activities' : 'my-activities-empty';
+      } else if (pageId === 'schedule') {
+        targetPageId = appState.hasActivities ? 'schedule' : 'schedule-empty';
+      }
+      
       // すべてのページを非表示
       document.querySelectorAll('.page').forEach(page => {
         page.classList.remove('active');
       });
       
       // 指定されたページを表示
-      document.getElementById(`page-${pageId}`).classList.add('active');
+      const targetPage = document.getElementById(`page-${targetPageId}`);
+      if (targetPage) {
+        targetPage.classList.add('active');
+      }
       
       // ナビゲーションのアクティブ状態を更新
       document.querySelectorAll('.nav-item').forEach(item => {
         item.classList.remove('active');
       });
       
+      // 元のpageIdでナビゲーション状態を判定
       const navItem = document.getElementById(`nav-${pageId}`);
       if (navItem) {
         navItem.classList.add('active');
@@ -1339,6 +1554,50 @@
     function viewCommunity(id) {
       showPage('community-detail');
     }
+
+    // デモ用: 状態切り替え(開発時のみ使用)
+    function toggleDemoState() {
+      appState.hasActivities = !appState.hasActivities;
+      const currentPage = document.querySelector('.page.active').id.replace('page-', '');
+      
+      // 現在のページに応じて再表示
+      if (currentPage.includes('home')) {
+        showPage('home');
+      } else if (currentPage.includes('my-activities')) {
+        showPage('my-activities');
+      } else if (currentPage.includes('schedule')) {
+        showPage('schedule');
+      }
+      
+      // ボタンのテキスト更新
+      const btn = document.getElementById('demo-toggle-btn');
+      if (btn) {
+        btn.textContent = appState.hasActivities ? '空状態を見る' : '参加中の状態を見る';
+      }
+    }
+
+    // 初期表示
+    window.addEventListener('DOMContentLoaded', () => {
+      // 診断完了後は空状態のホームから開始
+      // showPage('home'); は既にデフォルトで welcome が active
+    });
   </script>
+
+  <!-- デモ用切り替えボタン(開発時のみ表示) -->
+  <div style="position: fixed; bottom: 100px; right: 20px; z-index: 1000;">
+    <button id="demo-toggle-btn" onclick="toggleDemoState()" style="
+      padding: 12px 20px;
+      background: #6B7280;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    ">
+      参加中の状態を見る
+    </button>
+  </div>
 </body>
 </html>
