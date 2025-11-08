@@ -1,0 +1,2273 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>FUN・A・ROOM - 健康チェックからはじまる、地域のつながり</title>
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --primary-color: #4A90E2;
+            --secondary-color: #7FD3F0;
+            --tertiary-color: #5CA0F2;
+            --success-color: #10B981;
+            --warning-color: #F59E0B;
+            --danger-color: #EF4444;
+            --gray-color: #95989B;
+            --background: #F5F7FA;
+            --white: #FFFFFF;
+            --text-dark: #1F2937;
+            --text-light: #6B7280;
+            --text-muted: #9CA3AF;
+            --border-color: #E5E7EB;
+            --card-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            --button-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        body {
+            font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--background);
+            color: var(--text-dark);
+            line-height: 1.6;
+            font-size: 18px;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Mobile container */
+        .app-container {
+            max-width: 430px;
+            margin: 0 auto;
+            min-height: 100vh;
+            background: var(--white);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Navigation Bar */
+        .nav-bar {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 430px;
+            background: var(--white);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        .nav-item {
+            flex: 1;
+            text-align: center;
+            padding: 8px;
+            color: var(--text-light);
+            cursor: pointer;
+            font-size: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: color 0.3s;
+            background: none;
+            border: none;
+            outline: none;
+        }
+
+        .nav-item i {
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+
+        .nav-item.active {
+            color: var(--primary-color);
+        }
+
+        /* Page sections */
+        .page {
+            display: none;
+            padding-bottom: 80px;
+            min-height: 100vh;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Header styles */
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--white);
+            padding: 40px 20px 30px;
+            text-align: center;
+            border-radius: 0 0 30px 30px;
+            box-shadow: 0 4px 20px rgba(74, 144, 226, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.2;
+            z-index: 0;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .header-small {
+            padding: 30px 20px 20px;
+        }
+
+        .header-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .header-subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        /* Content container */
+        .content {
+            padding: 20px;
+        }
+
+        /* Card styles */
+        .card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 16px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-color);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card:active {
+            transform: scale(0.98);
+        }
+
+        .clickable-card {
+            cursor: pointer;
+        }
+
+        .clickable-card:hover {
+            box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+            transform: translateY(-2px);
+        }
+
+        /* Button styles */
+        .btn {
+            width: 100%;
+            padding: 18px;
+            border: none;
+            border-radius: 16px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-height: 56px;
+            box-shadow: var(--button-shadow);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--tertiary-color));
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(74, 144, 226, 0.4);
+        }
+
+        .btn-disabled {
+            background: var(--gray-color);
+            color: var(--white);
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .btn-secondary {
+            background: var(--white);
+            color: var(--text-dark);
+            border: 2px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--background);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--success-color), #059669);
+            color: var(--white);
+        }
+
+        .btn-google {
+            background: var(--white);
+            color: var(--text-dark);
+            border: 2px solid var(--border-color);
+        }
+
+        .btn-apple {
+            background: #000000;
+            color: var(--white);
+        }
+
+        /* Form styles */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 16px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 18px;
+            transition: border-color 0.3s;
+            background: var(--white);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+        }
+
+        /* Activity card */
+        .activity-card {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            background: var(--white);
+            border-radius: 16px;
+            margin-bottom: 16px;
+            box-shadow: var(--card-shadow);
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid var(--border-color);
+        }
+
+        .activity-card:hover {
+            transform: translateX(4px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+        }
+
+        .activity-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 16px;
+            font-size: 28px;
+            color: var(--white);
+        }
+
+        .activity-info {
+            flex: 1;
+        }
+
+        .activity-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+        }
+
+        .activity-detail {
+            font-size: 14px;
+            color: var(--text-light);
+        }
+
+        .activity-arrow {
+            color: var(--text-muted);
+            font-size: 20px;
+        }
+
+        /* Badge styles */
+        .badge {
+            display: inline-block;
+            padding: 6px 12px;
+            background: var(--background);
+            color: var(--text-dark);
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+
+        .badge-primary {
+            background: rgba(74, 144, 226, 0.1);
+            color: var(--primary-color);
+        }
+
+        .badge-success {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success-color);
+        }
+
+        .badge-warning {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning-color);
+        }
+
+        /* Health check styles */
+        .health-option {
+            padding: 20px;
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 18px;
+            text-align: center;
+            background: var(--white);
+        }
+
+        .health-option:hover {
+            border-color: var(--primary-color);
+            background: rgba(74, 144, 226, 0.05);
+        }
+
+        .health-option.selected {
+            border-color: var(--primary-color);
+            background: rgba(74, 144, 226, 0.1);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        /* Progress bar */
+        .progress-container {
+            width: 100%;
+            height: 8px;
+            background: var(--border-color);
+            border-radius: 4px;
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--tertiary-color));
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        /* Question counter */
+        .question-counter {
+            text-align: center;
+            color: var(--text-light);
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .question-text {
+            text-align: center;
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 32px;
+            line-height: 1.4;
+        }
+
+        /* Community card with image */
+        .community-card {
+            background: linear-gradient(135deg, #F3F4F6, #FFFFFF);
+            border-radius: 20px;
+            padding: 0;
+            margin-bottom: 16px;
+            box-shadow: var(--card-shadow);
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .community-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(0,0,0,0.12);
+        }
+
+        .community-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+
+        .community-content {
+            padding: 20px;
+        }
+
+        .community-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .community-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        .community-category {
+            display: inline-block;
+            padding: 6px 12px;
+            background: rgba(74, 144, 226, 0.1);
+            color: var(--primary-color);
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .community-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-top: 12px;
+            font-size: 14px;
+            color: var(--text-light);
+        }
+
+        .community-detail {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .community-detail i {
+            color: var(--primary-color);
+            font-size: 16px;
+        }
+
+        /* Diagnosis styles */
+        .diagnosis-header {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--white);
+            border-radius: 20px;
+            margin-bottom: 24px;
+        }
+
+        .diagnosis-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .diagnosis-subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        /* Result card */
+        .result-card {
+            background: linear-gradient(135deg, #F0FDF4, #DCFCE7);
+            border-radius: 20px;
+            padding: 32px;
+            text-align: center;
+            margin-bottom: 24px;
+            border: 2px solid #86EFAC;
+        }
+
+        .result-card.warning {
+            background: linear-gradient(135deg, #FEF3C7, #FDE68A);
+            border-color: #FCD34D;
+        }
+
+        .result-card.danger {
+            background: linear-gradient(135deg, #FEE2E2, #FECACA);
+            border-color: #FCA5A5;
+        }
+
+        .result-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 40px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .result-icon.good {
+            color: var(--success-color);
+        }
+
+        .result-icon.warning {
+            color: var(--warning-color);
+        }
+
+        .result-icon.danger {
+            color: var(--danger-color);
+        }
+
+        .result-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        .result-description {
+            font-size: 16px;
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        /* Exercise card */
+        .exercise-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 16px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .exercise-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(0,0,0,0.12);
+        }
+
+        .exercise-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 40px;
+            color: var(--white);
+        }
+
+        .exercise-title {
+            text-align: center;
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        .exercise-description {
+            text-align: center;
+            font-size: 14px;
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        /* Finished screen */
+        .finished-container {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .finished-icon {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--success-color), #059669);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            font-size: 60px;
+            color: var(--white);
+            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3);
+        }
+
+        .finished-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 12px;
+        }
+
+        .finished-message {
+            font-size: 16px;
+            color: var(--text-light);
+            line-height: 1.6;
+            margin-bottom: 32px;
+        }
+
+        /* Time restriction notice */
+        .time-restriction {
+            background: var(--gray-color);
+            color: var(--white);
+            padding: 16px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        /* Animation classes */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .slide-up {
+            animation: slideUp 0.4s ease;
+        }
+
+        /* Loading spinner */
+        .spinner {
+            border: 3px solid var(--border-color);
+            border-top: 3px solid var(--primary-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 430px) {
+            .app-container {
+                max-width: 100%;
+            }
+            
+            .nav-bar {
+                max-width: 100%;
+            }
+        }
+
+        /* Touch feedback */
+        .touchable {
+            -webkit-tap-highlight-color: rgba(74, 144, 226, 0.1);
+            touch-action: manipulation;
+        }
+
+        /* Manager section styles */
+        .manager-card {
+            background: linear-gradient(135deg, #EDE9FE, #DDD6FE);
+            border: 2px solid #A78BFA;
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .manager-icon {
+            font-size: 48px;
+            color: #7C3AED;
+            margin-bottom: 16px;
+        }
+
+        .manager-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        .manager-description {
+            font-size: 14px;
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Login Page -->
+        <div id="page-login" class="page active">
+            <div class="header">
+                <img src="https://static.wixstatic.com/media/07cdbc_82a0984731614afdb20bb2b581c55d5d~mv2_d_3000_2000_s_2.jpg" 
+                     alt="FUN・A・ROOM" class="header-image">
+                <div class="header-content">
+                    <h1 class="header-title">FUN・A・ROOM</h1>
+                    <p class="header-subtitle">健康チェックからはじまる、地域のつながり</p>
+                </div>
+            </div>
+            
+            <div class="content">
+                <div class="card">
+                    <h2 style="text-align: center; margin-bottom: 32px; font-size: 24px;">ログイン</h2>
+                    
+                    <form id="login-form">
+                        <div class="form-group">
+                            <label class="form-label">メールアドレス</label>
+                            <input type="email" class="form-input" placeholder="example@email.com" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">パスワード</label>
+                            <input type="password" class="form-input" placeholder="••••••••" required>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-sign-in-alt"></i>
+                            ログインする
+                        </button>
+                    </form>
+                    
+                    <div style="text-align: center; margin: 24px 0;">
+                        <span style="color: var(--text-light); font-size: 14px;">または</span>
+                    </div>
+                    
+                    <button class="btn btn-google" onclick="loginWithGoogle()">
+                        <i class="fab fa-google"></i>
+                        Googleアカウントでログイン
+                    </button>
+                    
+                    <button class="btn btn-apple" onclick="loginWithApple()">
+                        <i class="fab fa-apple"></i>
+                        Appleアカウントでログイン
+                    </button>
+                    
+                    <div style="text-align: center; margin-top: 24px;">
+                        <a href="#" onclick="showPage('signup')" style="color: var(--primary-color); text-decoration: none;">
+                            新規登録はこちら
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sign Up Page -->
+        <div id="page-signup" class="page">
+            <div class="header header-small">
+                <h1 class="header-title">新規登録</h1>
+                <p class="header-subtitle">アカウントを作成</p>
+            </div>
+            
+            <div class="content">
+                <div class="card">
+                    <form id="signup-form">
+                        <div class="form-group">
+                            <label class="form-label">お名前</label>
+                            <input type="text" class="form-input" placeholder="山田 太郎" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">メールアドレス</label>
+                            <input type="email" class="form-input" placeholder="example@email.com" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">パスワード</label>
+                            <input type="password" class="form-input" placeholder="8文字以上" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">パスワード（確認）</label>
+                            <input type="password" class="form-input" placeholder="もう一度入力" required>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-user-plus"></i>
+                            登録する
+                        </button>
+                    </form>
+                    
+                    <div style="text-align: center; margin-top: 24px;">
+                        <a href="#" onclick="showPage('login')" style="color: var(--primary-color); text-decoration: none;">
+                            すでにアカウントをお持ちの方
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Home Page -->
+        <div id="page-home" class="page">
+            <div class="header">
+                <img src="https://stat.ameba.jp/user_images/20140720/09/funaroom/8e/09/j/o0800045013008387592.jpg" 
+                     alt="FUN・A・ROOM" class="header-image">
+                <div class="header-content">
+                    <h1 class="header-title">こんにちは！</h1>
+                    <p class="header-subtitle">今日も元気に過ごしましょう</p>
+                </div>
+            </div>
+            
+            <div class="content">
+                <h2 style="font-size: 20px; font-weight: 600; margin-bottom: 16px;">今日のタスク</h2>
+                
+                <div class="activity-card" onclick="checkTimeAndShowHealthCheck()">
+                    <div class="activity-icon" style="background: linear-gradient(135deg, #4A90E2, #5CA0F2);">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <div class="activity-info">
+                        <div class="activity-title">健康チェック</div>
+                        <div class="activity-detail">今日の体調を記録しましょう</div>
+                    </div>
+                    <div class="activity-arrow">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+                
+                <div id="health-time-notice" class="time-restriction" style="display: none;">
+                    <i class="fas fa-clock"></i>
+                    ※18:00以降から記録できます
+                </div>
+                
+                <div class="activity-card" onclick="showPage('activitylist')">
+                    <div class="activity-icon" style="background: linear-gradient(135deg, #10B981, #059669);">
+                        <i class="fas fa-running"></i>
+                    </div>
+                    <div class="activity-info">
+                        <div class="activity-title">かんたん運動</div>
+                        <div class="activity-detail">体を動かしてリフレッシュ</div>
+                    </div>
+                    <div class="activity-arrow">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+                
+                <h2 style="font-size: 20px; font-weight: 600; margin: 32px 0 16px;">あなたにおすすめの部活</h2>
+                
+                <div class="community-card" onclick="showPage('communitydetail')">
+                    <img src="https://static.wixstatic.com/media/07cdbc_ffa8f4d3caa343ad96d08d1e33a3d943~mv2.jpg" 
+                         alt="朝の健康ウォーキング部" class="community-image">
+                    <div class="community-content">
+                        <div class="community-header">
+                            <div>
+                                <div class="community-title">朝の健康ウォーキング部</div>
+                                <div class="community-category">運動系</div>
+                            </div>
+                        </div>
+                        <div class="community-details">
+                            <div class="community-detail">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>日向市中央公園</span>
+                            </div>
+                            <div class="community-detail">
+                                <i class="fas fa-users"></i>
+                                <span>12名</span>
+                            </div>
+                            <div class="community-detail">
+                                <i class="fas fa-clock"></i>
+                                <span>火・木 7:00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="btn btn-secondary" onclick="showPage('communitylist')">
+                    <i class="fas fa-search"></i>
+                    もっと部活を探す
+                </button>
+                
+                <div style="margin-top: 32px; padding: 20px; background: linear-gradient(135deg, #EDE9FE, #DDD6FE); border-radius: 16px;">
+                    <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 8px; color: #7C3AED;">
+                        <i class="fas fa-magic"></i> まだ部活が決まっていませんか？
+                    </h3>
+                    <p style="font-size: 14px; color: var(--text-light); margin-bottom: 16px;">
+                        8つの質問に答えるだけで、あなたにぴったりの部活動を診断します
+                    </p>
+                    <button class="btn btn-primary" onclick="showPage('diagnosis1')" style="background: linear-gradient(135deg, #7C3AED, #6D28D9);">
+                        <i class="fas fa-clipboard-check"></i>
+                        コミュニティ診断を始める
+                    </button>
+                </div>
+                
+                <div style="margin-top: 24px; padding: 16px; background: linear-gradient(135deg, #FEF3C7, #FDE68A); border-radius: 16px; border: 1px solid #FCD34D;">
+                    <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 8px; color: #92400E;">
+                        <i class="fas fa-crown"></i> コミュニティリーダーの方へ
+                    </h3>
+                    <p style="font-size: 14px; color: #78350F; margin-bottom: 12px;">
+                        部活動の管理・運営ツールをご利用いただけます
+                    </p>
+                    <button class="btn btn-secondary" onclick="showPage('communitymanager')" style="padding: 12px;">
+                        <i class="fas fa-user-cog"></i>
+                        管理画面へ
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Health Check Page -->
+        <div id="page-healthcheck" class="page">
+            <div class="header header-small">
+                <h1 class="header-title">健康チェック</h1>
+                <p class="header-subtitle">今日の体調を記録</p>
+            </div>
+            
+            <div class="content">
+                <div class="card">
+                    <h3 style="text-align: center; font-size: 20px; margin-bottom: 16px;">
+                        <i class="fas fa-clipboard-check" style="color: var(--primary-color);"></i>
+                        今日の問診
+                    </h3>
+                    <p style="text-align: center; color: var(--text-light); margin-bottom: 24px;">
+                        簡単3つの質問<br>
+                        体調を記録しましょう
+                    </p>
+                    
+                    <button class="btn btn-primary" onclick="showPage('daily1')">
+                        問診を始める
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Daily Answer 1 -->
+        <div id="page-daily1" class="page">
+            <div class="header header-small">
+                <h1 class="header-title">毎日の問診</h1>
+                <p class="header-subtitle">質問 1 / 3</p>
+            </div>
+            
+            <div class="content">
+                <div class="card">
+                    <div class="progress-container">
+                        <div class="progress-bar" style="width: 33.33%;"></div>
+                    </div>
+                    
+                    <div class="question-text">
+                        今日の体調は<br>いかがですか？
+                    </div>
+                    
+                    <div id="daily1-options">
+                        <div class="health-option" onclick="selectDailyOption(this, 'とても良い')">
+                            😊 とても良い
+                        </div>
+                        <div class="health-option" onclick="selectDailyOption(this, '良い')">
+                            🙂 良い
+                        </div>
+                        <div class="health-option" onclick="selectDailyOption(this, '普通')">
+                            😐 普通
+                        </div>
+                        <div class="health-option" onclick="selectDailyOption(this, '悪い')">
+                            😔 悪い
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-primary" onclick="showPage('daily2')" style="margin-top: 24px;">
+                        次へ
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Daily Answer 2 -->
+        <div id="page-daily2" class="page">
+            <div class="header header-small">
+                <h1 class="header-title">毎日の問診</h1>
+                <p class="header-subtitle">質問 2 / 3</p>
+            </div>
+            
+            <div class="content">
+                <div class="card">
+                    <div class="progress-container">
+                        <div class="progress-bar" style="width: 66.66%;"></div>
+                    </div>
+                    
+                    <div class="question-text">
+                        昨夜はよく<br>眠れましたか？
+                    </div>
+                    
+                    <div id="daily2-options">
+                        <div class="health-option" onclick="selectDailyOption(this, 'よく眠れた')">
+                            よく眠れた
+                        </div>
+                        <div class="health-option" onclick="selectDailyOption(this, 'まあまあ眠れた')">
+                            まあまあ眠れた
+                        </div>
+                        <div class="health-option" onclick="selectDailyOption(this, 'あまり眠れなかった')">
+                            あまり眠れなかった
+                        </div>
+                        <div class="health-option" onclick="selectDailyOption(this, '全く眠れなかった')">
+                            全く眠れなかった
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-primary" onclick="showPage('daily3')" style="margin-top: 24px;">
+                        次へ
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Daily Answer 3 -->
+        <div id="page-daily3" class="page">
+            <div class="header header-small">
+                <h1 class="header-title">毎日の問診</h1>
+                <p class="header-subtitle">質問 3 / 3</p>
+            </div>
+            
+            <div class="content">
+                <div class="card">
+                    <div class="progress-container">
+                        <div class="progress-bar" style="width: 100%;"></div>
+                    </div>
+                    
+                    <div class="question-text">
+                        今日の歩数は<br>どのくらいでしたか？
+                    </div>
+                    
+                    <div id="daily3-options">
+                        <div class="health-option" onclick="selectDailyOption(this, '5000歩以上')">
+                            5000歩以上
+                        </div>
+                        <div class="health-option" onclick="selectDailyOption(this, '3000〜5000歩')">
+                            3000〜5000歩
+                        </div>
+                        <div class="health-option" onclick="selectDailyOption(this, '1000〜3000歩')">
+                            1000〜3000歩
+                        </div>
+                        <div class="health-option" onclick="selectDailyOption(this, '1000歩未満')">
+                            1000歩未満
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-primary" onclick="showPage('finishedinterview')" style="margin-top: 24px;">
+                        完了
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Finished Interview -->
+        <div id="page-finishedinterview" class="page">
+            <div class="finished-container">
+                <div class="finished-icon pulse">
+                    <i class="fas fa-check"></i>
+                </div>
+                <h2 class="finished-title">お疲れ様でした！</h2>
+                <p class="finished-message">
+                    今日の健康チェックが完了しました。<br>
+                    毎日の記録が健康管理の第一歩です。<br>
+                    明日もまた記録しましょう！
+                </p>
+                
+                <button class="btn btn-primary" onclick="showPage('home')">
+                    <i class="fas fa-home"></i>
+                    ホームに戻る
+                </button>
+            </div>
+        </div>
+
+        <!-- Community List Page -->
+        <div id="page-communitylist" class="page">
+            <div class="header header-small">
+                <h1 class="header-title">部活動を探す</h1>
+                <p class="header-subtitle">あなたに合った活動を見つけよう</p>
+            </div>
+            
+            <div class="content">
+                <div style="margin-bottom: 20px; padding: 16px; background: linear-gradient(135deg, #F0F9FF, #E0F2FE); border-radius: 12px;">
+                    <p style="font-size: 14px; color: var(--text-dark); margin-bottom: 8px;">
+                        <i class="fas fa-lightbulb" style="color: #3B82F6;"></i>
+                        どの部活が自分に合うか迷っていますか？
+                    </p>
+                    <button class="btn btn-primary" onclick="showPage('diagnosis1')" style="padding: 12px; font-size: 16px;">
+                        <i class="fas fa-magic"></i>
+                        診断で最適な部活を見つける
+                    </button>
+                </div>
+                
+                <div style="display: flex; gap: 8px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 8px;">
+                    <span class="badge badge-primary">すべて</span>
+                    <span class="badge">運動系</span>
+                    <span class="badge">文化系</span>
+                    <span class="badge">交流系</span>
+                    <span class="badge">学習系</span>
+                </div>
+                
+                <div class="community-card" onclick="showPage('communitydetail')">
+                    <img src="https://static.wixstatic.com/media/07cdbc_ffa8f4d3caa343ad96d08d1e33a3d943~mv2.jpg" 
+                         alt="朝の健康ウォーキング部" class="community-image">
+                    <div class="community-content">
+                        <div class="community-header">
+                            <div>
+                                <div class="community-title">朝の健康ウォーキング部</div>
+                                <div class="community-category">運動系</div>
+                            </div>
+                        </div>
+                        <div class="community-details">
+                            <div class="community-detail">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>日向市中央公園</span>
+                            </div>
+                            <div class="community-detail">
+                                <i class="fas fa-users"></i>
+                                <span>12名</span>
+                            </div>
+                            <div class="community-detail">
+                                <i class="fas fa-clock"></i>
+                                <span>火・木 7:00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="community-card">
+                    <div class="community-content">
+                        <div class="community-header">
+                            <div>
+                                <div class="community-title">ゆったりヨガ教室</div>
+                                <div class="community-category">運動系</div>
+                            </div>
+                        </div>
+                        <div class="community-details">
+                            <div class="community-detail">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>日向市総合体育館</span>
+                            </div>
+                            <div class="community-detail">
+                                <i class="fas fa-users"></i>
+                                <span>8名</span>
+                            </div>
+                            <div class="community-detail">
+                                <i class="fas fa-clock"></i>
+                                <span>月・金 10:00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="community-card">
+                    <div class="community-content">
+                        <div class="community-header">
+                            <div>
+                                <div class="community-title">絵手紙サークル</div>
+                                <div class="community-category">文化系</div>
+                            </div>
+                        </div>
+                        <div class="community-details">
+                            <div class="community-detail">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>日向市公民館</span>
+                            </div>
+                            <div class="community-detail">
+                                <i class="fas fa-users"></i>
+                                <span>15名</span>
+                            </div>
+                            <div class="community-detail">
+                                <i class="fas fa-clock"></i>
+                                <span>水 14:00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 32px; padding: 16px; background: #F9FAFB; border-radius: 12px; border: 1px solid var(--border-color); text-align: center;">
+                    <p style="font-size: 14px; color: var(--text-dark); font-weight: 600; margin-bottom: 8px;">
+                        <i class="fas fa-star"></i> コミュニティを運営されている方へ
+                    </p>
+                    <p style="font-size: 12px; color: var(--text-light); margin-bottom: 12px;">
+                        リーダー専用の管理ツールをご用意しています
+                    </p>
+                    <button class="btn btn-secondary" onclick="showPage('communitymanager')" style="padding: 10px; font-size: 14px;">
+                        <i class="fas fa-user-cog"></i>
+                        管理画面を見る
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Community Detail Page -->
+        <div id="page-communitydetail" class="page">
+            <div class="header header-small">
+                <h1 class="header-title">朝の健康ウォーキング部</h1>
+                <p class="header-subtitle">運動系・やさしいレベル</p>
+            </div>
+            
+            <div class="content">
+                <img src="https://static.wixstatic.com/media/07cdbc_82a0984731614afdb20bb2b581c55d5d~mv2_d_3000_2000_s_2.jpg" 
+                     alt="朝の健康ウォーキング" 
+                     style="width: 100%; height: 200px; object-fit: cover; border-radius: 16px; margin-bottom: 20px;">
+                
+                <div class="card">
+                    <h3 style="font-size: 20px; font-weight: 600; margin-bottom: 16px;">活動内容</h3>
+                    <p style="line-height: 1.8; color: var(--text-light);">
+                        朝の爽やかな空気の中、公園を約1時間ゆっくり歩きます。
+                        無理のないペースで、おしゃべりしながら楽しく歩きましょう。
+                        初心者の方も大歓迎です。運動不足の解消や、朝の習慣づくりに最適です。
+                    </p>
+                </div>
+                
+                <div class="card">
+                    <h3 style="font-size: 20px; font-weight: 600; margin-bottom: 16px;">詳細情報</h3>
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <i class="fas fa-map-marker-alt" style="color: var(--primary-color); width: 20px;"></i>
+                            <span>日向市中央公園</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <i class="fas fa-clock" style="color: var(--primary-color); width: 20px;"></i>
+                            <span>毎週火・木曜日 朝7:00〜8:00</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <i class="fas fa-users" style="color: var(--primary-color); width: 20px;"></i>
+                            <span>現在12名が参加中</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <i class="fas fa-yen-sign" style="color: var(--primary-color); width: 20px;"></i>
+                            <span>参加費：無料</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3 style="font-size: 20px; font-weight: 600; margin-bottom: 16px;">リーダーから一言</h3>
+                    <p style="line-height: 1.8; color: var(--text-light);">
+                        みんなで楽しく歩きましょう！無理せず、それぞれのペースで大丈夫です。
+                        歩いた後のお茶会も楽しみの一つです。
+                    </p>
+                </div>
+                
+                <button class="btn btn-primary pulse">
+                    <i class="fas fa-user-plus"></i>
+                    参加を申し込む
+                </button>
+                
+                <button class="btn btn-secondary" onclick="showPage('communitylist')">
+                    <i class="fas fa-arrow-left"></i>
+                    一覧に戻る
+                </button>
+                
+                <div style="margin-top: 24px; padding: 12px; background: #F3F4F6; border-radius: 12px; text-align: center;">
+                    <p style="font-size: 12px; color: var(--text-light); margin-bottom: 8px;">
+                        このコミュニティのリーダーですか？
+                    </p>
+                    <button class="btn btn-secondary" onclick="showPage('communitymanager')" style="padding: 10px; font-size: 14px;">
+                        <i class="fas fa-lock"></i>
+                        管理画面にログイン
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Activity List Page -->
+        <div id="page-activitylist" class="page">
+            <div class="header header-small">
+                <h1 class="header-title">かんたん運動</h1>
+                <p class="header-subtitle">今日の運動を選びましょう</p>
+            </div>
+            
+            <div class="content">
+                <div class="exercise-card" onclick="showPage('step')">
+                    <div class="exercise-icon" style="background: linear-gradient(135deg, #3B82F6, #1D4ED8);">
+                        <i class="fas fa-walking"></i>
+                    </div>
+                    <div class="exercise-title">足踏み運動</div>
+                    <div class="exercise-description">
+                        その場で3分間足踏み<br>
+                        血行を良くして体を温めます
+                    </div>
+                </div>
+                
+                <div class="exercise-card" onclick="showPage('radiostretch')">
+                    <div class="exercise-icon" style="background: linear-gradient(135deg, #8B5CF6, #7C3AED);">
+                        <i class="fas fa-music"></i>
+                    </div>
+                    <div class="exercise-title">ラジオ体操</div>
+                    <div class="exercise-description">
+                        おなじみのラジオ体操第一<br>
+                        全身をバランスよく動かします
+                    </div>
+                </div>
+                
+                <div class="exercise-card" onclick="showPage('easystretch')">
+                    <div class="exercise-icon" style="background: linear-gradient(135deg, #10B981, #059669);">
+                        <i class="fas fa-child"></i>
+                    </div>
+                    <div class="exercise-title">かんたんストレッチ</div>
+                    <div class="exercise-description">
+                        座ったままでもできる<br>
+                        優しいストレッチ運動
+                    </div>
+                </div>
+                
+                <div class="exercise-card" onclick="showPage('deepbreathe')">
+                    <div class="exercise-icon" style="background: linear-gradient(135deg, #06B6D4, #0891B2);">
+                        <i class="fas fa-wind"></i>
+                    </div>
+                    <div class="exercise-title">深呼吸エクササイズ</div>
+                    <div class="exercise-description">
+                        ゆっくり深い呼吸で<br>
+                        心身をリラックス
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step Exercise Page -->
+        <div id="page-step" class="page">
+            <div class="header header-small">
+                <h1 class="header-title">足踏み運動</h1>
+                <p class="header-subtitle">3分間チャレンジ</p>
+            </div>
+            
+            <div class="content">
+                <div class="card" style="text-align: center;">
+                    <div style="font-size: 120px; margin: 40px 0;">
+                        <i class="fas fa-walking" style="color: var(--primary-color);"></i>
+                    </div>
+                    
+                    <h2 style="font-size: 48px; font-weight: 700; color: var(--text-dark); margin-bottom: 8px;">
+                        <span id="step-timer">0:00</span>
+                    </h2>
+                    
+                    <p style="font-size: 18px; color: var(--text-light); margin-bottom: 32px;">
+                        目標：3分間
+                    </p>
+                    
+                    <button id="step-start" class="btn btn-success" onclick="startStepExercise()">
+                        <i class="fas fa-play"></i>
+                        スタート
+                    </button>
+                    
+                    <button id="step-stop" class="btn btn-secondary" onclick="stopStepExercise()" style="display: none;">
+                        <i class="fas fa-stop"></i>
+                        終了する
+                    </button>
+                </div>
+                
+                <div class="card">
+                    <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 12px;">やり方</h3>
+                    <ol style="padding-left: 20px; line-height: 1.8; color: var(--text-light);">
+                        <li>背筋を伸ばして立ちます</li>
+                        <li>その場で足踏みをします</li>
+                        <li>膝は軽く上げる程度でOK</li>
+                        <li>腕も自然に振りましょう</li>
+                        <li>無理のないペースで続けます</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- Other Exercise Pages (Radio Stretch, Easy Stretch, Deep Breathe) -->
+        <div id="page-radiostretch" class="page">
+            <div class="header header-small">
+                <h1 class="header-title">ラジオ体操</h1>
+                <p class="header-subtitle">全身運動</p>
+            </div>
+            
+            <div class="content">
+                <div class="card" style="text-align: center;">
+                    <div style="font-size: 120px; margin: 40px 0;">
+                        <i class="fas fa-music" style="color: var(--primary-color);"></i>
+                    </div>
+                    <p style="font-size: 18px; color: var(--text-light); margin-bottom: 32px;">
+                        音楽に合わせて体を動かしましょう
+                    </p>
+                    <button class="btn btn-primary" onclick="showPage('finishedactivity')">
+                        <i class="fas fa-check"></i>
+                        完了
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="page-easystretch" class="page">
+            <div class="header header-small">
+                <h1 class="header-title">かんたんストレッチ</h1>
+                <p class="header-subtitle">ゆっくり体をほぐしましょう</p>
+            </div>
+            
+            <div class="content">
+                <div class="card" style="text-align: center;">
+                    <div style="font-size: 120px; margin: 40px 0;">
+                        <i class="fas fa-child" style="color: var(--primary-color);"></i>
+                    </div>
+                    <p style="font-size: 18px; color: var(--text-light); margin-bottom: 32px;">
+                        無理のない範囲で体を伸ばしましょう
+                    </p>
+                    <button class="btn btn-primary" onclick="showPage('finishedactivity')">
+                        <i class="fas fa-check"></i>
+                        完了
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="page-deepbreathe" class="page">
+            <div class="header header-small">
+                <h1 class="header-title">深呼吸エクササイズ</h1>
+                <p class="header-subtitle">心を落ち着かせましょう</p>
+            </div>
+            
+            <div class="content">
+                <div class="card" style="text-align: center;">
+                    <div style="font-size: 120px; margin: 40px 0;">
+                        <i class="fas fa-wind" style="color: var(--primary-color);"></i>
+                    </div>
+                    <p style="font-size: 18px; color: var(--text-light); margin-bottom: 32px;">
+                        ゆっくり深く呼吸しましょう
+                    </p>
+                    <button class="btn btn-primary" onclick="showPage('finishedactivity')">
+                        <i class="fas fa-check"></i>
+                        完了
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Finished Activity -->
+        <div id="page-finishedactivity" class="page">
+            <div class="finished-container">
+                <div class="finished-icon pulse">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <h2 class="finished-title">素晴らしい！</h2>
+                <p class="finished-message">
+                    今日の運動が完了しました。<br>
+                    体を動かすことは健康への第一歩です。<br>
+                    明日も続けましょう！
+                </p>
+                
+                <button class="btn btn-primary" onclick="showPage('home')">
+                    <i class="fas fa-home"></i>
+                    ホームに戻る
+                </button>
+                
+                <button class="btn btn-secondary" onclick="showPage('activitylist')">
+                    <i class="fas fa-redo"></i>
+                    他の運動を試す
+                </button>
+            </div>
+        </div>
+
+        <!-- Diagnosis Pages -->
+        <div id="page-diagnosis1" class="page">
+            <div class="diagnosis-header">
+                <div class="diagnosis-title">コミュニティ診断</div>
+                <div class="diagnosis-subtitle">あなたに合った活動を見つけます</div>
+            </div>
+            
+            <div class="content">
+                <div class="card">
+                    <div class="question-counter">質問 1 / 8</div>
+                    <div class="progress-container">
+                        <div class="progress-bar" style="width: 12.5%;"></div>
+                    </div>
+                    
+                    <div class="question-text">
+                        どんな活動が<br>お好きですか？
+                    </div>
+                    
+                    <div>
+                        <div class="health-option" onclick="selectDiagnosisOption(this, '体を動かすこと')">
+                            体を動かすこと
+                        </div>
+                        <div class="health-option" onclick="selectDiagnosisOption(this, '創作活動')">
+                            創作活動
+                        </div>
+                        <div class="health-option" onclick="selectDiagnosisOption(this, 'おしゃべり')">
+                            おしゃべり
+                        </div>
+                        <div class="health-option" onclick="selectDiagnosisOption(this, '学ぶこと')">
+                            学ぶこと
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; gap: 12px; margin-top: 24px;">
+                        <button class="btn btn-secondary" onclick="showPage('home')">
+                            <i class="fas fa-times"></i> キャンセル
+                        </button>
+                        <button class="btn btn-primary" onclick="nextDiagnosis(2)">
+                            次へ
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Diagnosis 2-8 Pages -->
+        <div id="page-diagnosis2" class="page">
+            <div class="diagnosis-header">
+                <div class="diagnosis-title">コミュニティ診断</div>
+                <div class="diagnosis-subtitle">あなたに合った活動を見つけます</div>
+            </div>
+            
+            <div class="content">
+                <div class="card">
+                    <div class="question-counter">質問 2 / 8</div>
+                    <div class="progress-container">
+                        <div class="progress-bar" style="width: 25%;"></div>
+                    </div>
+                    
+                    <div class="question-text">
+                        活動する時間帯は<br>いつが良いですか？
+                    </div>
+                    
+                    <div>
+                        <div class="health-option" onclick="selectDiagnosisOption(this, '朝（6-9時）')">
+                            朝（6-9時）
+                        </div>
+                        <div class="health-option" onclick="selectDiagnosisOption(this, '午前（9-12時）')">
+                            午前（9-12時）
+                        </div>
+                        <div class="health-option" onclick="selectDiagnosisOption(this, '午後（12-17時）')">
+                            午後（12-17時）
+                        </div>
+                        <div class="health-option" onclick="selectDiagnosisOption(this, 'いつでも大丈夫')">
+                            いつでも大丈夫
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; gap: 12px; margin-top: 24px;">
+                        <button class="btn btn-secondary" onclick="showPage('diagnosis1')">
+                            <i class="fas fa-arrow-left"></i> 戻る
+                        </button>
+                        <button class="btn btn-primary" onclick="nextDiagnosis(3)">
+                            次へ
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="page-diagnosis3" class="page">
+            <div class="diagnosis-header">
+                <div class="diagnosis-title">コミュニティ診断</div>
+                <div class="diagnosis-subtitle">あなたに合った活動を見つけます</div>
+            </div>
+            
+            <div class="content">
+                <div class="card">
+                    <div class="question-counter">質問 3 / 8</div>
+                    <div class="progress-container">
+                        <div class="progress-bar" style="width: 37.5%;"></div>
+                    </div>
+                    
+                    <div class="question-text">
+                        グループの人数は<br>どのくらいが理想？
+                    </div>
+                    
+                    <div>
+                        <div class="health-option" onclick="selectDiagnosisOption(this, '少人数（5人以下）')">
+                            少人数（5人以下）
+                        </div>
+                        <div class="health-option" onclick="selectDiagnosisOption(this, '中人数（6-10人）')">
+                            中人数（6-10人）
+                        </div>
+                        <div class="health-option" onclick="selectDiagnosisOption(this, '大人数（11人以上）')">
+                            大人数（11人以上）
+                        </div>
+                        <div class="health-option" onclick="selectDiagnosisOption(this, 'こだわらない')">
+                            こだわらない
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; gap: 12px; margin-top: 24px;">
+                        <button class="btn btn-secondary" onclick="showPage('diagnosis2')">
+                            <i class="fas fa-arrow-left"></i> 戻る
+                        </button>
+                        <button class="btn btn-primary" onclick="nextDiagnosis(4)">
+                            次へ
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="page-diagnosis4" class="page">
+            <div class="diagnosis-header">
+                <div class="diagnosis-title">コミュニティ診断</div>
+                <div class="diagnosis-subtitle">あなたに合った活動を見つけます</div>
+            </div>
+            
+            <div class="content">
+                <div class="card">
+                    <div class="question-counter">質問 4 / 8</div>
+                    <div class="progress-container">
+                        <div class="progress-bar" style="width: 50%;"></div>
+                    </div>
+                    
+                    <div class="question-text">
+                        体力に自信は<br>ありますか？
+                    </div>
+                    
+                    <div>
+                        <div class="health-option" onclick="selectDiagnosisOption(this, 'とても自信がある')">
+                            とても自信がある
+                        </div>
+                        <div class="health-option" onclick="selectDiagnosisOption(this, 'まあまあ自信がある')">
+                            まあまあ自信がある
+                        </div>
+                        <div class="health-option" onclick="selectDiagnosisOption(this, 'あまり自信がない')">
+                            あまり自信がない
+                        </div>
+                        <div class="health-option" onclick="selectDiagnosisOption(this, '全く自信がない')">
+                            全く自信がない
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; gap: 12px; margin-top: 24px;">
+                        <button class="btn btn-secondary" onclick="showPage('diagnosis3')">
+                            <i class="fas fa-arrow-left"></i> 戻る
+                        </button>
+                        <button class="btn btn-primary" onclick="nextDiagnosis(5)">
+                            次へ
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="page-diagnosis5" class="page">
+            <div class="diagnosis-header">
+                <div class="diagnosis-title">コミュニティ診断</div>
+                <div class="diagnosis-subtitle">あなたに合った活動を見つけます</div>
+            </div>
+            
+            <div class="content">
+                <div class="card">
+                    <div class="question-counter">質問 5 / 8</div>
+                    <div class="progress-container">
+                        <div class="progress-bar" style="width: 62.5%;"></div>
+                    </div>
+                    
+                    <div class="question-text">
+                        新しいことを学ぶのは<br>好きですか？
+                    </div>
+                    
+                    <div>
+                        <div class="health-option" onclick="selectDiagnosisOption(this, 'とても好き')">
+                            とても好き
+                        </div>
+                        <div class="health-option" onclick="selectDiagnosisOption(this, '好き')">
+                            好き
+                        </div>
+                        <div class="health-option" onclick="selectDiagnosisOption(this, 'どちらでもない')">
+                            どちらでもない
+                        </div>
+                        <div class="health-option" onclick="selectDiagnosisOption(this, '苦手')">
+                            苦手
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; gap: 12px; margin-top: 24px;">
+                        <button class="btn btn-secondary" onclick="showPage('diagnosis4')">
+                            <i class="fas fa-arrow-left"></i> 戻る
+                        </button>
+                        <button class="btn btn-primary" onclick="nextDiagnosis(6)">
+                            次へ
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="page-diagnosis6" class="page">
+            <div class="diagnosis-header">
+                <div class="diagnosis-title">コミュニティ診断</div>
+                <div class="diagnosis-subtitle">あなたに合った活動を見つけます</div>
+            </div>
+            
+            <div class="content">
+                <div class="card">
+                    <div class="question-counter">質問 6 / 8</div>
+                    <div class="progress-container">
+                        <div class="progress-bar" style="width: 75%;"></div>
+                    </div>
+                    
+                    <div class="question-text">
+                        屋内と屋外<br>どちらが好き？
+                    </div>
+                    
+                    <div>
+                        <div class="health-option" onclick="selectDiagnosisOption(this, '屋外が好き')">
+                            屋外が好き
+                        </div>
+                        <div class="health-option" onclick="selectDiagnosisOption(this, 'どちらかといえば屋外')">
+                            どちらかといえば屋外
+                        </div>
+                        <div class="health-option" onclick="selectDiagnosisOption(this, 'どちらかといえば屋内')">
+                            どちらかといえば屋内
+                        </div>
+                        <div class="health-option" onclick="selectDiagnosisOption(this, '屋内が好き')">
+                            屋内が好き
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; gap: 12px; margin-top: 24px;">
+                        <button class="btn btn-secondary" onclick="showPage('diagnosis5')">
+                            <i class="fas fa-arrow-left"></i> 戻る
+                        </button>
+                        <button class="btn btn-primary" onclick="nextDiagnosis(7)">
+                            次へ
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="page-diagnosis7" class="page">
+            <div class="diagnosis-header">
+                <div class="diagnosis-title">コミュニティ診断</div>
+                <div class="diagnosis-subtitle">あなたに合った活動を見つけます</div>
+            </div>
+            
+            <div class="content">
+                <div class="card">
+                    <div class="question-counter">質問 7 / 8</div>
+                    <div class="progress-container">
+                        <div class="progress-bar" style="width: 87.5%;"></div>
+                    </div>
+                    
+                    <div class="question-text">
+                        活動頻度は<br>どのくらいが良い？
+                    </div>
+                    
+                    <div>
+                        <div class="health-option" onclick="selectDiagnosisOption(this, '週3回以上')">
+                            週3回以上
+                        </div>
+                        <div class="health-option" onclick="selectDiagnosisOption(this, '週2回')">
+                            週2回
+                        </div>
+                        <div class="health-option" onclick="selectDiagnosisOption(this, '週1回')">
+                            週1回
+                        </div>
+                        <div class="health-option" onclick="selectDiagnosisOption(this, '月2-3回')">
+                            月2-3回
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; gap: 12px; margin-top: 24px;">
+                        <button class="btn btn-secondary" onclick="showPage('diagnosis6')">
+                            <i class="fas fa-arrow-left"></i> 戻る
+                        </button>
+                        <button class="btn btn-primary" onclick="nextDiagnosis(8)">
+                            次へ
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="page-diagnosis8" class="page">
+            <div class="diagnosis-header">
+                <div class="diagnosis-title">コミュニティ診断</div>
+                <div class="diagnosis-subtitle">あなたに合った活動を見つけます</div>
+            </div>
+            
+            <div class="content">
+                <div class="card">
+                    <div class="question-counter">質問 8 / 8</div>
+                    <div class="progress-container">
+                        <div class="progress-bar" style="width: 100%;"></div>
+                    </div>
+                    
+                    <div class="question-text">
+                        参加費の予算は<br>月額どのくらい？
+                    </div>
+                    
+                    <div>
+                        <div class="health-option" onclick="selectDiagnosisOption(this, '無料が良い')">
+                            無料が良い
+                        </div>
+                        <div class="health-option" onclick="selectDiagnosisOption(this, '1,000円以下')">
+                            1,000円以下
+                        </div>
+                        <div class="health-option" onclick="selectDiagnosisOption(this, '3,000円以下')">
+                            3,000円以下
+                        </div>
+                        <div class="health-option" onclick="selectDiagnosisOption(this, 'こだわらない')">
+                            こだわらない
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; gap: 12px; margin-top: 24px;">
+                        <button class="btn btn-secondary" onclick="showPage('diagnosis7')">
+                            <i class="fas fa-arrow-left"></i> 戻る
+                        </button>
+                        <button class="btn btn-primary" onclick="showDiagnosisResult()">
+                            <i class="fas fa-check"></i> 診断結果を見る
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Diagnosis Result Page -->
+        <div id="page-diagnosisresult" class="page">
+            <div class="diagnosis-header">
+                <div class="diagnosis-title">診断結果</div>
+                <div class="diagnosis-subtitle">あなたにぴったりの活動</div>
+            </div>
+            
+            <div class="content">
+                <div class="result-card">
+                    <div class="result-icon good">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="result-title">アクティブ派</div>
+                    <div class="result-description">
+                        体を動かすことが好きなあなたには<br>
+                        運動系の部活動がおすすめです
+                    </div>
+                </div>
+                
+                <h3 style="font-size: 20px; font-weight: 600; margin: 24px 0 16px;">おすすめの部活動</h3>
+                
+                <div class="community-card" onclick="showPage('communitydetail')">
+                    <img src="https://static.wixstatic.com/media/07cdbc_ffa8f4d3caa343ad96d08d1e33a3d943~mv2.jpg" 
+                         alt="朝の健康ウォーキング部" class="community-image">
+                    <div class="community-content">
+                        <div class="community-header">
+                            <div>
+                                <div class="community-title">朝の健康ウォーキング部</div>
+                                <div class="badge badge-success">マッチ度 95%</div>
+                            </div>
+                        </div>
+                        <div class="community-details">
+                            <div class="community-detail">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>日向市中央公園</span>
+                            </div>
+                            <div class="community-detail">
+                                <i class="fas fa-users"></i>
+                                <span>12名</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary" onclick="showPage('communitylist')">
+                    <i class="fas fa-search"></i>
+                    他の部活も見る
+                </button>
+                
+                <button class="btn btn-secondary" onclick="showPage('home')">
+                    <i class="fas fa-home"></i>
+                    ホームに戻る
+                </button>
+            </div>
+        </div>
+
+        <!-- Community Manager Page -->
+        <div id="page-communitymanager" class="page">
+            <div class="header header-small">
+                <h1 class="header-title">コミュニティ管理</h1>
+                <p class="header-subtitle">リーダー専用ページ</p>
+            </div>
+            
+            <div class="content">
+                <div class="manager-card">
+                    <div class="manager-icon">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    <div class="manager-title">管理者ダッシュボード</div>
+                    <div class="manager-description">
+                        朝の健康ウォーキング部の管理画面
+                    </div>
+                </div>
+                
+                <div class="card" style="background: linear-gradient(135deg, #F0FDF4, #DCFCE7); border: 1px solid #86EFAC;">
+                    <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 16px; color: #166534;">
+                        <i class="fas fa-chart-line"></i> 活動状況
+                    </h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                        <div style="text-align: center;">
+                            <div style="font-size: 32px; font-weight: 700; color: var(--success-color);">12</div>
+                            <div style="font-size: 14px; color: var(--text-light);">登録メンバー</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 32px; font-weight: 700; color: var(--primary-color);">8</div>
+                            <div style="font-size: 14px; color: var(--text-light);">今週の参加者</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 16px;">
+                        <i class="fas fa-tools"></i> 管理メニュー
+                    </h3>
+                    
+                    <div class="activity-card" onclick="alert('メンバー管理機能は準備中です')">
+                        <div class="activity-icon" style="background: linear-gradient(135deg, #3B82F6, #1D4ED8); width: 48px; height: 48px;">
+                            <i class="fas fa-users" style="font-size: 24px;"></i>
+                        </div>
+                        <div class="activity-info">
+                            <div class="activity-title" style="font-size: 16px;">メンバー管理</div>
+                            <div class="activity-detail" style="font-size: 12px;">参加者の確認・承認</div>
+                        </div>
+                        <div class="activity-arrow">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-card" onclick="alert('イベント作成機能は準備中です')">
+                        <div class="activity-icon" style="background: linear-gradient(135deg, #10B981, #059669); width: 48px; height: 48px;">
+                            <i class="fas fa-calendar-plus" style="font-size: 24px;"></i>
+                        </div>
+                        <div class="activity-info">
+                            <div class="activity-title" style="font-size: 16px;">イベント作成</div>
+                            <div class="activity-detail" style="font-size: 12px;">活動予定の登録</div>
+                        </div>
+                        <div class="activity-arrow">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-card" onclick="alert('出欠管理機能は準備中です')">
+                        <div class="activity-icon" style="background: linear-gradient(135deg, #F59E0B, #D97706); width: 48px; height: 48px;">
+                            <i class="fas fa-clipboard-check" style="font-size: 24px;"></i>
+                        </div>
+                        <div class="activity-info">
+                            <div class="activity-title" style="font-size: 16px;">出欠管理</div>
+                            <div class="activity-detail" style="font-size: 12px;">参加状況の確認</div>
+                        </div>
+                        <div class="activity-arrow">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-card" onclick="alert('レポート作成機能は準備中です')">
+                        <div class="activity-icon" style="background: linear-gradient(135deg, #8B5CF6, #7C3AED); width: 48px; height: 48px;">
+                            <i class="fas fa-file-alt" style="font-size: 24px;"></i>
+                        </div>
+                        <div class="activity-info">
+                            <div class="activity-title" style="font-size: 16px;">活動レポート</div>
+                            <div class="activity-detail" style="font-size: 12px;">活動記録の作成</div>
+                        </div>
+                        <div class="activity-arrow">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-card" onclick="alert('写真アップロード機能は準備中です')">
+                        <div class="activity-icon" style="background: linear-gradient(135deg, #EC4899, #DB2777); width: 48px; height: 48px;">
+                            <i class="fas fa-camera" style="font-size: 24px;"></i>
+                        </div>
+                        <div class="activity-info">
+                            <div class="activity-title" style="font-size: 16px;">写真管理</div>
+                            <div class="activity-detail" style="font-size: 12px;">活動写真のアップロード</div>
+                        </div>
+                        <div class="activity-arrow">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card" style="background: #FEF3C7; border: 1px solid #FCD34D;">
+                    <p style="font-size: 14px; color: #78350F; text-align: center;">
+                        <i class="fas fa-info-circle"></i>
+                        管理機能は認証されたリーダーのみ利用可能です
+                    </p>
+                </div>
+                
+                <button class="btn btn-secondary" onclick="showPage('home')">
+                    <i class="fas fa-arrow-left"></i>
+                    ホームに戻る
+                </button>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <nav class="nav-bar">
+            <button class="nav-item active" onclick="navigateTo('home')">
+                <i class="fas fa-home"></i>
+                <span>ホーム</span>
+            </button>
+            <button class="nav-item" onclick="navigateTo('healthcheck')">
+                <i class="fas fa-heartbeat"></i>
+                <span>健康</span>
+            </button>
+            <button class="nav-item" onclick="navigateTo('communitylist')">
+                <i class="fas fa-users"></i>
+                <span>部活</span>
+            </button>
+            <button class="nav-item" onclick="navigateTo('activitylist')">
+                <i class="fas fa-running"></i>
+                <span>運動</span>
+            </button>
+            <button class="nav-item" onclick="navigateTo('communitymanager')">
+                <i class="fas fa-user-cog"></i>
+                <span>管理</span>
+            </button>
+        </nav>
+    </div>
+
+    <script>
+        // Current page tracking
+        let currentPage = 'login';
+        let healthStep = 1;
+        let stepTimer = null;
+        let stepSeconds = 0;
+        let interviewDone = false;
+        let diagnosisAnswers = {};
+
+        // Diagnosis navigation
+        function nextDiagnosis(nextPage) {
+            const currentElement = document.querySelector('#page-diagnosis' + (nextPage - 1) + ' .health-option.selected');
+            if (!currentElement) {
+                alert('回答を選択してください');
+                return;
+            }
+            diagnosisAnswers['q' + (nextPage - 1)] = currentElement.textContent.trim();
+            showPage('diagnosis' + nextPage);
+        }
+
+        function showDiagnosisResult() {
+            const currentElement = document.querySelector('#page-diagnosis8 .health-option.selected');
+            if (!currentElement) {
+                alert('回答を選択してください');
+                return;
+            }
+            diagnosisAnswers['q8'] = currentElement.textContent.trim();
+            
+            // 診断結果の判定ロジック（簡易版）
+            // 実際にはもっと複雑な判定が必要
+            showPage('diagnosisresult');
+        }
+
+        // Check time for health check (after 18:00)
+        function checkTimeAndShowHealthCheck() {
+            const now = new Date();
+            const currentHour = now.getHours();
+            
+            if (currentHour >= 18 || interviewDone) {
+                showPage('healthcheck');
+            } else {
+                // Show time restriction notice
+                document.getElementById('health-time-notice').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('health-time-notice').style.display = 'none';
+                }, 3000);
+            }
+        }
+
+        // Show page function
+        function showPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show selected page
+            const page = document.getElementById('page-' + pageId);
+            if (page) {
+                page.classList.add('active');
+                currentPage = pageId;
+                
+                // Update navigation if on main pages
+                updateNavigation(pageId);
+                
+                // If finished interview, mark as done
+                if (pageId === 'finishedinterview') {
+                    interviewDone = true;
+                }
+            }
+        }
+
+        // Navigation function
+        function navigateTo(pageId) {
+            showPage(pageId);
+        }
+
+        // Update navigation active state
+        function updateNavigation(pageId) {
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Map pages to nav items
+            const navMap = {
+                'home': 0,
+                'healthcheck': 1,
+                'daily1': 1,
+                'daily2': 1,
+                'daily3': 1,
+                'finishedinterview': 1,
+                'communitylist': 2,
+                'communitydetail': 2,
+                'activitylist': 3,
+                'step': 3,
+                'radiostretch': 3,
+                'easystretch': 3,
+                'deepbreathe': 3,
+                'finishedactivity': 3,
+                'communitymanager': 4,
+                'diagnosis1': 2,
+                'diagnosis2': 2,
+                'diagnosis3': 2,
+                'diagnosis4': 2,
+                'diagnosis5': 2,
+                'diagnosis6': 2,
+                'diagnosis7': 2,
+                'diagnosis8': 2,
+                'diagnosisresult': 2
+            };
+            
+            if (navMap[pageId] !== undefined) {
+                document.querySelectorAll('.nav-item')[navMap[pageId]].classList.add('active');
+            }
+        }
+
+        // Form submissions
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            showPage('home');
+        });
+
+        document.getElementById('signup-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            showPage('home');
+        });
+
+        // Social login functions
+        function loginWithGoogle() {
+            // Simulate login
+            setTimeout(() => {
+                showPage('home');
+            }, 500);
+        }
+
+        function loginWithApple() {
+            // Simulate login
+            setTimeout(() => {
+                showPage('home');
+            }, 500);
+        }
+
+        // Daily option selection
+        function selectDailyOption(element, value) {
+            // Remove previous selection
+            element.parentElement.querySelectorAll('.health-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            // Add selection to clicked element
+            element.classList.add('selected');
+        }
+
+        // Diagnosis option selection
+        function selectDiagnosisOption(element, value) {
+            // Remove previous selection
+            element.parentElement.querySelectorAll('.health-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            // Add selection to clicked element
+            element.classList.add('selected');
+        }
+
+        // Step exercise functions
+        function startStepExercise() {
+            document.getElementById('step-start').style.display = 'none';
+            document.getElementById('step-stop').style.display = 'block';
+            
+            stepSeconds = 0;
+            updateStepTimer();
+            
+            stepTimer = setInterval(() => {
+                stepSeconds++;
+                updateStepTimer();
+                
+                // Auto stop at 3 minutes
+                if (stepSeconds >= 180) {
+                    stopStepExercise();
+                    alert('3分間達成！お疲れ様でした！');
+                    showPage('finishedactivity');
+                }
+            }, 1000);
+        }
+
+        function stopStepExercise() {
+            if (stepTimer) {
+                clearInterval(stepTimer);
+                stepTimer = null;
+            }
+            
+            document.getElementById('step-start').style.display = 'block';
+            document.getElementById('step-stop').style.display = 'none';
+            
+            if (stepSeconds > 0) {
+                showPage('finishedactivity');
+            }
+        }
+
+        function updateStepTimer() {
+            const minutes = Math.floor(stepSeconds / 60);
+            const seconds = stepSeconds % 60;
+            document.getElementById('step-timer').textContent = 
+                `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        // Add touch feedback
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add touch feedback to all interactive elements
+            const touchables = document.querySelectorAll('.card, .btn, .health-option, .activity-card, .community-card, .exercise-card');
+            touchables.forEach(element => {
+                element.classList.add('touchable');
+            });
+
+            // Prevent double tap zoom
+            let lastTouchEnd = 0;
+            document.addEventListener('touchend', function(event) {
+                const now = (new Date()).getTime();
+                if (now - lastTouchEnd <= 300) {
+                    event.preventDefault();
+                }
+                lastTouchEnd = now;
+            }, false);
+        });
+    </script>
+</body>
+</html>
