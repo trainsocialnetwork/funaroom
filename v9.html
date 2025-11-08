@@ -7,7 +7,17 @@
     
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+          crossorigin=""/>
+
+    <!-- Leaflet JavaScript -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""></script>
+
     <style>
         * {
             margin: 0;
@@ -735,6 +745,78 @@
             font-size: 14px;
             color: var(--text-light);
             line-height: 1.6;
+        }
+
+        /* Map styles */
+        .map-container {
+            width: 100%;
+            height: 400px;
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .map-container-small {
+            width: 100%;
+            height: 200px;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 16px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .location-picker {
+            width: 100%;
+            height: 300px;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 12px;
+            border: 2px solid var(--border-color);
+        }
+
+        .sort-buttons {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .sort-btn {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            background: var(--white);
+            color: var(--text-dark);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .sort-btn:hover {
+            background: var(--background);
+        }
+
+        .sort-btn.active {
+            border-color: var(--primary-color);
+            background: rgba(74, 144, 226, 0.1);
+            color: var(--primary-color);
+        }
+
+        .distance-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            background: rgba(74, 144, 226, 0.1);
+            color: var(--primary-color);
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 500;
+            margin-left: 8px;
         }
     </style>
 </head>
@@ -2034,6 +2116,26 @@
                     新しいイベントを作る
                 </button>
 
+                <!-- Map View -->
+                <div class="card" style="margin-bottom: 24px;">
+                    <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 12px;">
+                        <i class="fas fa-map-marked-alt"></i> イベント地図
+                    </h3>
+                    <div id="events-map" class="map-container"></div>
+                </div>
+
+                <!-- Sort Buttons -->
+                <div class="sort-buttons">
+                    <button class="sort-btn active" onclick="sortEvents('default')">
+                        <i class="fas fa-clock"></i>
+                        新着順
+                    </button>
+                    <button class="sort-btn" onclick="sortEvents('distance')">
+                        <i class="fas fa-location-arrow"></i>
+                        距離順
+                    </button>
+                </div>
+
                 <h2 style="font-size: 20px; font-weight: 600; margin-bottom: 16px;">みんなのイベント</h2>
 
                 <div style="display: flex; gap: 8px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 8px;">
@@ -2067,6 +2169,7 @@
                             <div class="community-detail">
                                 <i class="fas fa-map-marker-alt"></i>
                                 <span>日向市音楽スタジオ</span>
+                                <span class="distance-badge" data-distance="">-</span>
                             </div>
                             <div class="community-detail">
                                 <i class="fas fa-users"></i>
@@ -2211,7 +2314,20 @@
 
                         <div class="form-group">
                             <label class="form-label">場所</label>
-                            <input type="text" class="form-input" placeholder="例：日向市中央公園" required>
+                            <input type="text" id="event-location" class="form-input" placeholder="例：日向市中央公園" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">地図上で場所を選択</label>
+                            <p style="font-size: 14px; color: var(--text-light); margin-bottom: 8px;">
+                                地図をクリックして場所を設定してください
+                            </p>
+                            <div id="location-picker-map" class="location-picker"></div>
+                            <input type="hidden" id="event-lat" name="latitude">
+                            <input type="hidden" id="event-lng" name="longitude">
+                            <p style="font-size: 13px; color: var(--text-muted); margin-top: 8px;">
+                                選択済み: <span id="selected-coords">未選択</span>
+                            </p>
                         </div>
 
                         <div class="form-group">
@@ -2294,6 +2410,9 @@
                             <span>参加費：1,000円（スタジオ代割り勘）</span>
                         </div>
                     </div>
+
+                    <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 12px;">開催場所</h3>
+                    <div id="event-detail-map" class="map-container-small"></div>
 
                     <button class="btn btn-primary pulse">
                         <i class="fas fa-hand-point-up"></i>
@@ -2480,6 +2599,40 @@
         let interviewDone = false;
         let diagnosisAnswers = {};
 
+        // Map and location tracking
+        let locationPickerMap = null;
+        let eventsMap = null;
+        let eventDetailMap = null;
+        let selectedMarker = null;
+        let selectedLocation = null;
+        let userLocation = null;
+        let eventsData = [
+            {
+                id: 1,
+                title: '🎸 バンドメンバー募集！初心者OK',
+                category: '趣味・音楽',
+                description: '週末にスタジオで練習してます。ドラムとベースを募集中！初心者大歓迎です。',
+                date: '12/15（土）14:00',
+                location: '日向市音楽スタジオ',
+                lat: 32.4214,
+                lng: 131.6246,
+                participants: '3/5名',
+                fee: '1,000円'
+            },
+            {
+                id: 2,
+                title: '⚾ 野球やろう！外野募集',
+                category: 'スポーツ',
+                description: '草野球チームで外野手を募集してます。経験者優遇、でも初心者も歓迎！',
+                date: '12/16（日）9:00',
+                location: '日向市総合運動公園',
+                lat: 32.4350,
+                lng: 131.6300,
+                participants: '8/12名',
+                fee: '無料'
+            }
+        ];
+
         // Diagnosis navigation
         function nextDiagnosis(nextPage) {
             const currentElement = document.querySelector('#page-diagnosis' + (nextPage - 1) + ' .health-option.selected');
@@ -2526,20 +2679,32 @@
             document.querySelectorAll('.page').forEach(page => {
                 page.classList.remove('active');
             });
-            
+
             // Show selected page
             const page = document.getElementById('page-' + pageId);
             if (page) {
                 page.classList.add('active');
                 currentPage = pageId;
-                
+
                 // Update navigation if on main pages
                 updateNavigation(pageId);
-                
+
                 // If finished interview, mark as done
                 if (pageId === 'finishedinterview') {
                     interviewDone = true;
                 }
+
+                // Initialize maps when entering map-enabled pages
+                setTimeout(() => {
+                    if (pageId === 'eventcreate') {
+                        initLocationPicker();
+                    } else if (pageId === 'eventlist') {
+                        initEventsMap();
+                        getUserLocation();
+                    } else if (pageId === 'eventdetail') {
+                        initEventDetailMap();
+                    }
+                }, 100);
             }
         }
 
@@ -2592,6 +2757,38 @@
 
         document.getElementById('event-create-form').addEventListener('submit', function(e) {
             e.preventDefault();
+
+            const form = e.target;
+            const eventName = form.querySelector('input[type="text"]').value;
+            const category = form.querySelector('select').value;
+            const description = form.querySelector('textarea').value;
+            const datetime = form.querySelector('input[type="datetime-local"]').value;
+            const location = document.getElementById('event-location').value;
+            const participants = form.querySelector('input[type="number"]').value;
+            const fee = form.querySelectorAll('input[type="number"]')[1].value;
+            const lat = parseFloat(document.getElementById('event-lat').value);
+            const lng = parseFloat(document.getElementById('event-lng').value);
+
+            if (!lat || !lng) {
+                alert('地図上で場所を選択してください');
+                return;
+            }
+
+            // Create new event
+            const newEvent = {
+                id: eventsData.length + 1,
+                title: eventName,
+                category: category,
+                description: description,
+                date: datetime,
+                location: location,
+                lat: lat,
+                lng: lng,
+                participants: `0/${participants}名`,
+                fee: fee ? `${fee}円` : '無料'
+            };
+
+            eventsData.push(newEvent);
             alert('イベントを作成しました！');
             showPage('eventlist');
         });
@@ -2669,8 +2866,180 @@
         function updateStepTimer() {
             const minutes = Math.floor(stepSeconds / 60);
             const seconds = stepSeconds % 60;
-            document.getElementById('step-timer').textContent = 
+            document.getElementById('step-timer').textContent =
                 `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        // Map initialization functions
+        function initLocationPicker() {
+            if (locationPickerMap) {
+                locationPickerMap.remove();
+            }
+
+            // Default center: Hyuga City, Miyazaki
+            const defaultLat = 32.4214;
+            const defaultLng = 131.6246;
+
+            locationPickerMap = L.map('location-picker-map').setView([defaultLat, defaultLng], 13);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors',
+                maxZoom: 19
+            }).addTo(locationPickerMap);
+
+            // Add click event to set location
+            locationPickerMap.on('click', function(e) {
+                if (selectedMarker) {
+                    locationPickerMap.removeLayer(selectedMarker);
+                }
+
+                selectedMarker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(locationPickerMap);
+                selectedLocation = { lat: e.latlng.lat, lng: e.latlng.lng };
+
+                document.getElementById('event-lat').value = e.latlng.lat;
+                document.getElementById('event-lng').value = e.latlng.lng;
+                document.getElementById('selected-coords').textContent =
+                    `緯度: ${e.latlng.lat.toFixed(5)}, 経度: ${e.latlng.lng.toFixed(5)}`;
+            });
+        }
+
+        function initEventsMap() {
+            if (eventsMap) {
+                eventsMap.remove();
+            }
+
+            const defaultLat = 32.4214;
+            const defaultLng = 131.6246;
+
+            eventsMap = L.map('events-map').setView([defaultLat, defaultLng], 12);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors',
+                maxZoom: 19
+            }).addTo(eventsMap);
+
+            // Add markers for all events
+            eventsData.forEach(event => {
+                if (event.lat && event.lng) {
+                    const marker = L.marker([event.lat, event.lng]).addTo(eventsMap);
+                    marker.bindPopup(`<b>${event.title}</b><br>${event.location}<br>${event.date}`);
+                }
+            });
+
+            // Add user location marker if available
+            if (userLocation) {
+                L.circleMarker([userLocation.lat, userLocation.lng], {
+                    color: '#4A90E2',
+                    fillColor: '#4A90E2',
+                    fillOpacity: 0.3,
+                    radius: 10
+                }).addTo(eventsMap).bindPopup('現在地');
+            }
+        }
+
+        function initEventDetailMap() {
+            if (eventDetailMap) {
+                eventDetailMap.remove();
+            }
+
+            // Use the first event for demo
+            const event = eventsData[0];
+            if (!event.lat || !event.lng) return;
+
+            eventDetailMap = L.map('event-detail-map').setView([event.lat, event.lng], 15);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors',
+                maxZoom: 19
+            }).addTo(eventDetailMap);
+
+            L.marker([event.lat, event.lng]).addTo(eventDetailMap)
+                .bindPopup(`<b>${event.title}</b><br>${event.location}`);
+        }
+
+        // Get user's current location
+        function getUserLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        userLocation = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude
+                        };
+                        calculateDistances();
+                    },
+                    (error) => {
+                        console.log('位置情報の取得に失敗しました:', error);
+                    }
+                );
+            }
+        }
+
+        // Calculate distance between two points (Haversine formula)
+        function calculateDistance(lat1, lon1, lat2, lon2) {
+            const R = 6371; // Earth's radius in km
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                    Math.sin(dLon/2) * Math.sin(dLon/2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            return R * c;
+        }
+
+        // Calculate distances from user location to all events
+        function calculateDistances() {
+            if (!userLocation) return;
+
+            eventsData.forEach(event => {
+                if (event.lat && event.lng) {
+                    event.distance = calculateDistance(
+                        userLocation.lat, userLocation.lng,
+                        event.lat, event.lng
+                    );
+                }
+            });
+
+            // Update distance badges on the page
+            updateDistanceBadges();
+        }
+
+        // Update distance badges in event cards
+        function updateDistanceBadges() {
+            const badges = document.querySelectorAll('.distance-badge');
+            badges.forEach((badge, index) => {
+                if (eventsData[index] && eventsData[index].distance !== undefined) {
+                    const distance = eventsData[index].distance;
+                    if (distance < 1) {
+                        badge.textContent = `${Math.round(distance * 1000)}m`;
+                    } else {
+                        badge.textContent = `${distance.toFixed(1)}km`;
+                    }
+                }
+            });
+        }
+
+        // Sort events by distance or default
+        function sortEvents(sortType) {
+            // Update button states
+            document.querySelectorAll('.sort-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            if (sortType === 'distance') {
+                if (!userLocation) {
+                    alert('位置情報を取得できませんでした。ブラウザの設定で位置情報を許可してください。');
+                    return;
+                }
+                eventsData.sort((a, b) => (a.distance || Infinity) - (b.distance || Infinity));
+            } else {
+                // Default sort (by creation time / id)
+                eventsData.sort((a, b) => a.id - b.id);
+            }
+
+            // Refresh the events list (in a real app, you'd re-render the event cards)
+            updateDistanceBadges();
         }
 
         // Add touch feedback
