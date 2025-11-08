@@ -2021,27 +2021,452 @@
             </div>
         </div>
 
+        <!-- Event List Page (この指止まれ) -->
+        <div id="page-eventlist" class="page">
+            <div class="header header-small">
+                <h1 class="header-title">その指止まれ</h1>
+                <p class="header-subtitle">気軽にイベントを作って参加者を募集しよう</p>
+            </div>
+
+            <div class="content">
+                <button class="btn btn-primary pulse" onclick="showPage('eventcreate')" style="margin-bottom: 24px;">
+                    <i class="fas fa-plus-circle"></i>
+                    新しいイベントを作る
+                </button>
+
+                <h2 style="font-size: 20px; font-weight: 600; margin-bottom: 16px;">みんなのイベント</h2>
+
+                <div style="display: flex; gap: 8px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 8px;">
+                    <span class="badge badge-primary">すべて</span>
+                    <span class="badge">スポーツ</span>
+                    <span class="badge">アウトドア</span>
+                    <span class="badge">グルメ</span>
+                    <span class="badge">趣味</span>
+                    <span class="badge">学び</span>
+                </div>
+
+                <div class="community-card" onclick="showPage('eventdetail')">
+                    <div class="community-content">
+                        <div class="community-header">
+                            <div style="width: 100%;">
+                                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+                                    <div class="community-title">🎸 バンドメンバー募集！初心者OK</div>
+                                    <span class="badge badge-success">募集中</span>
+                                </div>
+                                <div class="community-category">趣味・音楽</div>
+                            </div>
+                        </div>
+                        <p style="color: var(--text-light); font-size: 14px; margin: 12px 0;">
+                            週末にスタジオで練習してます。ドラムとベースを募集中！初心者大歓迎です。
+                        </p>
+                        <div class="community-details">
+                            <div class="community-detail">
+                                <i class="fas fa-calendar"></i>
+                                <span>12/15（土）14:00</span>
+                            </div>
+                            <div class="community-detail">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>日向市音楽スタジオ</span>
+                            </div>
+                            <div class="community-detail">
+                                <i class="fas fa-users"></i>
+                                <span>3/5名</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="community-card">
+                    <div class="community-content">
+                        <div class="community-header">
+                            <div style="width: 100%;">
+                                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+                                    <div class="community-title">⚾ 野球やろう！外野募集</div>
+                                    <span class="badge badge-success">募集中</span>
+                                </div>
+                                <div class="community-category">スポーツ</div>
+                            </div>
+                        </div>
+                        <p style="color: var(--text-light); font-size: 14px; margin: 12px 0;">
+                            草野球チームで外野手を募集してます。経験者優遇、でも初心者も歓迎！
+                        </p>
+                        <div class="community-details">
+                            <div class="community-detail">
+                                <i class="fas fa-calendar"></i>
+                                <span>12/20（日）9:00</span>
+                            </div>
+                            <div class="community-detail">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>日向市総合運動公園</span>
+                            </div>
+                            <div class="community-detail">
+                                <i class="fas fa-users"></i>
+                                <span>8/12名</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="community-card">
+                    <div class="community-content">
+                        <div class="community-header">
+                            <div style="width: 100%;">
+                                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+                                    <div class="community-title">🍠 みんなで芋掘り＆BBQ</div>
+                                    <span class="badge badge-warning">残り3名</span>
+                                </div>
+                                <div class="community-category">アウトドア</div>
+                            </div>
+                        </div>
+                        <p style="color: var(--text-light); font-size: 14px; margin: 12px 0;">
+                            午前中に芋掘り、午後はBBQを楽しみましょう！家族での参加も大歓迎です。
+                        </p>
+                        <div class="community-details">
+                            <div class="community-detail">
+                                <i class="fas fa-calendar"></i>
+                                <span>12/22（日）10:00</span>
+                            </div>
+                            <div class="community-detail">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>日向市農業体験施設</span>
+                            </div>
+                            <div class="community-detail">
+                                <i class="fas fa-users"></i>
+                                <span>17/20名</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="community-card">
+                    <div class="community-content">
+                        <div class="community-header">
+                            <div style="width: 100%;">
+                                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+                                    <div class="community-title">📸 写真散歩、桜を撮りに行こう</div>
+                                    <span class="badge badge-success">募集中</span>
+                                </div>
+                                <div class="community-category">趣味・写真</div>
+                            </div>
+                        </div>
+                        <p style="color: var(--text-light); font-size: 14px; margin: 12px 0;">
+                            カメラ好きな人、一緒に散歩しながら写真を撮りませんか？スマホでもOK！
+                        </p>
+                        <div class="community-details">
+                            <div class="community-detail">
+                                <i class="fas fa-calendar"></i>
+                                <span>3/25（土）8:00</span>
+                            </div>
+                            <div class="community-detail">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>日向市中央公園</span>
+                            </div>
+                            <div class="community-detail">
+                                <i class="fas fa-users"></i>
+                                <span>2/8名</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Event Create Page -->
+        <div id="page-eventcreate" class="page">
+            <div class="header header-small">
+                <h1 class="header-title">イベントを作る</h1>
+                <p class="header-subtitle">やりたいことを形にしよう</p>
+            </div>
+
+            <div class="content">
+                <div class="card">
+                    <form id="event-create-form">
+                        <div class="form-group">
+                            <label class="form-label">イベント名</label>
+                            <input type="text" class="form-input" placeholder="例：バンドメンバー募集！初心者OK" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">カテゴリー</label>
+                            <select class="form-input" required>
+                                <option value="">選択してください</option>
+                                <option value="sports">スポーツ</option>
+                                <option value="outdoor">アウトドア</option>
+                                <option value="gourmet">グルメ</option>
+                                <option value="hobby">趣味</option>
+                                <option value="learning">学び</option>
+                                <option value="other">その他</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">説明</label>
+                            <textarea class="form-input" rows="4" placeholder="どんなイベントか詳しく教えてください" required></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">開催日時</label>
+                            <input type="datetime-local" class="form-input" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">場所</label>
+                            <input type="text" class="form-input" placeholder="例：日向市中央公園" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">募集人数</label>
+                            <input type="number" class="form-input" placeholder="例：10" min="1" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">参加費（円）</label>
+                            <input type="number" class="form-input" placeholder="0" min="0">
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-check"></i>
+                            イベントを作成する
+                        </button>
+                    </form>
+
+                    <button class="btn btn-secondary" onclick="showPage('eventlist')">
+                        <i class="fas fa-arrow-left"></i>
+                        キャンセル
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Event Detail Page -->
+        <div id="page-eventdetail" class="page">
+            <div class="header header-small">
+                <h1 class="header-title">イベント詳細</h1>
+                <p class="header-subtitle">その指止まれ</p>
+            </div>
+
+            <div class="content">
+                <div class="card">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
+                        <h2 style="font-size: 24px; font-weight: 600; color: var(--text-dark);">
+                            🎸 バンドメンバー募集！初心者OK
+                        </h2>
+                        <span class="badge badge-success">募集中</span>
+                    </div>
+
+                    <div class="community-category" style="margin-bottom: 16px;">趣味・音楽</div>
+
+                    <div style="background: var(--background); padding: 16px; border-radius: 12px; margin-bottom: 20px;">
+                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                            <div style="width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); display: flex; align-items: center; justify-content: center; color: white; font-size: 20px; font-weight: 600;">
+                                田
+                            </div>
+                            <div>
+                                <div style="font-weight: 600; color: var(--text-dark);">田中さん</div>
+                                <div style="font-size: 12px; color: var(--text-light);">主催者</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 12px;">イベント内容</h3>
+                    <p style="line-height: 1.8; color: var(--text-light); margin-bottom: 20px;">
+                        週末にスタジオで練習してます。ドラムとベースを募集中！<br>
+                        初心者大歓迎です。一緒に音楽を楽しみましょう。<br>
+                        ロック、ポップス、何でもOKです。まずは気軽に見学からでも大丈夫です！
+                    </p>
+
+                    <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 12px;">詳細情報</h3>
+                    <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px;">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <i class="fas fa-calendar" style="color: var(--primary-color); width: 20px;"></i>
+                            <span>2024年12月15日（土）14:00〜17:00</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <i class="fas fa-map-marker-alt" style="color: var(--primary-color); width: 20px;"></i>
+                            <span>日向市音楽スタジオ</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <i class="fas fa-users" style="color: var(--primary-color); width: 20px;"></i>
+                            <span>現在3名参加 / 定員5名</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <i class="fas fa-yen-sign" style="color: var(--primary-color); width: 20px;"></i>
+                            <span>参加費：1,000円（スタジオ代割り勘）</span>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary pulse">
+                        <i class="fas fa-hand-point-up"></i>
+                        このイベントに参加する
+                    </button>
+
+                    <button class="btn btn-secondary" onclick="showPage('eventlist')">
+                        <i class="fas fa-arrow-left"></i>
+                        一覧に戻る
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- My Page -->
+        <div id="page-mypage" class="page">
+            <div class="header header-small">
+                <h1 class="header-title">マイページ</h1>
+                <p class="header-subtitle">あなたの活動</p>
+            </div>
+
+            <div class="content">
+                <div class="card" style="background: linear-gradient(135deg, #F0F9FF, #E0F2FE); border: 1px solid #3B82F6;">
+                    <div style="text-align: center;">
+                        <div style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); display: flex; align-items: center; justify-content: center; color: white; font-size: 32px; font-weight: 600; margin: 0 auto 16px;">
+                            山
+                        </div>
+                        <h2 style="font-size: 20px; font-weight: 600; margin-bottom: 8px;">山田 太郎さん</h2>
+                        <p style="color: var(--text-light); font-size: 14px;">会員番号: FUN-2024-001</p>
+                    </div>
+                </div>
+
+                <h2 style="font-size: 20px; font-weight: 600; margin: 24px 0 16px;">
+                    <i class="fas fa-users" style="color: var(--primary-color);"></i>
+                    所属している部活
+                </h2>
+
+                <div class="community-card" onclick="showPage('communitydetail')">
+                    <img src="https://static.wixstatic.com/media/07cdbc_ffa8f4d3caa343ad96d08d1e33a3d943~mv2.jpg"
+                         alt="朝の健康ウォーキング部" class="community-image">
+                    <div class="community-content">
+                        <div class="community-header">
+                            <div>
+                                <div class="community-title">朝の健康ウォーキング部</div>
+                                <div class="community-category">運動系</div>
+                            </div>
+                        </div>
+                        <div class="community-details">
+                            <div class="community-detail">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>日向市中央公園</span>
+                            </div>
+                            <div class="community-detail">
+                                <i class="fas fa-clock"></i>
+                                <span>火・木 7:00</span>
+                            </div>
+                            <div class="community-detail">
+                                <i class="fas fa-users"></i>
+                                <span>12名</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="community-card">
+                    <div class="community-content">
+                        <div class="community-header">
+                            <div>
+                                <div class="community-title">絵手紙サークル</div>
+                                <div class="community-category">文化系</div>
+                            </div>
+                        </div>
+                        <div class="community-details">
+                            <div class="community-detail">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>日向市公民館</span>
+                            </div>
+                            <div class="community-detail">
+                                <i class="fas fa-clock"></i>
+                                <span>水 14:00</span>
+                            </div>
+                            <div class="community-detail">
+                                <i class="fas fa-users"></i>
+                                <span>15名</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 style="font-size: 20px; font-weight: 600; margin: 32px 0 16px;">
+                    <i class="fas fa-calendar-check" style="color: var(--success-color);"></i>
+                    参加予定のイベント
+                </h2>
+
+                <div class="community-card" onclick="showPage('eventdetail')">
+                    <div class="community-content">
+                        <div class="community-header">
+                            <div style="width: 100%;">
+                                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+                                    <div class="community-title">🎸 バンドメンバー募集！初心者OK</div>
+                                    <span class="badge badge-primary">参加予定</span>
+                                </div>
+                                <div class="community-category">趣味・音楽</div>
+                            </div>
+                        </div>
+                        <div class="community-details">
+                            <div class="community-detail">
+                                <i class="fas fa-calendar"></i>
+                                <span>12/15（土）14:00</span>
+                            </div>
+                            <div class="community-detail">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>日向市音楽スタジオ</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="community-card">
+                    <div class="community-content">
+                        <div class="community-header">
+                            <div style="width: 100%;">
+                                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+                                    <div class="community-title">🍠 みんなで芋掘り＆BBQ</div>
+                                    <span class="badge badge-primary">参加予定</span>
+                                </div>
+                                <div class="community-category">アウトドア</div>
+                            </div>
+                        </div>
+                        <div class="community-details">
+                            <div class="community-detail">
+                                <i class="fas fa-calendar"></i>
+                                <span>12/22（日）10:00</span>
+                            </div>
+                            <div class="community-detail">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>日向市農業体験施設</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 32px;">
+                    <button class="btn btn-primary" onclick="showPage('eventlist')">
+                        <i class="fas fa-plus"></i>
+                        新しいイベントを探す
+                    </button>
+
+                    <button class="btn btn-secondary" onclick="showPage('communitylist')">
+                        <i class="fas fa-search"></i>
+                        新しい部活を探す
+                    </button>
+                </div>
+            </div>
+        </div>
+
         <!-- Bottom Navigation -->
         <nav class="nav-bar">
             <button class="nav-item active" onclick="navigateTo('home')">
                 <i class="fas fa-home"></i>
                 <span>ホーム</span>
             </button>
-            <button class="nav-item" onclick="navigateTo('healthcheck')">
-                <i class="fas fa-heartbeat"></i>
-                <span>健康</span>
-            </button>
             <button class="nav-item" onclick="navigateTo('communitylist')">
                 <i class="fas fa-users"></i>
                 <span>部活</span>
             </button>
-            <button class="nav-item" onclick="navigateTo('activitylist')">
-                <i class="fas fa-running"></i>
-                <span>運動</span>
+            <button class="nav-item" onclick="navigateTo('eventlist')">
+                <i class="fas fa-hand-point-up"></i>
+                <span>その指止まれ</span>
             </button>
-            <button class="nav-item" onclick="navigateTo('communitymanager')">
-                <i class="fas fa-user-cog"></i>
-                <span>管理</span>
+            <button class="nav-item" onclick="navigateTo('mypage')">
+                <i class="fas fa-user"></i>
+                <span>マイページ</span>
             </button>
         </nav>
     </div>
@@ -2128,35 +2553,27 @@
             document.querySelectorAll('.nav-item').forEach(item => {
                 item.classList.remove('active');
             });
-            
+
             // Map pages to nav items
             const navMap = {
                 'home': 0,
-                'healthcheck': 1,
-                'daily1': 1,
-                'daily2': 1,
-                'daily3': 1,
-                'finishedinterview': 1,
-                'communitylist': 2,
-                'communitydetail': 2,
-                'activitylist': 3,
-                'step': 3,
-                'radiostretch': 3,
-                'easystretch': 3,
-                'deepbreathe': 3,
-                'finishedactivity': 3,
-                'communitymanager': 4,
-                'diagnosis1': 2,
-                'diagnosis2': 2,
-                'diagnosis3': 2,
-                'diagnosis4': 2,
-                'diagnosis5': 2,
-                'diagnosis6': 2,
-                'diagnosis7': 2,
-                'diagnosis8': 2,
-                'diagnosisresult': 2
+                'communitylist': 1,
+                'communitydetail': 1,
+                'diagnosis1': 1,
+                'diagnosis2': 1,
+                'diagnosis3': 1,
+                'diagnosis4': 1,
+                'diagnosis5': 1,
+                'diagnosis6': 1,
+                'diagnosis7': 1,
+                'diagnosis8': 1,
+                'diagnosisresult': 1,
+                'eventlist': 2,
+                'eventcreate': 2,
+                'eventdetail': 2,
+                'mypage': 3
             };
-            
+
             if (navMap[pageId] !== undefined) {
                 document.querySelectorAll('.nav-item')[navMap[pageId]].classList.add('active');
             }
@@ -2171,6 +2588,12 @@
         document.getElementById('signup-form').addEventListener('submit', function(e) {
             e.preventDefault();
             showPage('home');
+        });
+
+        document.getElementById('event-create-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('イベントを作成しました！');
+            showPage('eventlist');
         });
 
         // Social login functions
